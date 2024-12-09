@@ -1,0 +1,56 @@
+.main-content-container {
+    padding: 1rem;
+  }
+  
+  .main-content {
+    transition: margin-left 0.3s ease;
+  }
+  
+  .main-content.sidebar-expanded {
+    margin-left: 240px;
+  }
+  
+  .app-container {
+    padding-left: 60px;
+    transition: padding-left 0.3s ease;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  @media (max-width: 768px) {
+    .app-container {
+        padding-left: 0;
+    }
+  }
+  
+  .app-container.sidebar-expanded {
+    padding-left: 240px; /* Width of expanded sidebar */
+  }
+  
+  .main-content {
+    flex: 1;
+    width: 100%;
+    transition: width 0.3s ease;
+  }
+  
+  
+  
+  body {
+    background-color: var(--background);
+    color: var(--text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .sidebar {
+    background-color: var(--sidebar-bg);
+  }
+  
+  .sidebar nav ul li a,
+  .sidebar nav ul li button {
+    color: var(--sidebar-text);
+  }
+  
+  .app-container.no-sidebar {
+      padding-left: 0;
+  }

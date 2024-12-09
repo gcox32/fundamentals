@@ -1,0 +1,8 @@
+/* Authenticator styles */
+[data-amplify-authenticator] {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
