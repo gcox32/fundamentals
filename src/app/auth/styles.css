@@ -1,0 +1,221 @@
+/* Keep authentication styles */
+:root {
+    --primary-color: #4F46E5;
+    --primary-color-hover: #4338CA;
+    --secondary-color: #7C3AED;
+    --secondary-color-hover: #6D28DB;
+    --background-color: #F9F9F9;
+}
+
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.auth-error {
+    text-align: center;
+    padding: 2rem;
+    max-width: 400px;
+}
+
+.auth-error h1 {
+    margin-bottom: 1rem;
+}
+
+.auth-error p {
+    margin-bottom: 2rem;
+    color: #f44336;
+}
+
+.auth-error a {
+    color: #2196F3;
+    text-decoration: underline;
+}
+
+.auth-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.auth-banner {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+}
+
+.banner-content {
+    max-width: 400px;
+}
+
+.banner-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.banner-content p {
+    font-size: 1.125rem;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.auth-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: var(--background-color);
+}
+
+.auth-form-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form-container h2 {
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    color: #111827;
+    font-weight: 600;
+}
+
+/* Amplify UI Overrides */
+.auth-form-container .amplify-button--primary {
+    background-color: var(--primary-color);
+}
+
+.auth-form-container .amplify-button--primary:hover {
+    background-color: var(--primary-color-hover);
+}
+
+.auth-form-container .amplify-tabs {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .auth-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-banner {
+        display: none;
+    }
+
+    .auth-content {
+        padding: 1rem;
+    }
+}
+
+/* Auth Form Variations */
+.auth-form-container[data-auth-state="signIn"] h2 {
+    color: #111827;
+}
+
+.auth-form-container[data-auth-state="signUp"] h2 {
+    color: var(--primary-color);
+}
+
+.auth-form-container[data-auth-state="forgotPassword"] h2 {
+    color: #DC2626;
+}
+
+/* Amplify UI Customizations */
+.auth-form-container .amplify-field__show-password {
+    color: #6B7280;
+}
+
+.auth-form-container .amplify-field__show-password:hover {
+    color: #374151;
+}
+
+.auth-form-container .amplify-text-field {
+    border-color: #E5E7EB;
+}
+
+.auth-form-container .amplify-text-field:focus-within {
+    border-color: #4F46E5;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+}
+
+.auth-form-container .amplify-button {
+    font-weight: 500;
+    height: 42px;
+}
+
+.auth-form-container .amplify-button--link {
+    color: #4F46E5;
+}
+
+.auth-form-container .amplify-button--link:hover {
+    color: #4338CA;
+    text-decoration: none;
+}
+
+.auth-form-container .amplify-label {
+    color: #374151;
+    font-weight: 500;
+}
+
+.auth-form-container .amplify-field-group__outer-end {
+    height: 42px;
+}
+
+/* Error Messages */
+.auth-form-container .amplify-alert {
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.auth-form-container .amplify-alert--error {
+    background-color: #FEF2F2;
+    border-color: #FCA5A5;
+    color: #DC2626;
+}
+
+.loading-placeholder {
+  width: 100%;
+  max-width: 400px;
+}
+
+.loading-title {
+  height: 40px;
+  width: 60%;
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite;
+}
+
+.loading-description {
+  height: 24px;
+  width: 80%;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  animation: pulse 1.5s infinite;
+}
+
+.loading-form {
+  width: 100%;
+  max-width: 400px;
+  height: 300px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.6; }
+}
