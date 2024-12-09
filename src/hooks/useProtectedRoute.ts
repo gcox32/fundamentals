@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useAuthenticator } from "@aws-amplify/ui-react";
+import { useAuthenticator } from "@/hooks/useAuthenticator";
 import { useRouter } from "next/navigation";
 
 export function useProtectedRoute(redirectTo: string = '/auth/sign-in') {
