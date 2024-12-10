@@ -3,36 +3,55 @@
 @tailwind utilities;
 
 :root {
+  /* Base colors */
   --background: #ffffff;
   --foreground: #171717;
-  --sidebar-bg: #f5f5f5;
-  --sidebar-text: #171717;
+  --text: #1a1a1a;
+  --text-secondary: #666666;
+
+  /* Navigation & Sidebar */
   --nav-bg: #ffffff;
   --nav-text: #171717;
-  --border-color: #e5e5e5;
-  --hover-bg: rgba(0, 0, 0, 0.05);
-  --active-accent: #35AAE0;
+  --sidebar-bg: #f5f5f5;
+  --sidebar-text: #171717;
+
+  /* Notifications */
   --snackbar-success-bg: #35AAE0;
   --snackbar-error-bg: #FF4B4B;
   --snackbar-text: #FFFFFF;
+
+  /* Modal */
   --modal-overlay: rgba(0, 0, 0, 0.5);
   --modal-bg: #ffffff;
   --modal-text: #171717;
 }
 
 :root[class~="dark-mode"] {
+  /* Base colors */
   --background: #0a0a0a;
   --foreground: #ededed;
-  --sidebar-bg: #1a1a1a;
-  --sidebar-text: #ffffff;
+  --text: #f3f4f6;
+  --text-secondary: #9ca3af;
+
+  /* Navigation & Sidebar */
   --nav-bg: #000000;
   --nav-text: #ffffff;
+  --sidebar-bg: #1a1a1a;
+  --sidebar-text: #ffffff;
+
+  /* Interactive elements */
   --border-color: #2a2a2a;
   --hover-bg: rgba(255, 255, 255, 0.05);
   --active-accent: #35AAE0;
+  --active-accent-dark: #2563eb;
+  --active-accent-rgb: 53, 170, 224;
+
+  /* Notifications */
   --snackbar-success-bg: #2a9bc7;
   --snackbar-error-bg: #e64444;
   --snackbar-text: #FFFFFF;
+
+  /* Modal */
   --modal-overlay: rgba(0, 0, 0, 0.75);
   --modal-bg: #1a1a1a;
   --modal-text: #ffffff;

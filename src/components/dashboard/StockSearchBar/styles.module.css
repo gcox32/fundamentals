@@ -1,0 +1,100 @@
+.searchContainer {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.searchBar.focused {
+  border-color: var(--active-accent);
+  box-shadow: 0 0 0 3px rgba(var(--active-accent-rgb), 0.2);
+}
+
+.searchIcon {
+  color: var(--text-secondary);
+  margin: 0 0.75rem;
+  font-size: 1.1rem;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background: transparent;
+  color: var(--text);
+  min-width: 200px;
+}
+
+.searchInput:focus {
+  outline: none;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.clearButton:hover {
+  color: var(--text);
+}
+
+.divider {
+  width: 1px;
+  height: 2rem;
+  background-color: var(--border-color);
+  margin: 0 0.5rem;
+}
+
+.exchangeSelect {
+  padding: 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.exchangeSelect:focus {
+  outline: none;
+}
+
+.searchButton {
+  background-color: var(--active-accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-left: 0.5rem;
+}
+
+.searchButton:hover {
+  background-color: var(--active-accent-dark);
+}
+
+/* Dark mode adjustments */
+:global(.dark) .searchBar {
+  background-color: var(--nav-bg);
+}
+
+:global(.dark) .searchInput::placeholder {
+  color: var(--text-secondary);
+} 

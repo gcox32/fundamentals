@@ -1,35 +1,35 @@
 import { NavGroup } from './types';
 import { 
-    FaTachometerAlt, 
-    FaChartLine, 
-    FaHistory, 
-    FaUsers, 
-    FaMapMarkerAlt, 
-    FaBlog, 
+    FaChartLine,
+    FaSearch,
+    FaBriefcase,
+    FaNewspaper,
+    FaChartBar,
+    FaBell,
     FaCalculator 
 } from 'react-icons/fa';
 
 export const navGroups: NavGroup[] = [
     {
-        title: 'Dashboard',
+        title: 'Market Research',
         items: [
-            { icon: <FaTachometerAlt />, label: 'Dashboard', href: '/dashboard' },
-            { icon: <FaChartLine />, label: 'KPIs', href: '/dashboard/kpis' },
-            { icon: <FaHistory />, label: 'Logs', href: '/dashboard/logs' },
+            { icon: <FaChartLine />, label: 'Overview', href: '/dashboard' },
+            { icon: <FaSearch />, label: 'Stock Screener', href: '/dashboard/screener' },
+            { icon: <FaNewspaper />, label: 'News & Analysis', href: '/dashboard/news' },
         ]
     },
     {
-        title: 'Management',
+        title: 'Portfolio',
         items: [
-            { icon: <FaUsers />, label: 'Users', href: '/management/users' },
-            { icon: <FaMapMarkerAlt />, label: 'Tracking', href: '/management/tracking' },
-            { icon: <FaBlog />, label: 'Blog', href: '/management/blog' },
+            { icon: <FaBriefcase />, label: 'Holdings', href: '/portfolio/holdings' },
+            { icon: <FaChartBar />, label: 'Performance', href: '/portfolio/performance' },
+            { icon: <FaBell />, label: 'Alerts', href: '/portfolio/alerts' },
         ]
     },
     {
         title: 'Tools',
         items: [
-            { icon: <FaCalculator />, label: 'Calculator', href: '/tools/calculator' },
+            { icon: <FaCalculator />, label: 'Investment Calculator', href: '/tools/calculator' },
         ]
     }
 ];
