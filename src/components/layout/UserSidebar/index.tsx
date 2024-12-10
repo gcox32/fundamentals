@@ -8,7 +8,7 @@ import Snackbar from '@/src/components/utils/Snackbar';
 interface UserSidebarProps {
   user: {
     name: string;
-    backgroundImage: string;
+    avatar: string;
   };
 }
 
@@ -34,7 +34,7 @@ export default function UserSidebar({ user }: UserSidebarProps) {
           <div 
             className={styles.userAvatar}
             style={{
-              backgroundImage: `url(${user.backgroundImage})`
+              backgroundImage: `url(${user.avatar})`
             }}
           />
           <h2 className={styles.userName}>{user.name}</h2>

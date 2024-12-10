@@ -15,7 +15,7 @@ export default function Navigation() {
 
     const user = {
         name: 'Demo Account',
-        backgroundImage: 'https://ui-avatars.com/api/?name=Demo+Account&background=random&color=fff&size=100.png'
+        avatar: 'https://ui-avatars.com/api/?name=Demo+Account&background=random&color=fff&size=100.png'
       };
 
     const router = useRouter();
@@ -50,7 +50,7 @@ export default function Navigation() {
                         aria-label="User menu"
                         onClick={() => setUserSidebarOpen(true)}
                         style={{
-                            backgroundImage: `url(${user.backgroundImage})`
+                            backgroundImage: `url(${user.avatar})`
                         }}
                     />
                 </div>
