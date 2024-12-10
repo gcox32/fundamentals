@@ -1,6 +1,7 @@
 'use client';
 
 import { useProtectedRoute } from "@/hooks/useProtectedRoute";
+import { redirect } from "next/navigation";
 
 interface AuthProtectedProps {
   children: (user: any) => React.ReactNode;
@@ -14,7 +15,7 @@ export default function AuthProtected({
   const { user, isAuthenticated } = useProtectedRoute(redirectTo);
 
   if (!isAuthenticated) {
-    return null;
+    redirect(redirectTo);
   }
 
   return <>{children(user)}</>;
