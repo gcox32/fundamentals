@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { signUp } from 'aws-amplify/auth';
 import { AuthError } from '@aws-amplify/auth';
+import { Spinner } from '@/src/components/utils/Spinner';
 
 interface SignUpFormProps {
   onStateChange: (state: string) => void;
@@ -14,6 +15,7 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
     username: ''
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -31,6 +33,7 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
       return;
     }
 
+    setIsLoading(true);
     try {
       await signUp({
         username: formData.email,
@@ -59,6 +62,8 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
       } else {
         setError('An unexpected error occurred');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -75,6 +80,7 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
           value={formData.username}
           onChange={handleChange}
           required
+          disabled={isLoading}
         />
       </div>
 
@@ -87,6 +93,7 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
           value={formData.email}
           onChange={handleChange}
           required
+          disabled={isLoading}
         />
       </div>
 
@@ -99,6 +106,7 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
           value={formData.password}
           onChange={handleChange}
           required
+          disabled={isLoading}
         />
       </div>
 
@@ -111,11 +119,23 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
           value={formData.confirmPassword}
           onChange={handleChange}
           required
+          disabled={isLoading}
         />
       </div>
 
-      <button type="submit" className="submit-button">
-        Create Account
+      <button 
+        type="submit" 
+        className="submit-button"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <span className="button-content">
+            <Spinner size="small" color="white" />
+            <span className="button-text">Creating Account...</span>
+          </span>
+        ) : (
+          'Create Account'
+        )}
       </button>
 
       <div className="auth-links">
@@ -123,6 +143,7 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
           type="button" 
           onClick={() => onStateChange('signIn')}
           className="text-button"
+          disabled={isLoading}
         >
           Already have an account? Sign in
         </button>

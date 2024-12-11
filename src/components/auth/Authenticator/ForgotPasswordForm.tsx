@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { resetPassword, confirmResetPassword } from 'aws-amplify/auth';
 import { AuthError } from '@aws-amplify/auth';
+import { Spinner } from '@/src/components/utils/Spinner';
 
 interface ForgotPasswordFormProps {
   onStateChange: (state: string) => void;
@@ -12,10 +13,12 @@ export default function ForgotPasswordForm({ onStateChange }: ForgotPasswordForm
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [code, setCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
 
     try {
       if (!isCodeSent) {
@@ -50,6 +53,8 @@ export default function ForgotPasswordForm({ onStateChange }: ForgotPasswordForm
       } else {
         setError('An unexpected error occurred');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -65,7 +70,7 @@ export default function ForgotPasswordForm({ onStateChange }: ForgotPasswordForm
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          disabled={isCodeSent}
+          disabled={isCodeSent || isLoading}
         />
       </div>
 
@@ -79,6 +84,7 @@ export default function ForgotPasswordForm({ onStateChange }: ForgotPasswordForm
               value={code}
               onChange={(e) => setCode(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -90,13 +96,27 @@ export default function ForgotPasswordForm({ onStateChange }: ForgotPasswordForm
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
         </>
       )}
 
-      <button type="submit" className="submit-button">
-        {isCodeSent ? 'Reset Password' : 'Send Code'}
+      <button 
+        type="submit" 
+        className="submit-button"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <span className="button-content">
+            <Spinner size="small" color="white" />
+            <span className="button-text">
+              {isCodeSent ? 'Resetting Password...' : 'Sending Code...'}
+            </span>
+          </span>
+        ) : (
+          isCodeSent ? 'Reset Password' : 'Send Code'
+        )}
       </button>
 
       <div className="auth-links">
@@ -104,6 +124,7 @@ export default function ForgotPasswordForm({ onStateChange }: ForgotPasswordForm
           type="button" 
           onClick={() => onStateChange('signIn')}
           className="text-button"
+          disabled={isLoading}
         >
           Back to Sign In
         </button>

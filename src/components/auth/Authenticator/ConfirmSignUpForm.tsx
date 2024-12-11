@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { confirmSignUp, resendSignUpCode } from 'aws-amplify/auth';
 import { AuthError } from '@aws-amplify/auth';
+import { Spinner } from '@/src/components/utils/Spinner';
 
 interface ConfirmSignUpFormProps {
   onStateChange: (state: string) => void;
@@ -13,9 +14,11 @@ export default function ConfirmSignUpForm({ onStateChange, email = '' }: Confirm
   const [error, setError] = useState('');
   const [resendDisabled, setResendDisabled] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleResendCode = async () => {
     try {
+      setIsLoading(true);
       await resendSignUpCode({ username: userEmail });
       setResendDisabled(true);
       setCountdown(30);
@@ -34,12 +37,15 @@ export default function ConfirmSignUpForm({ onStateChange, email = '' }: Confirm
       if (err instanceof AuthError) {
         setError('Failed to resend code. Please try again.');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
 
     try {
       await confirmSignUp({
@@ -62,6 +68,8 @@ export default function ConfirmSignUpForm({ onStateChange, email = '' }: Confirm
       } else {
         setError('An unexpected error occurred');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -78,6 +86,7 @@ export default function ConfirmSignUpForm({ onStateChange, email = '' }: Confirm
             value={userEmail}
             onChange={(e) => setUserEmail(e.target.value)}
             required
+            disabled={isLoading}
           />
         </div>
       )}
@@ -90,28 +99,46 @@ export default function ConfirmSignUpForm({ onStateChange, email = '' }: Confirm
           value={verificationCode}
           onChange={(e) => setVerificationCode(e.target.value)}
           required
+          disabled={isLoading}
         />
       </div>
 
-      <button type="submit" className="submit-button">
-        Verify Account
+      <button 
+        type="submit" 
+        className="submit-button"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <span className="button-content">
+            <Spinner size="small" color="white" />
+            <span className="button-text">Verifying...</span>
+          </span>
+        ) : (
+          'Verify Account'
+        )}
       </button>
 
       <div className="auth-links">
         <button 
           type="button"
           onClick={handleResendCode}
-          disabled={resendDisabled}
+          disabled={resendDisabled || isLoading}
           className="text-button"
         >
           {resendDisabled 
             ? `Resend code in ${countdown}s` 
-            : 'Resend code'}
+            : isLoading 
+              ? <span className="button-content">
+                  <Spinner size="small" color="currentColor" />
+                  <span className="button-text">Resending...</span>
+                </span>
+              : 'Resend code'}
         </button>
         <button 
           type="button" 
           onClick={() => onStateChange('signIn')}
           className="text-button"
+          disabled={isLoading}
         >
           Back to Sign In
         </button>

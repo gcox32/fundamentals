@@ -8,9 +8,7 @@ export function useAuthRedirect(redirectTo: string) {
   }));
 
   useEffect(() => {
-    console.log('isAuthenticated', isAuthenticated)
     if (isAuthenticated) {
-      console.log('redirecting to', redirectTo)
       redirect(redirectTo);
     }
   }, [isAuthenticated, redirectTo]);

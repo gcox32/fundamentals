@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuthenticator } from '@/src/hooks/useAuthenticator';
 import { useRouter } from 'next/navigation';
+import { Spinner } from '@/src/components/utils/Spinner';
 
 interface ChangePasswordFormProps {
   onStateChange: (state: string) => void;
@@ -11,6 +12,7 @@ export default function ChangePasswordForm({ onStateChange, username }: ChangePa
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { confirmPasswordChange } = useAuthenticator();
   const router = useRouter();
 
@@ -23,13 +25,16 @@ export default function ChangePasswordForm({ onStateChange, username }: ChangePa
       return;
     }
 
+    setIsLoading(true);
     try {
       const result = await confirmPasswordChange(username, newPassword);
       if (result?.isSignedIn) {
-        router.replace('/'); // or wherever your protected route is
+        router.replace('/');
       }
     } catch (err: any) {
       setError(err.message || 'Failed to change password');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -45,6 +50,7 @@ export default function ChangePasswordForm({ onStateChange, username }: ChangePa
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           required
+          disabled={isLoading}
         />
       </div>
 
@@ -56,11 +62,23 @@ export default function ChangePasswordForm({ onStateChange, username }: ChangePa
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
+          disabled={isLoading}
         />
       </div>
 
-      <button type="submit" className="submit-button">
-        Change Password
+      <button 
+        type="submit" 
+        className="submit-button"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <span className="button-content">
+            <Spinner size="small" color="white" />
+            <span className="button-text">Changing Password...</span>
+          </span>
+        ) : (
+          'Change Password'
+        )}
       </button>
     </form>
   );

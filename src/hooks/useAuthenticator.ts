@@ -42,7 +42,6 @@ export function useAuthenticator(selector?: (context: AuthContextType) => any) {
       try {
         console.log('Checking authentication status...');
         const user = await getCurrentUser();
-        console.log('Current user found:', user);
         setAuthState({
           user: {
             username: user.username,
@@ -90,9 +89,7 @@ export function useAuthenticator(selector?: (context: AuthContextType) => any) {
 
   const signIn = useCallback(async (username: string, password: string) => {
     try {
-      console.log('Starting sign in process...', { username });
       const signInResult = await amplifySignIn({ username, password });
-      console.log('Sign in result:', signInResult);
       
       if (signInResult.nextStep?.signInStep === 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED') {
         console.log('User needs to change password');
@@ -100,7 +97,6 @@ export function useAuthenticator(selector?: (context: AuthContextType) => any) {
       }
       
       const user = await getCurrentUser();
-      console.log('Got current user:', user);
       
       setAuthState({
         user: {
