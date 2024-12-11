@@ -18,7 +18,7 @@ export default function UserSidebar({ user }: UserSidebarProps) {
         <div 
           className={styles.userAvatar}
           style={{
-            backgroundImage: `url(${user.avatar})`
+            backgroundImage: `url(${user?.avatar || 'https://ui-avatars.com/api/?name=Demo+Account&background=random&color=fff&size=100.png'})`
           }}
         />
         <h2 className={styles.userName}>{user.name}</h2>

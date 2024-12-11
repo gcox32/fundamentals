@@ -83,7 +83,7 @@ export default function Navigation() {
                 onClose={() => setUserSidebarOpen(false)}
                 position="right"
             >
-                <UserSidebar user={user || { name: 'Demo Account', avatar: 'https://ui-avatars.com/api/?name=Demo+Account&background=random&color=fff&size=100.png' }} />
+                <UserSidebar user={user} />
             </Sidebar>
         </>
     );
