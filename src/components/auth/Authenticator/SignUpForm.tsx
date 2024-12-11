@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useAuthenticator } from '@/src/hooks/useAuthenticator';
+import { signUp } from 'aws-amplify/auth';
+import { AuthError } from '@aws-amplify/auth';
 
 interface SignUpFormProps {
   onStateChange: (state: string) => void;
@@ -13,7 +14,6 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
     username: ''
   });
   const [error, setError] = useState('');
-  const { signIn } = useAuthenticator();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -32,10 +32,33 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
     }
 
     try {
-      // In a real implementation, this would be signUp instead of signIn
-      await signIn(formData.email, formData.password);
+      await signUp({
+        username: formData.email,
+        password: formData.password,
+        options: {
+          userAttributes: {
+            email: formData.email,
+            preferred_username: formData.username
+          },
+          autoSignIn: true
+        }
+      });
+      onStateChange('confirmSignUp');
     } catch (err) {
-      setError('Failed to create account');
+      if (err instanceof AuthError) {
+        switch (err.name) {
+          case 'UsernameExistsException':
+            setError('An account with this email already exists');
+            break;
+          case 'InvalidPasswordException':
+            setError('Password does not meet requirements');
+            break;
+          default:
+            setError('Failed to create account');
+        }
+      } else {
+        setError('An unexpected error occurred');
+      }
     }
   };
 

@@ -20,6 +20,10 @@ nav {
   .nav-logo {
     display: flex;
     align-items: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: none;
   }
   
   .nav-controls {
@@ -66,6 +70,12 @@ nav {
   }
   
   .nav-button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
     background: #35AAE0;
     border: 1px solid #35AAE0;
     border-radius: 16px;
@@ -77,7 +87,7 @@ nav {
   }
   
   .nav-button:hover {
-    background-color: #FFFFFF90;
+    background-color: var(--primary-color-hover);
   }
   
   .menu-toggle {
@@ -469,5 +479,12 @@ nav {
   
   .sidebar-overlay {
     background-color: var(--modal-overlay);
+  }
+  
+  .nav-link {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    margin-right: 1rem;
   }
   

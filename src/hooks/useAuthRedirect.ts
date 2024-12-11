@@ -1,16 +1,19 @@
 import { useEffect } from "react";
 import { useAuthenticator } from "@/hooks/useAuthenticator";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
-export function useAuthRedirect(redirectTo: string = "/") {
-  const { isAuthenticated } = useAuthenticator((context) => [context.isAuthenticated]);
-  const router = useRouter();
+export function useAuthRedirect(redirectTo: string) {
+  const { isAuthenticated } = useAuthenticator(context => ({
+    isAuthenticated: context.isAuthenticated
+  }));
 
   useEffect(() => {
+    console.log('isAuthenticated', isAuthenticated)
     if (isAuthenticated) {
-      router.replace(redirectTo);
+      console.log('redirecting to', redirectTo)
+      redirect(redirectTo);
     }
-  }, [isAuthenticated, router, redirectTo]);
+  }, [isAuthenticated, redirectTo]);
 
   return isAuthenticated;
 } 

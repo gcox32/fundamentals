@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { resetPassword, confirmResetPassword } from 'aws-amplify/auth';
+import { AuthError } from '@aws-amplify/auth';
 
 interface ForgotPasswordFormProps {
   onStateChange: (state: string) => void;
@@ -17,15 +19,37 @@ export default function ForgotPasswordForm({ onStateChange }: ForgotPasswordForm
 
     try {
       if (!isCodeSent) {
-        // Simulate sending reset code
+        await resetPassword({ username: email });
         setIsCodeSent(true);
       } else {
-        // Simulate password reset
-        console.log('Password reset with:', { email, code, newPassword });
+        await confirmResetPassword({
+          username: email,
+          confirmationCode: code,
+          newPassword
+        });
         onStateChange('signIn');
       }
     } catch (err) {
-      setError('Failed to process request');
+      if (err instanceof AuthError) {
+        switch (err.name) {
+          case 'LimitExceededException':
+            setError('Too many attempts. Please try again later.');
+            break;
+          case 'CodeMismatchException':
+            setError('Invalid verification code');
+            break;
+          case 'InvalidPasswordException':
+            setError('Password does not meet requirements');
+            break;
+          case 'UserNotFoundException':
+            setError('No account found with this email');
+            break;
+          default:
+            setError('An error occurred during password reset');
+        }
+      } else {
+        setError('An unexpected error occurred');
+      }
     }
   };
 

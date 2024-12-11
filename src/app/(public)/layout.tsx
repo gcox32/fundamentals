@@ -11,38 +11,35 @@ import outputs from '@/amplify_outputs.json';
 
 Amplify.configure(outputs);
 
-function MainContent({ children }: { children: React.ReactNode }) {
-  const { isExpanded } = useSidebar();
+function PublicContent({ children }: { children: React.ReactNode }) {
+    const { isExpanded } = useSidebar();
 
-  return (
-    <AuthProtected>
-      {(user) => (
+    return (
         <div className={`app-container ${isExpanded ? 'sidebar-expanded' : ''}`}>
-          <Navigation />
-          <main className="main-content">
-            {children}
-          </main>
-          <Footer />
+            <Navigation />
+            <main className="main-content">
+                {children}
+            </main>
+            <Footer />
         </div>
-      )}
-    </AuthProtected>
-  );
+    );
 }
 
+
 export default function ClientLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return (
-    <ThemeProvider>
-      <SidebarProvider>
-        <SearchProvider>
-          <MainContent>
-            {children}
-          </MainContent>
-        </SearchProvider>
-      </SidebarProvider>
-    </ThemeProvider>
-  );
+    return (
+        <ThemeProvider>
+            <SidebarProvider>
+                <SearchProvider>
+                    <PublicContent>
+                        {children}
+                    </PublicContent>
+                </SearchProvider>
+            </SidebarProvider>
+        </ThemeProvider>
+    );
 } 

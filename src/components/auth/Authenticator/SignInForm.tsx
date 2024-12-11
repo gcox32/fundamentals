@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 import { useAuthenticator } from '@/src/hooks/useAuthenticator';
+import { AuthError } from '@aws-amplify/auth';
 
 interface SignInFormProps {
   onStateChange: (state: string) => void;
   hideSignUp?: boolean;
+  onSignIn: (username: string, password: string) => Promise<void>;
 }
 
-export default function SignInForm({ onStateChange, hideSignUp }: SignInFormProps) {
+export default function SignInForm({ onStateChange, hideSignUp, onSignIn }: SignInFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { signIn } = useAuthenticator();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     
     try {
-      await signIn(email, password);
-    } catch (err) {
-      setError('Invalid email or password');
+      await onSignIn(email, password);
+    } catch (err: any) {
+      setError(err.message || 'Invalid email or password');
     }
   };
 
