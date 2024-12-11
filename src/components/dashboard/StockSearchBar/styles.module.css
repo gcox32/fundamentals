@@ -1,6 +1,6 @@
 .searchContainer {
   width: 100%;
-  max-width: 800px;
+  max-width: 640px;
   margin: 0 auto;
 }
 
@@ -67,7 +67,8 @@
   color: var(--text);
   font-size: 0.9rem;
   cursor: pointer;
-  min-width: 140px;
+  min-width: 48px;
+  text-align: center;
 }
 
 .exchangeSelect:focus {

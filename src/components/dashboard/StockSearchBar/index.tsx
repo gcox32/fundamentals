@@ -51,10 +51,9 @@ export default function StockSearchBar() {
           onChange={(e) => setSelectedExchange(e.target.value)}
           className={styles.exchangeSelect}
         >
-          <option value="">All Exchanges</option>
           {exchanges.map((exchange) => (
             <option key={exchange.code} value={exchange.code}>
-              {exchange.name}
+              {exchange.code}
             </option>
           ))}
         </select>
