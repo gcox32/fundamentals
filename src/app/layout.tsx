@@ -12,7 +12,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-    title: "Fundamentals Dashboard",
+    title: "Fundamental",
     description: "A starting point for portfolio research",
     manifest: "/site.webmanifest",
     icons: {

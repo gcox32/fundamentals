@@ -14,7 +14,7 @@ export default function Footer() {
           <Link href="/privacy-policy">Privacy Policy</Link>
           <Link href="/terms-of-service">Terms of Service</Link>
         </div>
-        <p className="copyright">&copy; {new Date().getFullYear()} Our Website</p>
+        <p className="copyright">&copy; {new Date().getFullYear()} Fundamental</p>
       </div>
     </footer>
   );
