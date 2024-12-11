@@ -20,7 +20,7 @@
 
   /* Interactive elements */
   --border-color: #2a2a2a;
-  --hover-bg: rgba(255, 255, 255, 0.05);
+  --hover-bg: rgba(0, 0, 0, 0.15);
   --active-accent: #35AAE0;
   --active-accent-dark: #2563eb;
   --active-accent-rgb: 53, 170, 224;

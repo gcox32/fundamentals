@@ -34,6 +34,7 @@
   background: transparent;
   color: var(--text);
   min-width: 200px;
+  width: 100%;
 }
 
 .searchInput:focus {
@@ -98,4 +99,79 @@
 
 :global(.dark) .searchInput::placeholder {
   color: var(--text-secondary);
+}
+
+.inputWrapper {
+  position: relative;
+  flex: 1;
+  width: 100%;
+}
+
+.resultsDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: var(--searchbar-bg);
+  border: 1px solid var(--border-color);
+  border-top: 1px dotted var(--active-accent);
+  border-radius: 0 0 4px 4px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.resultItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  gap: 0.75rem;
+}
+
+.resultItem:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+:global(.dark) .resultItem:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.resultItem:hover {
+  background-color: var(--hover-bg);
+}
+
+.logoWrapper {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.companyLogo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.symbol {
+  font-weight: 600;
+  color: var(--text);
+  min-width: 80px;
+}
+
+.name {
+  color: var(--text-secondary);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 } 
