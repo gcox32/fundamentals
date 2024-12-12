@@ -10,12 +10,12 @@ interface PriceInfoProps {
   isLoading?: boolean;
 }
 
-export default function PriceInfo({ 
-  currentPrice, 
-  priceChange, 
-  percentChange, 
+export default function PriceInfo({
+  currentPrice,
+  priceChange,
+  percentChange,
   isAfterHours,
-  isLoading 
+  isLoading
 }: PriceInfoProps) {
   const formatPrice = (price: number) => `$${price.toFixed(2)}`;
   const formatChange = (change: number) => (change >= 0 ? `+${change.toFixed(2)}` : change.toFixed(2));
@@ -26,13 +26,15 @@ export default function PriceInfo({
       <span className={styles.currentPrice}>
         {isLoading ? 'Loading' : formatPrice(currentPrice)}
       </span>
-      <span className={`${styles.priceChange} ${priceChange >= 0 ? styles.positive : styles.negative}`}>
-        {isLoading ? 'Loading' : formatChange(priceChange)}
-      </span>
-      |
-      <span className={`${styles.percentChange} ${percentChange >= 0 ? styles.positive : styles.negative}`}>
-        {isLoading ? 'Loading' : formatPercent(percentChange)}
-      </span>
+      <div className={`${styles.priceChangeContainer} ${priceChange >= 0 ? styles.positive : styles.negative}`}>
+        <span className={styles.priceChange}>
+          {isLoading ? 'Loading' : formatChange(priceChange)}
+        </span>
+        |
+        <span className={styles.percentChange}>
+          {isLoading ? 'Loading' : formatPercent(percentChange)}
+        </span>
+      </div>
       {isAfterHours && !isLoading && (
         <span className={styles.afterHours}>AH</span>
       )}

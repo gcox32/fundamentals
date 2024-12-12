@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import styles from './styles.module.css';
 import loadingStyles from '@/styles/loading.module.css';
-import PriceInfo from '../PriceInfo';
+import PriceInfo from './PriceInfo';
 
 interface CompanyHeaderProps {
   symbol: string;
