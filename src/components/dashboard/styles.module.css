@@ -59,7 +59,7 @@
   color: var(--text);
 }
 
-.resultItem:hover {
+.resultItem:hover, .resultItem:focus, .resultItem:active {
   background-color: var(--hover-bg);
 }
 

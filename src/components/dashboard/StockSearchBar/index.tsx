@@ -54,11 +54,16 @@ export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { sym
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       setSelectedIndex(prev => Math.max(prev - 1, -1));
-    } else if (e.key === 'Enter' && selectedIndex >= 0) {
+    } else if ((e.key === 'Enter' || e.key === 'Tab') && selectedIndex >= 0 && selectedIndex < results.length) {
       e.preventDefault();
       const selected = results[selectedIndex];
+      setSelectedResult(selected);
       setSearchQuery(selected.symbol);
-      setResults([]);
+      setSelectedIndex(-1);
+      
+      if (e.key === 'Enter') {
+        handleSubmit(e);
+      }
     }
   };
 
@@ -166,7 +171,8 @@ export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { sym
           className={styles.searchButton}
           disabled={selectedExchange !== 'NYSE'}
         >
-          Research
+          <span className={styles.searchButtonText}>Search</span>
+          <FaSearch className={styles.searchButtonIcon} />
         </button>
       </div>
     </form>

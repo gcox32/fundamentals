@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import StockSearchBar from "@/components/dashboard/StockSearchBar";
 import CompanyHeader from "@/components/dashboard/CompanyHeader";
 import DashboardCard from "@/components/dashboard/DashboardCard";
+import CompanySummary from "@/components/dashboard/CompanySummary";
 import styles from './styles.module.css';
 
 export default function Dashboard() {
@@ -43,6 +44,27 @@ export default function Dashboard() {
               }}
             />
             
+            <CompanySummary
+              isLoading={isLoading}
+              profile={{
+                sector: "Technology",
+                industry: "Software & Services",
+                location: "Redmond, Washington",
+                description: "Microsoft Corporation develops, manufactures, and sells computer software, consumer electronics, and personal computers and services.",
+                website: "https://www.microsoft.com"
+              }}
+              events={{
+                nextEarningsDate: "2024-04-25",
+                nextDividendDate: "2024-06-08",
+                nextExDividendDate: "2024-05-15"
+              }}
+              valuation={{
+                marketCap: 3.2e12,
+                peRatioTTM: 38.5,
+                peRatioForward: 35.2
+              }}
+            />
+
             <div className={styles.cardGrid}>
               <DashboardCard title="Price History" isLoading={isLoading}>
                 <div>{isLoading ? 'Loading price history...' : ''}</div>
