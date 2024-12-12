@@ -1,6 +1,6 @@
 .searchContainer {
   width: 100%;
-  max-width: 640px;
+  max-width: 580px;
   margin: 0 auto;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .exchangeSelect {
-  padding: 0.75rem;
+  padding: 0;
   border: none;
   background: transparent;
   color: var(--text);
@@ -88,8 +88,15 @@
   margin-left: 0.5rem;
 }
 
-.searchButton:hover {
+.searchButton:hover:not(:disabled) {
   background-color: var(--active-accent-dark);
+}
+
+.searchButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  color: var(--text-secondary);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 /* Dark mode adjustments */
@@ -174,4 +181,4 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-} 
+}

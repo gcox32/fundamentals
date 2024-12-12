@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
     });
 
     const results = await db.all(
-      `SELECT symbol, name 
+      `SELECT symbol, name
        FROM nyse_data 
        WHERE symbol LIKE ? OR name LIKE ? 
        LIMIT 10`,

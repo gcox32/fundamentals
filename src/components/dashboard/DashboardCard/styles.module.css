@@ -1,0 +1,17 @@
+.card {
+  background: var(--searchbar-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: 100%;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.cardContent {
+  min-height: 200px;
+}

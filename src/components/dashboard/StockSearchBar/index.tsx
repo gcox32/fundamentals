@@ -9,11 +9,12 @@ import Image from 'next/image';
 interface StockResult {
   symbol: string;
   name: string;
+  exchange: string;
 }
 
-export default function StockSearchBar() {
+export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { symbol: string; name: string, exchange: string }) => void }) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedExchange, setSelectedExchange] = useState('');
+  const [selectedExchange, setSelectedExchange] = useState('NYSE');
   const [isFocused, setIsFocused] = useState(false);
   const [results, setResults] = useState<StockResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -29,7 +30,7 @@ export default function StockSearchBar() {
 
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/stocks/search?q=${encodeURIComponent(searchQuery)}`);
+        const response = await fetch(`/api/stocks/search?q=${encodeURIComponent(searchQuery)}&exchange=${encodeURIComponent(selectedExchange)}`);
         if (!response.ok) throw new Error('Search failed');
         const data = await response.json();
         setResults(data);
@@ -62,10 +63,29 @@ export default function StockSearchBar() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Search:', { query: searchQuery, exchange: selectedExchange });
+    if (!searchQuery.trim()) return;
+
+    // Find the matching result from the results array
+    const selectedResult = results.find(result => result.symbol === searchQuery);
+    console.log('searchQuery', searchQuery);
+    console.log('selectedExchange', selectedExchange);
+    console.log('results', results);
+    console.log('selectedResult', selectedResult);
+    if (!selectedResult) {
+      console.warn('No matching result found for query:', searchQuery);
+      return;
+    }
+
+    onSubmit({
+      symbol: selectedResult.symbol,
+      name: selectedResult.name,
+      exchange: selectedExchange
+    });
+    setSearchQuery('');
+    setResults([]);
   };
 
-  const getCompanyLogoUrl = (symbol: string) => 
+  const getCompanyLogoUrl = (symbol: string) =>
     `https://assets.letmedemo.com/public/fundamental/icons/companies/${symbol}.png`;
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -74,14 +94,14 @@ export default function StockSearchBar() {
 
   return (
     <form onSubmit={handleSubmit} className={styles.searchContainer}>
-      <div 
+      <div
         ref={searchRef}
         className={`${styles.searchBar} ${isFocused ? styles.focused : ''}`}
       >
         <div className={styles.searchIcon}>
           <FaSearch />
         </div>
-        
+
         <div className={styles.inputWrapper}>
           <input
             type="text"
@@ -90,7 +110,7 @@ export default function StockSearchBar() {
             onFocus={() => setIsFocused(true)}
             onBlur={() => setTimeout(() => setIsFocused(false), 200)}
             onKeyDown={handleKeyDown}
-            placeholder="Search by company name or ticker symbol..."
+            placeholder="Search by company name or ticker"
             className={styles.searchInput}
           />
 
@@ -150,8 +170,12 @@ export default function StockSearchBar() {
           ))}
         </select>
 
-        <button type="submit" className={styles.searchButton}>
-          Search
+        <button
+          type="submit"
+          className={styles.searchButton}
+          disabled={selectedExchange !== 'NYSE'}
+        >
+          Research
         </button>
       </div>
     </form>
