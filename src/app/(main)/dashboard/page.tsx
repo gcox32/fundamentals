@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import StockSearchBar from "@/components/dashboard/StockSearchBar";
 import CompanyHeader from "@/components/dashboard/CompanyHeader";
+import TimeframeSelector from "@/components/dashboard/TimeframeSelector";
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import CompanySummary from "@/components/dashboard/CompanySummary";
 import styles from './styles.module.css';
@@ -10,22 +11,21 @@ import styles from './styles.module.css';
 export default function Dashboard() {
   const [selectedCompany, setSelectedCompany] = useState<{ symbol: string; name: string; exchange: string } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedTimeframe, setSelectedTimeframe] = useState('1M');
+  const [selectedSegment, setSelectedSegment] = useState('daily');
 
   const handleCompanySelect = async (company: { symbol: string; name: string; exchange: string }) => {
     setIsLoading(true);
-    // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 2000));
     setSelectedCompany(company);
     setIsLoading(false);
   };
 
   return (
-    <div 
-      style={{
-        backgroundImage: `linear-gradient(to bottom, var(--background-secondary), var(--background))`,
-        borderRadius: '16px'
-      }}
-    >
+    <div style={{
+      backgroundImage: `linear-gradient(to bottom, var(--background-secondary), var(--background))`,
+      borderRadius: '16px'
+    }}>
       <div className="container mx-auto px-4 py-8">
         <StockSearchBar onSubmit={handleCompanySelect} />
         
@@ -64,22 +64,27 @@ export default function Dashboard() {
                 peRatioForward: 35.2
               }}
             />
-
+            <TimeframeSelector
+              selectedTimeframe={selectedTimeframe}
+              setSelectedTimeframe={setSelectedTimeframe}
+              selectedSegment={selectedSegment}
+              setSelectedSegment={setSelectedSegment}
+            />
             <div className={styles.cardGrid}>
               <DashboardCard title="Price History" isLoading={isLoading}>
                 <div>{isLoading ? 'Loading price history...' : ''}</div>
               </DashboardCard>
               
-              <DashboardCard title="Key Metrics" isLoading={isLoading}>
-                <div>{isLoading ? 'Loading metrics...' : ''}</div>
+              <DashboardCard title="Revenue" isLoading={isLoading}>
+                <div>{isLoading ? 'Loading revenue...' : ''}</div>
               </DashboardCard>
               
-              <DashboardCard title="News" isLoading={isLoading}>
-                <div>{isLoading ? 'Loading news...' : ''}</div>
+              <DashboardCard title="Dividend History" isLoading={isLoading}>
+                <div>{isLoading ? 'Loading dividends...' : ''}</div>
               </DashboardCard>
               
-              <DashboardCard title="Company Overview" isLoading={isLoading}>
-                <div>{isLoading ? 'Loading company info...' : ''}</div>
+              <DashboardCard title="Shares Outstanding" isLoading={isLoading}>
+                <div>{isLoading ? 'Loading buybacks...' : ''}</div>
               </DashboardCard>
             </div>
           </>

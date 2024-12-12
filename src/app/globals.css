@@ -38,7 +38,7 @@
   --modal-text: #171717;
 
   /* Search Bar */
-  --searchbar-bg: #ffffff;
+  --searchbar-bg: #f7f7f7;
 }
 
 :root[class~="dark-mode"] {

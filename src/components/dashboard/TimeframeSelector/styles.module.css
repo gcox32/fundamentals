@@ -1,0 +1,64 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 1rem;
+  background-color: var(--searchbar-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.5rem;
+  margin: 2rem auto;
+  max-width: 1200px;
+}
+
+.selectorGroup {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.selectorButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.selectorButton:hover {
+  background-color: var(--hover-bg);
+  color: var(--text);
+}
+
+.selectorButton.selected {
+  background-color: var(--active-accent);
+  color: white;
+}
+
+.divider {
+  width: 1px;
+  height: 2rem;
+  background-color: var(--border-color);
+  margin: 0 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    margin: 0.5rem 0;
+  }
+
+  .selectorGroup {
+    width: 100%;
+    justify-content: center;
+  }
+} 
