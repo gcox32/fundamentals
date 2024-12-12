@@ -35,6 +35,12 @@ export default function Dashboard() {
               name={selectedCompany?.name || 'Loading Company Data'} 
               exchange={selectedCompany?.exchange || 'Loading'}
               isLoading={isLoading}
+              priceInfo={{
+                currentPrice: 142.50,
+                priceChange: 3.25,
+                percentChange: 2.33,
+                isAfterHours: true
+              }}
             />
             
             <div className={styles.cardGrid}>

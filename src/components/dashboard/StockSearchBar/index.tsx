@@ -20,6 +20,7 @@ export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { sym
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [isLoading, setIsLoading] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const [selectedResult, setSelectedResult] = useState<StockResult | null>(null);
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -63,18 +64,7 @@ export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { sym
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!searchQuery.trim()) return;
-
-    // Find the matching result from the results array
-    const selectedResult = results.find(result => result.symbol === searchQuery);
-    console.log('searchQuery', searchQuery);
-    console.log('selectedExchange', selectedExchange);
-    console.log('results', results);
-    console.log('selectedResult', selectedResult);
-    if (!selectedResult) {
-      console.warn('No matching result found for query:', searchQuery);
-      return;
-    }
+    if (!searchQuery.trim() || !selectedResult) return;
 
     onSubmit({
       symbol: selectedResult.symbol,
@@ -83,6 +73,7 @@ export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { sym
     });
     setSearchQuery('');
     setResults([]);
+    setSelectedResult(null);
   };
 
   const getCompanyLogoUrl = (symbol: string) =>
@@ -122,8 +113,8 @@ export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { sym
                   type="button"
                   className={`${styles.resultItem} ${index === selectedIndex ? styles.selected : ''}`}
                   onClick={() => {
+                    setSelectedResult(result);
                     setSearchQuery(result.symbol);
-                    setResults([]);
                   }}
                 >
                   <div className={styles.logoWrapper}>

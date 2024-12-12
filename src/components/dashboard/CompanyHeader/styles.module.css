@@ -1,9 +1,17 @@
-.companyHeader {
+.companyHeaderContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  padding: 1.5rem;
+}
+
+.companyHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem;
   background: var(--searchbar-bg);
   border-radius: 12px;
   margin: 2rem 0;
@@ -29,7 +37,7 @@
 }
 
 .companyName {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--text);
 }
