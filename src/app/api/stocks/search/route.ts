@@ -10,10 +10,19 @@ import fs from 'fs/promises';
 const s3 = new S3Client({
   region: process.env.REGION || 'us-east-1',
   credentials: {
-    accessKeyId: process.env.ACCESS_KEY_ID!,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY!
+    accessKeyId: process.env.ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.SECRET_ACCESS_KEY || ''
   }
 });
+
+// Add validation check
+if (!process.env.ACCESS_KEY_ID || !process.env.SECRET_ACCESS_KEY || !process.env.S3_BUCKET_NAME) {
+  console.error('Missing required environment variables:', {
+    hasAccessKey: !!process.env.ACCESS_KEY_ID,
+    hasSecretKey: !!process.env.SECRET_ACCESS_KEY,
+    hasBucketName: !!process.env.S3_BUCKET_NAME
+  });
+}
 
 const DB_PATH = path.join(process.cwd(), 'tmp', 'nyse.db');
 
@@ -36,7 +45,7 @@ async function ensureDatabase() {
 
   // Download fresh copy from S3
   const command = new GetObjectCommand({
-    Bucket: process.env.S3_BUCKET_NAME!,
+    Bucket: process.env.S3_BUCKET_NAME || '',
     Key: 'public/fundamental/db/nyse.db'
   });
 
