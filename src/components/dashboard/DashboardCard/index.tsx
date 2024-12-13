@@ -1,11 +1,7 @@
 import React from 'react';
 import styles from './styles.module.css';
 import loadingStyles from '@/styles/loading.module.css';
-interface DashboardCardProps {
-  title: string;
-  children: React.ReactNode;
-  isLoading?: boolean;
-}
+import { DashboardCardProps } from './types';
 
 export default function DashboardCard({ title, children, isLoading }: DashboardCardProps) {
   return (

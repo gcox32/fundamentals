@@ -1,14 +1,7 @@
 import React from 'react';
 import styles from './styles.module.css';
 import loadingStyles from '@/styles/loading.module.css';
-
-interface PriceInfoProps {
-  currentPrice: number;
-  priceChange: number;
-  percentChange: number;
-  isAfterHours: boolean;
-  isLoading?: boolean;
-}
+import { PriceInfoProps } from './types';
 
 export default function PriceInfo({
   currentPrice,

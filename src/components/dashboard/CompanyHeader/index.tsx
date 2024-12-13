@@ -3,19 +3,7 @@ import Image from 'next/image';
 import styles from './styles.module.css';
 import loadingStyles from '@/styles/loading.module.css';
 import PriceInfo from './PriceInfo';
-
-interface CompanyHeaderProps {
-  symbol: string;
-  name: string;
-  exchange: string;
-  isLoading?: boolean;
-  priceInfo?: {
-    currentPrice: number;
-    priceChange: number;
-    percentChange: number;
-    isAfterHours: boolean;
-  };
-}
+import { CompanyHeaderProps } from './types';
 
 export default function CompanyHeader({
   symbol,

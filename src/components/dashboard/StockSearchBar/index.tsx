@@ -5,12 +5,7 @@ import { FaSearch, FaTimesCircle } from 'react-icons/fa';
 import { exchanges } from './config';
 import styles from './styles.module.css';
 import Image from 'next/image';
-
-interface StockResult {
-  symbol: string;
-  name: string;
-  exchange: string;
-}
+import { StockResult } from './types';
 
 export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { symbol: string; name: string, exchange: string }) => void }) {
   const [searchQuery, setSearchQuery] = useState('');
