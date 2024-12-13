@@ -7,12 +7,18 @@ export default function PriceInfo({
   currentPrice,
   priceChange,
   percentChange,
-  isAfterHours,
+  marketStatus,
   isLoading
 }: PriceInfoProps) {
   const formatPrice = (price: number) => `$${price.toFixed(2)}`;
   const formatChange = (change: number) => (change >= 0 ? `+${change.toFixed(2)}` : change.toFixed(2));
   const formatPercent = (percent: number) => (percent >= 0 ? `+${percent.toFixed(2)}%` : `${percent.toFixed(2)}%`);
+
+  const getMarketStatusBadge = () => {
+    if (marketStatus === 'pre') return <span className={styles.marketStatus}>Pre</span>;
+    if (marketStatus === 'after') return <span className={styles.marketStatus}>AH</span>;
+    return null;
+  };
 
   return (
     <div className={`${styles.priceContainer} ${isLoading ? loadingStyles.pulse : ''}`}>
@@ -28,9 +34,7 @@ export default function PriceInfo({
           {isLoading ? 'Loading' : formatPercent(percentChange)}
         </span>
       </div>
-      {isAfterHours && !isLoading && (
-        <span className={styles.afterHours}>AH</span>
-      )}
+      {!isLoading && getMarketStatusBadge()}
     </div>
   );
 } 

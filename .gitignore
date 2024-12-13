@@ -29,6 +29,7 @@ yarn-error.log*
 # local data
 db/
 tmp/
+yhfinance.json
 
 # vercel
 .vercel

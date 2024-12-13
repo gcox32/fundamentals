@@ -41,7 +41,7 @@ export default function CompanyHeader({
         currentPrice={priceInfo?.currentPrice ?? 0}
         priceChange={priceInfo?.priceChange ?? 0}
         percentChange={priceInfo?.percentChange ?? 0}
-        isAfterHours={priceInfo?.isAfterHours ?? false}
+        marketStatus={priceInfo?.marketStatus ?? 'regular'}
         isLoading={isLoading}
       />
     </div>

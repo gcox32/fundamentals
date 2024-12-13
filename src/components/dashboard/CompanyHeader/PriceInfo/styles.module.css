@@ -45,4 +45,17 @@
 
 :global(.dark) .afterHours {
   background: rgba(255, 255, 255, 0.1);
+}
+
+.marketStatus {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+:global(.dark) .marketStatus {
+  background: rgba(255, 255, 255, 0.1);
 } 

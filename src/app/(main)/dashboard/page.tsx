@@ -7,18 +7,47 @@ import TimeframeSelector from "@/components/dashboard/TimeframeSelector";
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import CompanySummary from "@/components/dashboard/CompanySummary";
 import styles from './styles.module.css';
+import { CompanyData } from '@/types/company';
+
 
 export default function Dashboard() {
-  const [selectedCompany, setSelectedCompany] = useState<{ symbol: string; name: string; exchange: string } | null>(null);
+  const [selectedCompany, setSelectedCompany] = useState<CompanyData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTimeframe, setSelectedTimeframe] = useState('1M');
   const [selectedSegment, setSelectedSegment] = useState('daily');
 
   const handleCompanySelect = async (company: { symbol: string; name: string; exchange: string }) => {
+    console.log('Company selected:', company);
     setIsLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setSelectedCompany(company);
-    setIsLoading(false);
+    
+    try {
+      console.log('Fetching profile for:', company.symbol);
+      const response = await fetch(`/api/company/profile?symbol=${company.symbol}`);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Profile fetch failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorData
+        });
+        throw new Error('Failed to fetch company profile');
+      }
+
+      console.log('Profile fetch successful');
+      const profileData = await response.json();
+      console.log('Profile data:', profileData);
+
+      setSelectedCompany({
+        ...company,
+        profile: profileData
+      });
+    } catch (error) {
+      console.error('Error in handleCompanySelect:', error);
+      setSelectedCompany(company);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -36,23 +65,11 @@ export default function Dashboard() {
               name={selectedCompany?.name || 'Loading Company Data'} 
               exchange={selectedCompany?.exchange || 'Loading'}
               isLoading={isLoading}
-              priceInfo={{
-                currentPrice: 142.50,
-                priceChange: 3.25,
-                percentChange: 2.33,
-                isAfterHours: true
-              }}
             />
             
             <CompanySummary
               isLoading={isLoading}
-              profile={{
-                sector: "Technology",
-                industry: "Software & Services",
-                location: "Redmond, Washington",
-                description: "Microsoft Corporation develops, manufactures, and sells computer software, consumer electronics, and personal computers and services.",
-                website: "https://www.microsoft.com"
-              }}
+              profile={selectedCompany?.profile}
               events={{
                 nextEarningsDate: "2024-04-25",
                 nextDividendDate: "2024-06-08",

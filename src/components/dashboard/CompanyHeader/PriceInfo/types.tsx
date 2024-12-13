@@ -2,6 +2,6 @@ export interface PriceInfoProps {
     currentPrice: number;
     priceChange: number;
     percentChange: number;
-    isAfterHours: boolean;
+    marketStatus: 'pre' | 'regular' | 'after' | 'closed';
     isLoading?: boolean;
 }
