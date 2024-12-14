@@ -35,8 +35,8 @@
 
 .profileContainer {
     display: flex;
-    align-items: center;
-    justify-content: space-evenly;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .profileContainer p.description {

@@ -1,0 +1,16 @@
+.graphicalCard {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.graphicalCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+      0 6px 8px -1px rgba(0, 0, 0, 0.15),
+      0 3px 6px -1px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.clickableContent {
+  height: 100%;
+}

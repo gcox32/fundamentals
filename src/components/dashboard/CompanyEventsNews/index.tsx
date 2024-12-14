@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './styles.module.css';
-import loadingStyles from '@/styles/loading.module.css';
 import { CompanyCalendarEvents, CompanyNews } from '@/types/company';
-import { FaCalendarAlt, FaDollarSign, FaChartLine, FaNewspaper } from 'react-icons/fa';
+import { FaCalendarAlt, FaDollarSign, FaChartLine } from 'react-icons/fa';
+import OverviewCard from '@/components/dashboard/DashboardCard/OverviewCard';
 
 interface CompanyEventsNewsProps {
     isLoading?: boolean;
@@ -31,8 +31,7 @@ export default function CompanyEventsNews({ isLoading, events }: CompanyEventsNe
 
     return (
         <div className={styles.container}>
-            <div className={styles.eventsSection}>
-                <h3 className={styles.sectionTitle}>Upcoming Events</h3>
+            <OverviewCard title="Upcoming Events" isLoading={isLoading}>
                 <div className={styles.eventsFlex}>
                     <div className={styles.eventCard}>
                         <div className={styles.eventIcon}>
@@ -64,14 +63,13 @@ export default function CompanyEventsNews({ isLoading, events }: CompanyEventsNe
                         </div>
                     </div>
                 </div>
-            </div>
+            </OverviewCard>
 
-            <div className={styles.newsSection}>
-                <h3 className={styles.sectionTitle}>Latest News</h3>
+            <OverviewCard title="Latest News" isLoading={isLoading}>
                 <div className={styles.comingSoon}>
                     News feed coming soon
                 </div>
-            </div>
+            </OverviewCard>
         </div>
     );
 }

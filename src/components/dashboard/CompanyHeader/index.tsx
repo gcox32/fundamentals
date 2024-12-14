@@ -4,6 +4,7 @@ import styles from './styles.module.css';
 import loadingStyles from '@/styles/loading.module.css';
 import PriceInfo from './PriceInfo';
 import { CompanyHeaderProps } from './types';
+import OverviewCard from '@/components/dashboard/DashboardCard/OverviewCard';
 
 export default function CompanyHeader({
   symbol,
@@ -13,7 +14,7 @@ export default function CompanyHeader({
   priceInfo
 }: CompanyHeaderProps) {
   return (
-    <div className={`${styles.companyHeader} ${isLoading ? loadingStyles.loading : ''}`}>
+    <OverviewCard title="" isLoading={isLoading} className={styles.headerCard}>
       <div className={styles.companyHeaderContainer}>
         <div className={styles.logoContainer}>
           <Image
@@ -44,6 +45,6 @@ export default function CompanyHeader({
         marketStatus={priceInfo?.marketStatus ?? 'regular'}
         isLoading={isLoading}
       />
-    </div>
+    </OverviewCard>
   );
 }

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import StockSearchBar from "@/components/dashboard/StockSearchBar";
 import CompanyHeader from "@/components/dashboard/CompanyHeader";
 import TimeframeSelector from "@/components/dashboard/TimeframeSelector";
-import DashboardCard from "@/components/dashboard/DashboardCard";
+import GraphicalCard from "@/src/components/dashboard/DashboardCard/GraphicalCard";
 import CompanyProfile from "@/src/components/dashboard/CompanyProfile";
 import CompanyEventsNews from "@/components/dashboard/CompanyEventsNews";
 import styles from './styles.module.css';
@@ -80,21 +80,21 @@ export default function Dashboard() {
               setSelectedSegment={setSelectedSegment}
             />
             <div className={styles.cardGrid}>
-              <DashboardCard title="Price History" isLoading={isLoading}>
+              <GraphicalCard title="Price History" isLoading={isLoading}>
                 <div>{isLoading ? 'Loading price history...' : ''}</div>
-              </DashboardCard>
+              </GraphicalCard>
               
-              <DashboardCard title="Revenue" isLoading={isLoading}>
+              <GraphicalCard title="Revenue" isLoading={isLoading}>
                 <div>{isLoading ? 'Loading revenue...' : ''}</div>
-              </DashboardCard>
+              </GraphicalCard>
               
-              <DashboardCard title="Dividend History" isLoading={isLoading}>
+              <GraphicalCard title="Dividend History" isLoading={isLoading}>
                 <div>{isLoading ? 'Loading dividends...' : ''}</div>
-              </DashboardCard>
+              </GraphicalCard>
               
-              <DashboardCard title="Shares Outstanding" isLoading={isLoading}>
+              <GraphicalCard title="Shares Outstanding" isLoading={isLoading}>
                 <div>{isLoading ? 'Loading buybacks...' : ''}</div>
-              </DashboardCard>
+              </GraphicalCard>
             </div>
           </>
         )}

@@ -2,41 +2,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  padding: 1rem;
-  background: var(--searchbar-bg);
-  border-radius: 12px;
-  padding: 1.5rem;
-  height: 100%;
-  box-shadow: 
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.container:hover {
-  cursor: pointer;
-  box-shadow: 
-    0 6px 8px -1px rgba(0, 0, 0, 0.15),
-    0 3px 6px -1px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
-}
-
-.eventsSection, .newsSection {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-
-.sectionTitle {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--text);
 }
 
 .eventsFlex {
@@ -55,6 +20,7 @@
   background: var(--card-bg);
   border-radius: 8px;
   border: 1px solid var(--border);
+  width: 100%;
 }
 
 .eventIcon {
@@ -85,12 +51,6 @@
   margin: 0.25rem 0 0 0;
 }
 
-.newsSection {
-  background: var(--searchbar-bg);
-  padding: 1rem;
-  border-left: 1px solid var(--border-color);
-}
-
 .comingSoon {
   display: flex;
   align-items: center;
@@ -104,62 +64,4 @@
   .container {
     grid-template-columns: 1fr;
   }
-}
-
-.newsList {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.newsItem {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    padding: 0.75rem;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.newsItem:hover {
-    background: var(--card-bg-hover);
-    transform: translateX(4px);
-}
-
-.newsContent {
-    flex: 1;
-    margin-right: 1rem;
-}
-
-.newsContent h4 {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text);
-    margin: 0 0 0.5rem 0;
-    line-height: 1.4;
-}
-
-.newsMetadata {
-    display: flex;
-    gap: 1rem;
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-}
-
-.newsIcon {
-    color: var(--accent);
-    font-size: 1.25rem;
-    margin-top: 0.25rem;
-}
-
-.noNews {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 200px;
-    color: var(--text-secondary);
-    font-style: italic;
 } 

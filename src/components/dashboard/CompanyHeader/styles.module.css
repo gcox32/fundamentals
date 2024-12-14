@@ -1,28 +1,12 @@
+.headerCard {
+  margin: 2rem 0;
+}
+
 .companyHeaderContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
-}
-
-.companyHeader {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: 0.5rem;
-  padding-top: 1rem;
-  background: var(--searchbar-bg);
-  border-radius: 12px;
-  margin: 2rem 0;
-  box-shadow: 
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .logoContainer {
