@@ -4,7 +4,7 @@ import loadingStyles from '@/styles/loading.module.css';
 import { CompanySummaryProps } from '@/types/company';
 import { FaMapMarkerAlt, FaUsers, FaChartPie, FaIndustry, FaGlobe } from 'react-icons/fa';
 
-export default function CompanySummary({ isLoading, profile, events, valuation }: CompanySummaryProps) {
+export default function CompanyProfile({ isLoading, profile, events, valuation }: CompanySummaryProps) {
   const formatMarketCap = (value: number) => {
     if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`;
     if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
@@ -73,48 +73,6 @@ export default function CompanySummary({ isLoading, profile, events, valuation }
           )}
         </div>
         <p className={styles.description}>{isLoading ? 'Loading...' : profile?.longBusinessSummary}</p>
-        </div>
-      </div>
-
-      <div className={styles.section}>
-        <h3 className={styles.sectionTitle}>Upcoming Events</h3>
-        <div className={styles.eventsGrid}>
-          <div className={styles.eventItem}>
-            <span className={styles.label}>Next Earnings</span>
-            <span className={styles.value}>{isLoading ? 'Loading...' : events?.nextEarningsDate}</span>
-          </div>
-          <div className={styles.eventItem}>
-            <span className={styles.label}>Next Dividend</span>
-            <span className={styles.value}>{isLoading ? 'Loading...' : events?.nextDividendDate}</span>
-          </div>
-          <div className={styles.eventItem}>
-            <span className={styles.label}>Ex-Dividend Date</span>
-            <span className={styles.value}>{isLoading ? 'Loading...' : events?.nextExDividendDate}</span>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.section}>
-        <h3 className={styles.sectionTitle}>Valuation</h3>
-        <div className={styles.valuationGrid}>
-          <div className={styles.valuationItem}>
-            <span className={styles.label}>Market Cap</span>
-            <span className={styles.value}>
-              {isLoading ? 'Loading...' : formatMarketCap(valuation?.marketCap || 0)}
-            </span>
-          </div>
-          <div className={styles.valuationItem}>
-            <span className={styles.label}>P/E Ratio (TTM)</span>
-            <span className={styles.value}>
-              {isLoading ? 'Loading...' : valuation?.peRatioTTM?.toFixed(2)}
-            </span>
-          </div>
-          <div className={styles.valuationItem}>
-            <span className={styles.label}>P/E Ratio (Forward)</span>
-            <span className={styles.value}>
-              {isLoading ? 'Loading...' : valuation?.peRatioForward?.toFixed(2)}
-            </span>
-          </div>
         </div>
       </div>
     </div>

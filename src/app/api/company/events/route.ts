@@ -1,5 +1,5 @@
 import { fetchYahooFinanceData } from '@/utils/yahooFinance';
-import { CompanyProfile } from '@/types/company';
+import { CompanyCalendarEvents } from '@/types/company';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -10,21 +10,21 @@ export async function GET(request: Request) {
   }
 
   try {
-    const data = await fetchYahooFinanceData<CompanyProfile & { lastUpdated: number }>({
+    const data = await fetchYahooFinanceData<CompanyCalendarEvents & { lastUpdated: number }>({
       endpoint: 'markets/stock/modules',
       params: {
         ticker: symbol,
-        module: 'profile'
+        module: 'calendar-events'
       },
-      tableName: 'Fundamental-CompanyProfile',
-      ttlSeconds: 30 * 24 * 60 * 60, // 30 days
+      tableName: 'Fundamental-CompanyEvents',
+      ttlSeconds: 7 * 24 * 60 * 60, // 7 days
       cacheKey: `${symbol}`
     });
 
     return Response.json(data);
   } catch (error) {
     return Response.json(
-      { error: 'Failed to fetch company profile' },
+      { error: 'Failed to fetch company events' },
       { status: 500 }
     );
   }

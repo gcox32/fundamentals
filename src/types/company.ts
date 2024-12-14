@@ -22,23 +22,10 @@ interface CompanyOfficer {
     };
 }
 
-interface Events {
-    nextEarningsDate: string;
-    nextDividendDate: string;
-    nextExDividendDate: string;
-}
-
 interface Valuation {
     marketCap: number;
     peRatioTTM: number;
     peRatioForward: number;
-}
-
-export interface CompanySummaryProps {
-    isLoading?: boolean;
-    profile?: CompanyProfile;
-    events?: Events;
-    valuation?: Valuation;
 }
 
 export interface CompanyProfile {
@@ -70,12 +57,7 @@ export interface CompanyData {
     name: string;
     exchange: string;
     profile?: CompanyProfile;
-}
-
-export interface CompanyEvents {
-    nextEarningsDate: string;
-    nextDividendDate: string;
-    nextExDividendDate: string;
+    events?: CompanyCalendarEvents;
 }
 
 export interface CompanyValuation {
@@ -87,6 +69,57 @@ export interface CompanyValuation {
 export interface CompanySummaryProps {
     isLoading?: boolean;
     profile?: CompanyProfile;
-    events?: CompanyEvents;
+    events?: CompanyCalendarEvents;
     valuation?: CompanyValuation;
+}
+
+export interface CompanyCalendarEvents {
+    symbol: string;
+    maxAge: number;
+    earnings: {
+        earningsDate: Array<{
+            raw: number;
+            fmt: string;
+        }>;
+        earningsCallDate: Array<{
+            raw: number;
+            fmt: string;
+        }>;
+        earningsAverage: {
+            raw: number;
+            fmt: string;
+        };
+        earningsHigh: {
+            raw: number;
+            fmt: string;
+        };
+        earningsLow: {
+            raw: number;
+            fmt: string;
+        };
+        revenueAverage: {
+            raw: number;
+            fmt: string;
+            longFmt: string;
+        };
+        revenueHigh: {
+            raw: number;
+            fmt: string;
+            longFmt: string;
+        };
+        revenueLow: {
+            raw: number;
+            fmt: string;
+            longFmt: string;
+        };
+        isEarningsDateEstimate: boolean;
+    };
+    dividendDate?: {
+        raw: number;
+        fmt: string;
+    };
+    exDividendDate?: {
+        raw: number;
+        fmt: string;
+    };
 }

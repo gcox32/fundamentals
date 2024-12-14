@@ -13,7 +13,6 @@ frontend:
         - S3_BUCKET_NAME=${S3_BUCKET_NAME}
         - ACCESS_KEY_ID=${ACCESS_KEY_ID}
         - SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}
-        - DYNAMODB_TABLE_NAME=${DYNAMODB_TABLE_NAME}
         - npm run build
   artifacts:
     baseDirectory: .next

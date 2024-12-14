@@ -5,7 +5,8 @@ import StockSearchBar from "@/components/dashboard/StockSearchBar";
 import CompanyHeader from "@/components/dashboard/CompanyHeader";
 import TimeframeSelector from "@/components/dashboard/TimeframeSelector";
 import DashboardCard from "@/components/dashboard/DashboardCard";
-import CompanySummary from "@/components/dashboard/CompanySummary";
+import CompanyProfile from "@/src/components/dashboard/CompanyProfile";
+import CompanyEventsNews from "@/components/dashboard/CompanyEventsNews";
 import styles from './styles.module.css';
 import { CompanyData } from '@/types/company';
 
@@ -21,26 +22,25 @@ export default function Dashboard() {
     setIsLoading(true);
     
     try {
-      console.log('Fetching profile for:', company.symbol);
-      const response = await fetch(`/api/company/profile?symbol=${company.symbol}`);
+      // Fetch both profile and events data
+      const [profileResponse, eventsResponse] = await Promise.all([
+        fetch(`/api/company/profile?symbol=${company.symbol}`),
+        fetch(`/api/company/events?symbol=${company.symbol}`)
+      ]);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Profile fetch failed:', {
-          status: response.status,
-          statusText: response.statusText,
-          error: errorData
-        });
-        throw new Error('Failed to fetch company profile');
+      if (!profileResponse.ok || !eventsResponse.ok) {
+        throw new Error('Failed to fetch company data');
       }
 
-      console.log('Profile fetch successful');
-      const profileData = await response.json();
-      console.log('Profile data:', profileData);
+      const [profileData, eventsData] = await Promise.all([
+        profileResponse.json(),
+        eventsResponse.json()
+      ]);
 
       setSelectedCompany({
         ...company,
-        profile: profileData
+        profile: profileData,
+        events: eventsData
       });
     } catch (error) {
       console.error('Error in handleCompanySelect:', error);
@@ -67,20 +67,16 @@ export default function Dashboard() {
               isLoading={isLoading}
             />
             
-            <CompanySummary
+            <CompanyProfile
               isLoading={isLoading}
               profile={selectedCompany?.profile}
-              events={{
-                nextEarningsDate: "2024-04-25",
-                nextDividendDate: "2024-06-08",
-                nextExDividendDate: "2024-05-15"
-              }}
-              valuation={{
-                marketCap: 3.2e12,
-                peRatioTTM: 38.5,
-                peRatioForward: 35.2
-              }}
             />
+
+            <CompanyEventsNews 
+              isLoading={isLoading}
+              events={selectedCompany?.events}
+            />
+
             <TimeframeSelector
               selectedTimeframe={selectedTimeframe}
               setSelectedTimeframe={setSelectedTimeframe}
