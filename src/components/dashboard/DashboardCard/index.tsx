@@ -12,7 +12,7 @@ interface DashboardCardProps {
 export default function DashboardCard({ title, isLoading, children, className }: DashboardCardProps) {
     return (
         <div className={`${styles.card} ${isLoading ? loadingStyles.loading : ''} ${className || ''}`}>
-            <h3 className={styles.cardTitle}>{title}</h3>
+            {title && <h3 className={styles.cardTitle}>{title}</h3>}
             <div className={styles.cardContent}>
                 {children}
             </div>

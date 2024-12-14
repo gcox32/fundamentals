@@ -60,6 +60,13 @@
   font-style: italic;
 }
 
+.eventsFlex {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center
+}
+
 @media (max-width: 768px) {
   .container {
     grid-template-columns: 1fr;

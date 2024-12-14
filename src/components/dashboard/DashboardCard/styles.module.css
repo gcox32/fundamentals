@@ -16,6 +16,7 @@
     font-weight: 600;
     margin-bottom: 1rem;
     color: var(--text);
+    text-align: center;
 }
 
 .cardContent {
