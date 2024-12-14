@@ -1,3 +1,8 @@
+.dashboardContainer {
+  background-image: linear-gradient(to bottom, var(--background-secondary), var(--background));
+  border-radius: 16px;
+}
+
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
