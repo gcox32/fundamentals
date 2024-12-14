@@ -1,3 +1,4 @@
+import { API_TTL, API_ENDPOINTS, DYNAMODB_TABLES } from '../../config';
 import { fetchYahooFinanceData } from '@/utils/yahooFinance';
 import { CompanyProfile } from '@/types/company';
 
@@ -11,13 +12,13 @@ export async function GET(request: Request) {
 
   try {
     const data = await fetchYahooFinanceData<CompanyProfile & { lastUpdated: number }>({
-      endpoint: 'markets/stock/modules',
+      endpoint: API_ENDPOINTS.COMPANY.PROFILE,
       params: {
         ticker: symbol,
         module: 'profile'
       },
-      tableName: 'Fundamental-CompanyProfile',
-      ttlSeconds: 30 * 24 * 60 * 60, // 30 days
+      tableName: DYNAMODB_TABLES.COMPANY.PROFILE,
+      ttlSeconds: API_TTL.COMPANY.PROFILE,
       cacheKey: `${symbol}`
     });
 

@@ -22,7 +22,6 @@ export default function Dashboard() {
     setIsLoading(true);
     
     try {
-      // Fetch both profile and events data
       const [profileResponse, eventsResponse] = await Promise.all([
         fetch(`/api/company/profile?symbol=${company.symbol}`),
         fetch(`/api/company/events?symbol=${company.symbol}`)

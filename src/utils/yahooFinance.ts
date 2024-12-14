@@ -54,7 +54,7 @@ export async function fetchYahooFinanceData<T extends CacheableData>({
     
     console.log(`Fetching fresh data from Yahoo Finance for: ${cacheKey}`);
     const response = await fetch(
-      `https://yahoo-finance15.p.rapidapi.com/api/v1/${endpoint}?${queryString}`,
+      `https://yahoo-finance15.p.rapidapi.com/api/${endpoint}?${queryString}`,
       {
         headers: {
           'X-RapidAPI-Host': 'yahoo-finance15.p.rapidapi.com',

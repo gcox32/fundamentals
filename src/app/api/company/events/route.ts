@@ -1,5 +1,6 @@
 import { fetchYahooFinanceData } from '@/utils/yahooFinance';
 import { CompanyCalendarEvents } from '@/types/company';
+import { API_TTL, API_ENDPOINTS, DYNAMODB_TABLES } from '../../config';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -11,13 +12,13 @@ export async function GET(request: Request) {
 
   try {
     const data = await fetchYahooFinanceData<CompanyCalendarEvents & { lastUpdated: number }>({
-      endpoint: 'markets/stock/modules',
+      endpoint: API_ENDPOINTS.COMPANY.EVENTS,
       params: {
         ticker: symbol,
         module: 'calendar-events'
       },
-      tableName: 'Fundamental-CompanyEvents',
-      ttlSeconds: 7 * 24 * 60 * 60, // 7 days
+      tableName: DYNAMODB_TABLES.COMPANY.EVENTS,
+      ttlSeconds: API_TTL.COMPANY.EVENTS,
       cacheKey: `${symbol}`
     });
 

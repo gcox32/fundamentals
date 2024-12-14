@@ -1,12 +1,13 @@
 import React from 'react';
 import styles from './styles.module.css';
 import loadingStyles from '@/styles/loading.module.css';
-import { CompanyCalendarEvents } from '@/types/company';
-import { FaCalendarAlt, FaDollarSign, FaChartLine } from 'react-icons/fa';
+import { CompanyCalendarEvents, CompanyNews } from '@/types/company';
+import { FaCalendarAlt, FaDollarSign, FaChartLine, FaNewspaper } from 'react-icons/fa';
 
 interface CompanyEventsNewsProps {
     isLoading?: boolean;
     events?: CompanyCalendarEvents;
+    news?: CompanyNews;
 }
 
 export default function CompanyEventsNews({ isLoading, events }: CompanyEventsNewsProps) {
@@ -62,13 +63,11 @@ export default function CompanyEventsNews({ isLoading, events }: CompanyEventsNe
                             <p>{isLoading ? 'Loading...' : formatDate(events?.dividendDate)}</p>
                         </div>
                     </div>
-
                 </div>
             </div>
 
             <div className={styles.newsSection}>
                 <h3 className={styles.sectionTitle}>Latest News</h3>
-                {/* News section will be implemented later */}
                 <div className={styles.comingSoon}>
                     News feed coming soon
                 </div>

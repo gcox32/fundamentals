@@ -58,6 +58,7 @@ export interface CompanyData {
     exchange: string;
     profile?: CompanyProfile;
     events?: CompanyCalendarEvents;
+    news?: CompanyNews;
 }
 
 export interface CompanyValuation {
@@ -122,4 +123,18 @@ export interface CompanyCalendarEvents {
         raw: number;
         fmt: string;
     };
+}
+
+export interface NewsItem {
+    guid: string;
+    link: string;
+    pubDate: string;
+    source: string;
+    title: string;
+}
+
+export interface CompanyNews {
+    symbol: string;
+    maxAge: number;
+    items: NewsItem[];
 }
