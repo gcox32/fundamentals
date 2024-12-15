@@ -4,6 +4,9 @@ export const API_TTL = {
         EVENTS: 7 * 24 * 60 * 60,      // 7 days
         NEWS: 6 * 60 * 60,             // 6 hours
         STATISTICS: 3 * 24 * 60 * 60,   // 3 days
+    },
+    STOCK: {
+        SNAPSHOT: 24 * 60 * 60,         // 24 hours
     }
 } as const; 
 
@@ -13,6 +16,9 @@ export const API_ENDPOINTS = {
         EVENTS: 'v1/markets/stock/modules',
         NEWS: 'v2/market/news',
         STATISTICS: 'v1/markets/stock/modules',
+    },
+    STOCK: {
+        SNAPSHOT: 'v1/markets/stock/quotes',
     }
 } as const; 
 
@@ -22,5 +28,8 @@ export const DYNAMODB_TABLES = {
         EVENTS: 'Fundamental-CompanyEvents',
         NEWS: 'Fundamental-MarketNews',
         STATISTICS: 'Fundamental-StockStatistics',
+    },
+    STOCK: {
+        SNAPSHOT: 'Fundamental-StockSnapshot',
     }
 } as const; 
