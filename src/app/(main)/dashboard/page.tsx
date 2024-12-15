@@ -7,6 +7,7 @@ import TimeframeSelector from "@/components/dashboard/TimeframeSelector";
 import GraphicalCard from "@/src/components/dashboard/DashboardCard/GraphicalCard";
 import CompanyProfile from "@/src/components/dashboard/CompanyProfile";
 import CompanyEventsNews from "@/components/dashboard/CompanyEventsNews";
+import StockStatistics from "@/components/dashboard/StockStatistics";
 import styles from './styles.module.css';
 import { CompanyData } from '@/types/company';
 
@@ -22,24 +23,27 @@ export default function Dashboard() {
     setIsLoading(true);
     
     try {
-      const [profileResponse, eventsResponse] = await Promise.all([
+      const [profileResponse, eventsResponse, statisticsResponse] = await Promise.all([
         fetch(`/api/company/profile?symbol=${company.symbol}`),
-        fetch(`/api/company/events?symbol=${company.symbol}`)
+        fetch(`/api/company/events?symbol=${company.symbol}`),
+        fetch(`/api/stock/statistics?symbol=${company.symbol}`)
       ]);
 
-      if (!profileResponse.ok || !eventsResponse.ok) {
+      if (!profileResponse.ok || !eventsResponse.ok || !statisticsResponse.ok) {
         throw new Error('Failed to fetch company data');
       }
 
-      const [profileData, eventsData] = await Promise.all([
+      const [profileData, eventsData, statisticsData] = await Promise.all([
         profileResponse.json(),
-        eventsResponse.json()
+        eventsResponse.json(),
+        statisticsResponse.json()
       ]);
 
       setSelectedCompany({
         ...company,
         profile: profileData,
-        events: eventsData
+        events: eventsData,
+        statistics: statisticsData
       });
     } catch (error) {
       console.error('Error in handleCompanySelect:', error);
@@ -66,6 +70,11 @@ export default function Dashboard() {
             <CompanyProfile
               isLoading={isLoading}
               profile={selectedCompany?.profile}
+            />
+
+            <StockStatistics 
+              isLoading={isLoading}
+              statistics={selectedCompany?.statistics}
             />
 
             <CompanyEventsNews 

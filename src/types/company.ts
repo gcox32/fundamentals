@@ -1,3 +1,5 @@
+import type { StockStatistics } from './stock';
+
 interface CompanyOfficer {
     maxAge: number;
     name: string;
@@ -59,6 +61,7 @@ export interface CompanyData {
     profile?: CompanyProfile;
     events?: CompanyCalendarEvents;
     news?: CompanyNews;
+    statistics?: StockStatistics;
 }
 
 export interface CompanyValuation {
