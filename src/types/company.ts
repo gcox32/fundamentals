@@ -1,4 +1,4 @@
-import type { StockStatistics, StockSnapshotItem } from './stock';
+import type { StockStatistics, StockSnapshotItem, StockQuote } from './stock';
 
 interface CompanyOfficer {
     maxAge: number;
@@ -63,6 +63,7 @@ export interface CompanyData {
     news?: CompanyNews;
     statistics?: StockStatistics;
     snapshot?: StockSnapshotItem;
+    quote?: StockQuote;
 }
 
 export interface CompanyValuation {

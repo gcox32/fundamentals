@@ -12,6 +12,7 @@ import StockSnapshot from "@/components/dashboard/StockSnapshot";
 import styles from './styles.module.css';
 import { CompanyData } from '@/types/company';
 import { fetchDashboardData } from '@/utils/fetchDashboardData';
+import { StockQuote } from '@/types/stock';
 
 export default function Dashboard() {
   const [selectedCompany, setSelectedCompany] = useState<CompanyData | null>(null);
@@ -49,6 +50,12 @@ export default function Dashboard() {
       }, (error) => {
         console.error('Failed to fetch stock snapshot:', error);
       });
+      // Quote
+      fetchDashboardData('stock/quote', company.symbol, (data) => {
+        setSelectedCompany(prev => prev ? { ...prev, quote: data } : null);
+      }, (error) => {
+        console.error('Failed to fetch stock quote:', error);
+      });
 
     } catch (error) {
       console.error('Error in handleCompanySelect:', error);
@@ -65,10 +72,11 @@ export default function Dashboard() {
         {(selectedCompany || isLoading) && (
           <>
             <CompanyHeader 
-              symbol={selectedCompany?.symbol || 'Loading'} 
-              name={selectedCompany?.name || 'Loading Company Data'} 
-              exchange={selectedCompany?.exchange || 'Loading'}
+              symbol={selectedCompany?.symbol || '' } 
+              name={selectedCompany?.name || ''} 
+              exchange={selectedCompany?.exchange || ''}
               isLoading={isLoading}
+              quote={selectedCompany?.quote}
             />
             
             <CompanyProfile

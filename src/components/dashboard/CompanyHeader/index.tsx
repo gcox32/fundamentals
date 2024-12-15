@@ -5,14 +5,24 @@ import loadingStyles from '@/styles/loading.module.css';
 import PriceInfo from './PriceInfo';
 import { CompanyHeaderProps } from './types';
 import OverviewCard from '@/components/dashboard/DashboardCard/OverviewCard';
+import { StockQuote } from '@/types/stock';
 
 export default function CompanyHeader({
   symbol,
   name,
   exchange,
   isLoading,
-  priceInfo
-}: CompanyHeaderProps) {
+  quote
+}: Omit<CompanyHeaderProps, 'priceInfo'> & { quote?: StockQuote }) {
+  const priceInfo = quote ? {
+    currentPrice: parseFloat(quote.primaryData.lastSalePrice.replace('$', '')),
+    priceChange: parseFloat(quote.primaryData.netChange),
+    percentChange: parseFloat(quote.primaryData.percentageChange),
+    marketStatus: quote.marketStatus.toLowerCase() as 'pre' | 'regular' | 'after' | 'closed'
+  } : undefined;
+
+  const displayExchange = quote?.exchange || exchange;
+
   return (
     <OverviewCard title="" isLoading={isLoading} className={styles.headerCard}>
       <div className={styles.companyHeaderContainer}>
@@ -34,7 +44,7 @@ export default function CompanyHeader({
             {isLoading ? 'Loading' : name}
           </h2>
           <span className={`${styles.companySymbol} ${isLoading ? loadingStyles.pulse : ''}`}>
-            {isLoading ? 'Loading' : symbol} | {isLoading ? 'Loading' : exchange}
+            {isLoading ? 'Loading' : symbol} | {isLoading ? 'Loading' : displayExchange}
           </span>
         </div>
       </div>

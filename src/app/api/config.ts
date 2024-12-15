@@ -7,6 +7,7 @@ export const API_TTL = {
     },
     STOCK: {
         SNAPSHOT: 24 * 60 * 60,         // 24 hours
+        QUOTE: 15 * 60,                 // 15 minutes
     }
 } as const; 
 
@@ -19,6 +20,7 @@ export const API_ENDPOINTS = {
     },
     STOCK: {
         SNAPSHOT: 'v1/markets/stock/quotes',
+        QUOTE: 'v1/markets/quote',
     }
 } as const; 
 
@@ -31,5 +33,6 @@ export const DYNAMODB_TABLES = {
     },
     STOCK: {
         SNAPSHOT: 'Fundamental-StockSnapshot',
+        QUOTE: 'Fundamental-StockQuote',
     }
 } as const; 
