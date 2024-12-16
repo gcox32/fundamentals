@@ -1,82 +1,40 @@
-import type { StockStatistics, StockSnapshotItem, StockQuote } from './stock';
-
-interface CompanyOfficer {
-    maxAge: number;
-    name: string;
-    age?: number;
-    title: string;
-    yearBorn?: number;
-    fiscalYear: number;
-    totalPay?: {
-        raw: number;
-        fmt: string;
-        longFmt: string;
-    };
-    exercisedValue: {
-        raw: number;
-        fmt: string | null;
-        longFmt: string;
-    };
-    unexercisedValue: {
-        raw: number;
-        fmt: string | null;
-        longFmt: string;
-    };
-}
-
-interface Valuation {
-    marketCap: number;
-    peRatioTTM: number;
-    peRatioForward: number;
-}
-
 export interface CompanyProfile {
-    symbol: string;
-    address1: string;
-    city: string;
-    state: string;
-    zip: string;
-    country: string;
-    phone: string;
-    website: string;
-    industry: string;
-    industryKey: string;
-    industryDisp: string;
-    sector: string;
-    sectorKey: string;
-    sectorDisp: string;
-    longBusinessSummary: string;
-    fullTimeEmployees: number;
-    companyOfficers: CompanyOfficer[];
-}
-
-export interface CompanyProfileWithMetadata extends CompanyProfile {
-    lastUpdated: number;
-}
-
-export interface CompanyData {
-    symbol: string;
-    name: string;
-    exchange: string;
-    profile?: CompanyProfile;
-    events?: CompanyCalendarEvents;
-    news?: CompanyNews;
-    statistics?: StockStatistics;
-    snapshot?: StockSnapshotItem;
-    quote?: StockQuote;
-}
-
-export interface CompanyValuation {
-    marketCap: number;
-    peRatioTTM: number;
-    peRatioForward: number;
-}
-
-export interface CompanySummaryProps {
-    isLoading?: boolean;
-    profile?: CompanyProfile;
-    events?: CompanyCalendarEvents;
-    valuation?: CompanyValuation;
+  symbol: string;
+  price: number;
+  beta: number;
+  volAvg: number;
+  mktCap: number;
+  lastDiv: number;
+  range: string;
+  changes: number;
+  companyName: string;
+  currency: string;
+  cik: string;
+  isin: string;
+  cusip: string;
+  exchange: string;
+  exchangeShortName: string;
+  industry: string;
+  website: string;
+  description: string;
+  ceo: string;
+  sector: string;
+  country: string;
+  fullTimeEmployees: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  dcfDiff: number;
+  dcf: number;
+  image: string;
+  ipoDate: string;
+  defaultImage: boolean;
+  isEtf: boolean;
+  isActivelyTrading: boolean;
+  isAdr: boolean;
+  isFund: boolean;
 }
 
 export interface CompanyCalendarEvents {
@@ -128,18 +86,4 @@ export interface CompanyCalendarEvents {
         raw: number;
         fmt: string;
     };
-}
-
-export interface NewsItem {
-    guid: string;
-    link: string;
-    pubDate: string;
-    source: string;
-    title: string;
-}
-
-export interface CompanyNews {
-    symbol: string;
-    maxAge: number;
-    items: NewsItem[];
 }

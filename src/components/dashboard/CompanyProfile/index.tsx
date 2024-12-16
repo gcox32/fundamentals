@@ -1,21 +1,29 @@
 import React from 'react';
 import styles from './styles.module.css';
-import { CompanySummaryProps } from '@/types/company';
+import type { CompanyProfile } from '@/types/company';
 import { FaMapMarkerAlt, FaUsers, FaChartPie, FaIndustry, FaGlobe } from 'react-icons/fa';
 import OverviewCard from '@/components/dashboard/DashboardCard/OverviewCard';
 
-export default function CompanyProfile({ isLoading, profile }: CompanySummaryProps) {
+interface CompanyProfileProps {
+  isLoading: boolean;
+  profile?: CompanyProfile;
+}
+
+export default function CompanyProfile({ isLoading, profile }: CompanyProfileProps) {
   const formatAddress = () => {
     if (!profile) return '';
-    if (profile.country === 'United States') {
-      profile.country = 'United\u00A0States';
-    }
     const parts = [
+      profile.address,
       profile.city,
       profile.state,
       profile.country
     ].filter(Boolean);
     return parts.join(', ');
+  };
+
+  const formatEmployees = (employees?: string) => {
+    if (!employees) return 'N/A';
+    return parseInt(employees).toLocaleString();
   };
 
   return (
@@ -27,7 +35,7 @@ export default function CompanyProfile({ isLoading, profile }: CompanySummaryPro
               <FaChartPie className={styles.icon} /> Sector
             </span>
             <span className={styles.value}>
-              {isLoading ? 'Loading...' : profile?.sector}
+              {isLoading ? 'Loading...' : profile?.sector || 'N/A'}
             </span>
           </div>
           <div className={styles.profileItem}>
@@ -35,7 +43,7 @@ export default function CompanyProfile({ isLoading, profile }: CompanySummaryPro
               <FaIndustry className={styles.icon} /> Industry
             </span>
             <span className={styles.value}>
-              {isLoading ? 'Loading...' : profile?.industry}
+              {isLoading ? 'Loading...' : profile?.industry || 'N/A'}
             </span>
           </div>
           <div className={styles.profileItem}>
@@ -48,22 +56,27 @@ export default function CompanyProfile({ isLoading, profile }: CompanySummaryPro
             <span className={styles.label}>
               <FaGlobe className={styles.icon} /> Website
             </span>
-            <a href={profile?.website} target="_blank" rel="noopener noreferrer" className={styles.link}>
-              {isLoading ? 'Loading...' : profile?.website}
+            <a 
+              href={profile?.website} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className={styles.link}
+            >
+              {isLoading ? 'Loading...' : profile?.website || 'N/A'}
             </a>
           </div>
-          {profile?.fullTimeEmployees && (
-            <div className={styles.profileItem}>
-              <span className={styles.label}>
-                <FaUsers className={styles.icon} /> Employees
-              </span>
-              <span className={styles.value}>
-                {profile.fullTimeEmployees.toLocaleString()}
-              </span>
-            </div>
-          )}
+          <div className={styles.profileItem}>
+            <span className={styles.label}>
+              <FaUsers className={styles.icon} /> Employees
+            </span>
+            <span className={styles.value}>
+              {isLoading ? 'Loading...' : formatEmployees(profile?.fullTimeEmployees)}
+            </span>
+          </div>
         </div>
-        <p className={styles.description}>{isLoading ? 'Loading...' : profile?.longBusinessSummary}</p>
+        <p className={styles.description}>
+          {isLoading ? 'Loading...' : profile?.description || 'No description available.'}
+        </p>
       </div>
     </OverviewCard>
   );

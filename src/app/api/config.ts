@@ -13,14 +13,14 @@ export const API_TTL = {
 
 export const API_ENDPOINTS = {
     COMPANY: {
-        PROFILE: 'v1/markets/stock/modules',
+        PROFILE: 'v3/profile/<ticker>',
         EVENTS: 'v1/markets/stock/modules',
         NEWS: 'v2/market/news',
         STATISTICS: 'v1/markets/stock/modules',
     },
     STOCK: {
         SNAPSHOT: 'v1/markets/stock/quotes',
-        QUOTE: 'v1/markets/quote',
+        QUOTE: 'v3/quote/<ticker>',
     }
 } as const; 
 

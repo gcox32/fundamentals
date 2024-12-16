@@ -15,10 +15,10 @@ export default function CompanyHeader({
   quote
 }: Omit<CompanyHeaderProps, 'priceInfo'> & { quote?: StockQuote }) {
   const priceInfo = quote ? {
-    currentPrice: parseFloat(quote.primaryData.lastSalePrice.replace('$', '')),
-    priceChange: parseFloat(quote.primaryData.netChange),
-    percentChange: parseFloat(quote.primaryData.percentageChange),
-    marketStatus: quote.marketStatus.toLowerCase() as 'pre' | 'regular' | 'after' | 'closed'
+    currentPrice: quote.price,
+    priceChange: quote.change,
+    percentChange: quote.changesPercentage,
+    marketStatus: 'regular'
   } : undefined;
 
   const displayExchange = quote?.exchange || exchange;
@@ -52,7 +52,7 @@ export default function CompanyHeader({
         currentPrice={priceInfo?.currentPrice ?? 0}
         priceChange={priceInfo?.priceChange ?? 0}
         percentChange={priceInfo?.percentChange ?? 0}
-        marketStatus={priceInfo?.marketStatus ?? 'regular'}
+        marketStatus="regular"
         isLoading={isLoading}
       />
     </OverviewCard>

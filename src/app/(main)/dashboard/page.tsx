@@ -7,15 +7,22 @@ import TimeframeSelector from "@/components/dashboard/TimeframeSelector";
 import GraphicalCard from "@/src/components/dashboard/DashboardCard/GraphicalCard";
 import CompanyProfile from "@/src/components/dashboard/CompanyProfile";
 import CompanyEventsNews from "@/components/dashboard/CompanyEventsNews";
-import StockStatistics from "@/components/dashboard/StockStatistics";
-import StockSnapshot from "@/components/dashboard/StockSnapshot";
 import styles from './styles.module.css';
-import { CompanyData } from '@/types/company';
 import { fetchDashboardData } from '@/utils/fetchDashboardData';
 import { StockQuote } from '@/types/stock';
+import { CompanyProfile as CompanyProfileType } from '@/types/company';
+
+interface SelectedCompany {
+  symbol: string;
+  name: string;
+  exchange: string;
+  profile?: CompanyProfileType;
+  quote?: StockQuote;
+  events?: any;
+}
 
 export default function Dashboard() {
-  const [selectedCompany, setSelectedCompany] = useState<CompanyData | null>(null);
+  const [selectedCompany, setSelectedCompany] = useState<SelectedCompany | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTimeframe, setSelectedTimeframe] = useState('1M');
   const [selectedSegment, setSelectedSegment] = useState('daily');
@@ -28,31 +35,19 @@ export default function Dashboard() {
     try {
       // Profile
       fetchDashboardData('company/profile', company.symbol, (data) => {
-        setSelectedCompany(prev => prev ? { ...prev, profile: data } : null);
+        setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, profile: data } : null);
       }, (error) => {
         console.error('Failed to fetch company profile:', error);
       });
       // Events
       fetchDashboardData('company/events', company.symbol, (data) => {
-        setSelectedCompany(prev => prev ? { ...prev, events: data } : null);
+        setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, events: data } : null);
       }, (error) => {
         console.error('Failed to fetch company events:', error);
       });
-      // Statistics
-      fetchDashboardData('stock/statistics', company.symbol, (data) => {
-        setSelectedCompany(prev => prev ? { ...prev, statistics: data } : null);
-      }, (error) => {
-        console.error('Failed to fetch stock statistics:', error);
-      });
-      // Snapshot
-      fetchDashboardData('stock/snapshot', company.symbol, (data) => {
-        setSelectedCompany(prev => prev ? { ...prev, snapshot: data } : null);
-      }, (error) => {
-        console.error('Failed to fetch stock snapshot:', error);
-      });
       // Quote
       fetchDashboardData('stock/quote', company.symbol, (data) => {
-        setSelectedCompany(prev => prev ? { ...prev, quote: data } : null);
+        setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, quote: data } : null);
       }, (error) => {
         console.error('Failed to fetch stock quote:', error);
       });
@@ -82,16 +77,6 @@ export default function Dashboard() {
             <CompanyProfile
               isLoading={isLoading}
               profile={selectedCompany?.profile}
-            />
-
-            <StockStatistics 
-              isLoading={isLoading}
-              statistics={selectedCompany?.statistics}
-            />
-
-            <StockSnapshot 
-              isLoading={isLoading}
-              snapshot={selectedCompany?.snapshot}
             />
 
             <CompanyEventsNews 
