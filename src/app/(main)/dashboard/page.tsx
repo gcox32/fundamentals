@@ -9,6 +9,7 @@ import CompanyProfile from "@/src/components/dashboard/CompanyProfile";
 import CompanyEvents from "@/components/dashboard/CompanyEvents";
 import CompanyNews from "@/components/dashboard/CompanyNews";
 import CompanyMetricsOverview from "@/src/components/dashboard/CompanyMetricsOverview";
+import StockOverview from "@/src/components/dashboard/StockOverview";
 import styles from './styles.module.css';
 import { fetchDashboardData } from '@/utils/fetchDashboardData';
 import { StockQuote } from '@/types/stock';
@@ -76,6 +77,12 @@ export default function Dashboard() {
               exchange={selectedCompany?.exchange || ''}
               isLoading={isLoading}
               quote={selectedCompany?.quote}
+            />
+
+            <StockOverview
+              isLoading={isLoading}
+              quote={selectedCompany?.quote}
+              profile={selectedCompany?.outlook?.profile}
             />
             
             <CompanyProfile

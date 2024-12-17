@@ -1,5 +1,27 @@
 import type { CompanyProfile } from "@/types/company";
 
+export const formatLargeNumber = (value?: number) => {
+    if (!value) return '--';
+    
+    const trillion = 1_000_000_000_000;
+    const billion = 1_000_000_000;
+    const million = 1_000_000;
+
+    if (Math.abs(value) >= trillion) {
+        return `${(value / trillion).toFixed(2)}T`;
+    }
+    
+    if (Math.abs(value) >= billion) {
+        return `${(value / billion).toFixed(2)}B`;
+    }
+    
+    if (Math.abs(value) >= million) {
+        return `${(value / million).toFixed(2)}M`;
+    }
+    
+    return value.toLocaleString();
+};
+
 export const formatPercent = (value?: number) => {
     if (!value) return '--';
     return `${value.toFixed(2)}%`;
