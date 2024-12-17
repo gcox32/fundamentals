@@ -4,6 +4,7 @@ export const API_TTL = {
         EVENTS: 7 * 24 * 60 * 60,      // 7 days
         NEWS: 6 * 60 * 60,             // 6 hours
         STATISTICS: 3 * 24 * 60 * 60,   // 3 days
+        OUTLOOK: 1 * 24 * 60 * 60,     // 1 day
     },
     STOCK: {
         SNAPSHOT: 24 * 60 * 60,         // 24 hours
@@ -15,8 +16,9 @@ export const API_ENDPOINTS = {
     COMPANY: {
         PROFILE: 'v3/profile/<ticker>',
         EVENTS: 'v1/markets/stock/modules',
-        NEWS: 'v2/market/news',
+        NEWS: 'v3/stock_news',
         STATISTICS: 'v1/markets/stock/modules',
+        OUTLOOK: 'v4/company-outlook',
     },
     STOCK: {
         SNAPSHOT: 'v1/markets/stock/quotes',
@@ -30,6 +32,7 @@ export const DYNAMODB_TABLES = {
         EVENTS: 'Fundamental-CompanyEvents',
         NEWS: 'Fundamental-MarketNews',
         STATISTICS: 'Fundamental-StockStatistics',
+        OUTLOOK: 'Fundamental-CompanyOutlook',
     },
     STOCK: {
         SNAPSHOT: 'Fundamental-StockSnapshot',

@@ -47,7 +47,6 @@ export async function fetchFMPData<T extends CacheableData>({
     );
 
     if (cacheResult.Item) {
-      console.log('Found cached item:', JSON.stringify(cacheResult.Item, null, 2));
       const cachedData = cacheResult.Item.data as T;
       const age = Date.now() - cachedData.lastUpdated;
       
@@ -67,7 +66,6 @@ export async function fetchFMPData<T extends CacheableData>({
     const queryString = new URLSearchParams(params).toString();
     const fullEndpoint = `https://financialmodelingprep.com/api/${endpoint}?${queryString}` as string;
     
-    console.log('Fetching from FMP API:', fullEndpoint.replace(FMP_API_KEY!, '[REDACTED]'));
     const response = await fetch(fullEndpoint);
 
     if (!response.ok) {
@@ -79,7 +77,6 @@ export async function fetchFMPData<T extends CacheableData>({
     }
 
     const data = await response.json();
-    console.log('API Response:', JSON.stringify(data, null, 2));
 
     const dataWithTimestamp = {
       ...data,
@@ -94,7 +91,6 @@ export async function fetchFMPData<T extends CacheableData>({
       data: dataWithTimestamp,
       ttl: Math.floor(Date.now() / 1000) + ttlSeconds
     };
-    console.log('Cache item:', JSON.stringify(putItem, null, 2));
 
     await docClient.send(
       new PutCommand({

@@ -6,19 +6,20 @@ import CompanyHeader from "@/components/dashboard/CompanyHeader";
 import TimeframeSelector from "@/components/dashboard/TimeframeSelector";
 import GraphicalCard from "@/src/components/dashboard/DashboardCard/GraphicalCard";
 import CompanyProfile from "@/src/components/dashboard/CompanyProfile";
-import CompanyEventsNews from "@/components/dashboard/CompanyEventsNews";
+import CompanyEvents from "@/components/dashboard/CompanyEvents";
+import CompanyNews from "@/components/dashboard/CompanyNews";
 import styles from './styles.module.css';
 import { fetchDashboardData } from '@/utils/fetchDashboardData';
 import { StockQuote } from '@/types/stock';
-import { CompanyProfile as CompanyProfileType } from '@/types/company';
+import { CompanyProfile as CompanyProfileType, MarketNews, CompanyOutlook } from '@/types/company';
 
 interface SelectedCompany {
   symbol: string;
   name: string;
   exchange: string;
-  profile?: CompanyProfileType;
   quote?: StockQuote;
   events?: any;
+  outlook?: CompanyOutlook;
 }
 
 export default function Dashboard() {
@@ -33,23 +34,25 @@ export default function Dashboard() {
     setSelectedCompany(company);
     
     try {
-      // Profile
-      fetchDashboardData('company/profile', company.symbol, (data) => {
-        setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, profile: data } : null);
-      }, (error) => {
-        console.error('Failed to fetch company profile:', error);
-      });
       // Events
       fetchDashboardData('company/events', company.symbol, (data) => {
         setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, events: data } : null);
       }, (error) => {
         console.error('Failed to fetch company events:', error);
       });
+
       // Quote
       fetchDashboardData('stock/quote', company.symbol, (data) => {
         setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, quote: data } : null);
       }, (error) => {
         console.error('Failed to fetch stock quote:', error);
+      });
+
+      // Outlook (includes profile and news)
+      fetchDashboardData('company/outlook', company.symbol, (data) => {
+        setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, outlook: data } : null);
+      }, (error) => {
+        console.error('Failed to fetch company outlook:', error);
       });
 
     } catch (error) {
@@ -76,10 +79,10 @@ export default function Dashboard() {
             
             <CompanyProfile
               isLoading={isLoading}
-              profile={selectedCompany?.profile}
+              profile={selectedCompany?.outlook?.profile}
             />
 
-            <CompanyEventsNews 
+            <CompanyEvents 
               isLoading={isLoading}
               events={selectedCompany?.events}
             />
@@ -107,6 +110,10 @@ export default function Dashboard() {
                 <div>{isLoading ? 'Loading buybacks...' : ''}</div>
               </GraphicalCard>
             </div>
+            <CompanyNews 
+              isLoading={isLoading}
+              news={selectedCompany?.outlook?.stockNews}
+            />
           </>
         )}
       </div>
