@@ -58,3 +58,19 @@ export interface HistoricalSharesOutstanding {
     historical: HistoricalShares[];
     lastUpdated?: number;
 }
+
+export interface HistoricalDividend {
+    date: string;
+    label: string;
+    adjDividend: number;
+    dividend: number;
+    recordDate: string;
+    paymentDate: string;
+    declarationDate: string;
+}
+
+export interface HistoricalDividendData {
+    symbol: string;
+    historical: HistoricalDividend[];
+    lastUpdated?: number;
+}
