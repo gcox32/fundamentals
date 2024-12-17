@@ -3,30 +3,13 @@ import styles from './styles.module.css';
 import { CompanyCalendarEvents } from '@/types/company';
 import { FaCalendarAlt, FaDollarSign, FaChartLine } from 'react-icons/fa';
 import OverviewCard from '@/components/dashboard/DashboardCard/OverviewCard';
-
+import { formatDate } from '@/utils/format';
 interface CompanyEventsProps {
     isLoading?: boolean;
     events?: CompanyCalendarEvents;
 }
 
 export default function CompanyEvents({ isLoading, events }: CompanyEventsProps) {
-    const formatDate = (event?: { raw: number; fmt: string } | Array<{ raw: number; fmt: string }>) => {
-        if (!event) return 'Not Available';
-        if (Array.isArray(event)) {
-            return event[0] ? new Date(event[0].raw * 1000).toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            }) : 'Not Available';
-        }
-        return new Date(event.raw * 1000).toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-    };
 
     return (
         <OverviewCard title="Upcoming Events" isLoading={isLoading}>

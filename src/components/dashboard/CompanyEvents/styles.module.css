@@ -13,13 +13,14 @@
     right: 0;
     bottom: 0;
     height: 2px;
-    background: var(--border-color);
+    background: var(--background-secondary);
     border-radius: 1px;
 }
 
 .eventCard {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 1rem;
     padding: 1rem;
     background-color: var(--card-background);
@@ -35,7 +36,7 @@
     left: 50%;
     width: 2px;
     height: 2rem;
-    background: var(--border-color);
+    background: var(--background-secondary);
     transform: translateX(-50%);
 }
 

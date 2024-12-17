@@ -3,6 +3,7 @@ import styles from './styles.module.css';
 import type { CompanyProfile } from '@/types/company';
 import { FaMapMarkerAlt, FaUsers, FaChartPie, FaIndustry, FaGlobe } from 'react-icons/fa';
 import OverviewCard from '@/components/dashboard/DashboardCard/OverviewCard';
+import { formatAddress, formatEmployees } from '@/utils/format';
 
 interface CompanyProfileProps {
   isLoading: boolean;
@@ -10,21 +11,6 @@ interface CompanyProfileProps {
 }
 
 export default function CompanyProfile({ isLoading, profile }: CompanyProfileProps) {
-  const formatAddress = () => {
-    if (!profile) return '';
-    const parts = [
-      profile.address,
-      profile.city,
-      profile.state,
-      profile.country
-    ].filter(Boolean);
-    return parts.join(', ');
-  };
-
-  const formatEmployees = (employees?: string) => {
-    if (!employees) return 'N/A';
-    return parseInt(employees).toLocaleString();
-  };
 
   return (
     <OverviewCard title="Company Profile" isLoading={isLoading}>
@@ -50,7 +36,7 @@ export default function CompanyProfile({ isLoading, profile }: CompanyProfilePro
             <span className={styles.label}>
               <FaMapMarkerAlt className={styles.icon} /> Headquarters
             </span>
-            <span className={styles.value}>{isLoading ? 'Loading...' : formatAddress()}</span>
+            <span className={styles.value}>{isLoading ? 'Loading...' : formatAddress(profile as CompanyProfile)}</span>
           </div>
           <div className={styles.profileItem}>
             <span className={styles.label}>

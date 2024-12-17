@@ -3,6 +3,7 @@ import styles from './styles.module.css';
 import { MarketNews } from '@/types/company';
 import OverviewCard from '@/components/dashboard/DashboardCard/OverviewCard';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { formatNewsDate } from '@/utils/format';
 
 interface CompanyNewsProps {
     isLoading?: boolean;
@@ -13,15 +14,6 @@ const ITEMS_PER_PAGE = 5;
 
 export default function CompanyNews({ isLoading, news }: CompanyNewsProps) {
     const [currentPage, setCurrentPage] = useState(0);
-
-    const formatNewsDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric'
-        });
-    };
 
     if (isLoading) {
         return (

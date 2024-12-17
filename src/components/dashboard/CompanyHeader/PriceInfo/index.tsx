@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './styles.module.css';
 import loadingStyles from '@/styles/loading.module.css';
 import { PriceInfoProps } from './types';
-
+import { formatPrice, formatChange, formatPercent } from '@/utils/format';
 export default function PriceInfo({
   currentPrice,
   priceChange,
@@ -10,9 +10,6 @@ export default function PriceInfo({
   marketStatus,
   isLoading
 }: PriceInfoProps) {
-  const formatPrice = (price: number) => `$${price.toFixed(2)}`;
-  const formatChange = (change: number) => (change >= 0 ? `+${change.toFixed(2)}` : change.toFixed(2));
-  const formatPercent = (percent: number) => (percent >= 0 ? `+${percent.toFixed(2)}%` : `${percent.toFixed(2)}%`);
 
   const getMarketStatusBadge = () => {
     if (marketStatus === 'pre') return <span className={styles.marketStatus}>Pre</span>;
