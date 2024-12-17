@@ -1,7 +1,7 @@
 .graphicalCard {
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  padding: 1rem 0;
+  padding: 1rem;
 }
 
 .graphicalCard h3 {
@@ -41,7 +41,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 300px;
   color: var(--text-secondary);
   margin: 2rem;
   text-align: center;
