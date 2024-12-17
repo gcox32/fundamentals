@@ -23,9 +23,8 @@ export default function HistoricalShares({ data, isLoading }: HistoricalSharesPr
   }
 
   // Convert object with numeric keys to array, filtering out non-numeric keys
-  const chartData = Object.entries(data)
-    .filter(([key]) => !isNaN(Number(key)))
-    .map(([_, value]) => ({
+  const chartData = [...data.historical]
+    .map(value => ({
       ...value,
       outstandingShares: Number(value.outstandingShares)
     }))

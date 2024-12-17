@@ -14,23 +14,27 @@ const FMP_API_KEY = process.env.FMP_API_KEY;
 
 interface CacheableData {
   lastUpdated: number;
-  [key: string]: any;
   symbol: string;
+  [key: string]: any;
 }
 
-export async function fetchFMPData<T extends CacheableData>({
-  endpoint,
-  params = {},
-  tableName,
-  ttlSeconds,
-  cacheKey
-}: {
+interface FetchOptions<T extends CacheableData, R = any> {
   endpoint: string;
   params?: Record<string, string>;
   tableName: string;
   ttlSeconds: number;
   cacheKey: string;
-}): Promise<T> {
+  transform?: (rawData: R) => T;
+}
+
+export async function fetchFMPData<T extends CacheableData, R = any>({
+  endpoint,
+  params = {},
+  tableName,
+  ttlSeconds,
+  cacheKey,
+  transform
+}: FetchOptions<T, R>): Promise<T> {
   try {
     console.log('=== FMP Data Fetch Start ===');
     console.log('Cache Key:', cacheKey);
@@ -76,19 +80,20 @@ export async function fetchFMPData<T extends CacheableData>({
       throw new Error(`FMP API responded with status: ${response.status}`);
     }
 
-    const data = await response.json();
-
-    const dataWithTimestamp = {
-      ...data,
+    const rawData = await response.json() as R;
+    
+    // Transform the data if a transform function is provided
+    const transformedData = transform ? transform(rawData) : ({
+      ...rawData,
       symbol: cacheKey,
       lastUpdated: Date.now()
-    } as T;
+    } as unknown as T);
 
     // Cache the response
     console.log('Caching response in DynamoDB...');
     const putItem = {
       symbol: cacheKey,
-      data: dataWithTimestamp,
+      data: transformedData,
       ttl: Math.floor(Date.now() / 1000) + ttlSeconds
     };
 
@@ -101,7 +106,7 @@ export async function fetchFMPData<T extends CacheableData>({
     console.log('Successfully cached data');
     console.log('=== FMP Data Fetch Complete ===');
 
-    return dataWithTimestamp;
+    return transformedData;
   } catch (error) {
     console.error('Error in fetchFMPData:', {
       error: error instanceof Error ? error.message : 'Unknown error',

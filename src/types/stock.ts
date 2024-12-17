@@ -56,7 +56,7 @@ export interface HistoricalShares {
 export interface HistoricalSharesOutstanding {
     symbol: string;
     historical: HistoricalShares[];
-    lastUpdated?: number;
+    lastUpdated: number;
 }
 
 export interface HistoricalDividend {
