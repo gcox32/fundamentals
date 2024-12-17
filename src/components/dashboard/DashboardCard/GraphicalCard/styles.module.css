@@ -36,3 +36,13 @@
   height: 300px;
   color: var(--text-secondary);
 } 
+
+.noData {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  color: var(--text-secondary);
+  margin: 2rem;
+  text-align: center;
+}

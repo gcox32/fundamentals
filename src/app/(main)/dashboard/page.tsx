@@ -90,7 +90,8 @@ export default function Dashboard() {
       fetchDashboardData('stock/historical/dividends', company.symbol, (data) => {
         setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, dividendHistory: data } : null);
       }, (error) => {
-        console.error('Failed to fetch dividend history:', error);
+        // console.error('Failed to fetch dividend history:', error);
+        setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, dividendHistory: { symbol: prev.symbol, historical: [], lastUpdated: Date.now() } } : null);
       });
 
     } catch (error) {

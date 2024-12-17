@@ -18,8 +18,16 @@ interface DividendHistoryProps {
 }
 
 export default function DividendHistory({ data, isLoading }: DividendHistoryProps) {
-  if (isLoading || !data) {
+  if (isLoading) {
     return <div className={graphStyles.loading}>Loading dividend history...</div>;
+  }
+
+  if (!data?.historical?.length) {
+    return (
+      <div className={graphStyles.noData}>
+        No dividend history available. This company may not pay dividends.
+      </div>
+    );
   }
 
   const chartData = [...data.historical].reverse();
@@ -39,7 +47,7 @@ export default function DividendHistory({ data, isLoading }: DividendHistoryProp
             tickFormatter={(value) => formatPrice(value)}
           />
           <Tooltip
-            formatter={(value: number) => [`${formatPrice(value)}`, 'Dividend']}
+            formatter={(value: number) => [`$${formatPrice(value)}`, 'Dividend']}
             labelFormatter={(label) => new Date(label).toLocaleDateString()}
           />
           <Bar
