@@ -25,7 +25,7 @@ export async function GET(request: Request) {
       params: {
         symbol,
         structure: 'flat',
-        period: 'quarterly'
+        period: 'quarter'
       }
     });
 

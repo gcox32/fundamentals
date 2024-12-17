@@ -85,17 +85,17 @@ export default function CompanyMetricsOverview({ isLoading, ratios }: CompanyMet
 
         {/* Returns Metrics */}
         <div className={styles.metricSection}>
-          <h4 className={styles.sectionTitle}>Returns on Equity</h4>
+          <h4 className={styles.sectionTitle}>Returns</h4>
           <div className={styles.metric}>
-            <span className={styles.label}>ROE</span>
+            <span className={styles.label}>Return on Equity</span>
             <span className={styles.value}>{formatPercent(latestRatios?.returnOnEquityTTM)}</span>
           </div>
           <div className={styles.metric}>
-            <span className={styles.label}>ROA</span>
+            <span className={styles.label}>Return on Assets</span>
             <span className={styles.value}>{formatPercent(latestRatios?.returnOnAssetsTTM)}</span>
           </div>
           <div className={styles.metric}>
-            <span className={styles.label}>ROCE</span>
+            <span className={styles.label}>Return on Capital Employed</span>
             <span className={styles.value}>{formatPercent(latestRatios?.returnOnCapitalEmployedTTM)}</span>
           </div>
         </div>

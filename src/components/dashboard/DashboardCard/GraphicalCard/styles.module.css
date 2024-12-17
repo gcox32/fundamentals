@@ -4,6 +4,12 @@
   padding: 1rem;
 }
 
+@media (max-width: 768px) {
+  .graphicalCard {
+    padding: 1rem 0;
+  }
+}
+
 .graphicalCard h3 {
   margin-bottom: 0;
 }
