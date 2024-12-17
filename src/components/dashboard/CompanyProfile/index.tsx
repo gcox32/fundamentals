@@ -13,7 +13,7 @@ interface CompanyProfileProps {
 export default function CompanyProfile({ isLoading, profile }: CompanyProfileProps) {
 
   return (
-    <OverviewCard title="Company Profile" isLoading={isLoading}>
+    <OverviewCard title="Company Profile" isLoading={isLoading} className={styles.marginTopTwo}>
       <div className={styles.profileContainer}>
         <div className={styles.profileGrid}>
           <div className={styles.profileItem}>

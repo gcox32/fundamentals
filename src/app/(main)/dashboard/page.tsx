@@ -12,9 +12,11 @@ import CompanyMetricsOverview from "@/src/components/dashboard/CompanyMetricsOve
 import StockOverview from "@/src/components/dashboard/StockOverview";
 import styles from './styles.module.css';
 import { fetchDashboardData } from '@/utils/fetchDashboardData';
-import { StockQuote } from '@/types/stock';
-import { CompanyProfile as CompanyProfileType, MarketNews, CompanyOutlook } from '@/types/company';
-
+import type { StockQuote, HistoricalPriceData } from '@/types/stock';
+import type { CompanyOutlook } from '@/types/company';
+import HistoricalPrice from "@/components/dashboard/HistoricalPrice";
+import HistoricalShares from "@/components/dashboard/HistoricalShares";
+import type { HistoricalSharesOutstanding } from '@/types/stock';
 interface SelectedCompany {
   symbol: string;
   name: string;
@@ -22,12 +24,14 @@ interface SelectedCompany {
   quote?: StockQuote;
   events?: any;
   outlook?: CompanyOutlook;
+  historicalPrice?: HistoricalPriceData;
+  historicalShares?: HistoricalSharesOutstanding;
 }
 
 export default function Dashboard() {
   const [selectedCompany, setSelectedCompany] = useState<SelectedCompany | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedTimeframe, setSelectedTimeframe] = useState('1M');
+  const [selectedTimeframe, setSelectedTimeframe] = useState('5Y');
   const [selectedSegment, setSelectedSegment] = useState('daily');
 
   const handleCompanySelect = async (company: { symbol: string; name: string; exchange: string }) => {
@@ -57,6 +61,20 @@ export default function Dashboard() {
         console.error('Failed to fetch company outlook:', error);
       });
 
+      // Historical Price
+      fetchDashboardData('stock/historical/price', company.symbol, (data) => {
+        setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, historicalPrice: data } : null);
+      }, (error) => {
+        console.error('Failed to fetch historical price:', error);
+      });
+
+      // Historical Shares Outstanding
+      fetchDashboardData('stock/historical/shares-outstanding', company.symbol, (data) => {
+        setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, historicalShares: data } : null);
+      }, (error) => {
+        console.error('Failed to fetch historical shares data:', error);
+      });
+
     } catch (error) {
       console.error('Error in handleCompanySelect:', error);
     } finally {
@@ -84,11 +102,6 @@ export default function Dashboard() {
               quote={selectedCompany?.quote}
               profile={selectedCompany?.outlook?.profile}
             />
-            
-            <CompanyProfile
-              isLoading={isLoading}
-              profile={selectedCompany?.outlook?.profile}
-            />
 
             <CompanyMetricsOverview
               isLoading={isLoading}
@@ -108,7 +121,10 @@ export default function Dashboard() {
             />
             <div className={styles.cardGrid}>
               <GraphicalCard title="Price History" isLoading={isLoading}>
-                <div>{isLoading ? 'Loading price history...' : ''}</div>
+                <HistoricalPrice 
+                  data={selectedCompany?.historicalPrice}
+                  isLoading={isLoading}
+                />
               </GraphicalCard>
               
               <GraphicalCard title="Revenue" isLoading={isLoading}>
@@ -120,9 +136,18 @@ export default function Dashboard() {
               </GraphicalCard>
               
               <GraphicalCard title="Shares Outstanding" isLoading={isLoading}>
-                <div>{isLoading ? 'Loading buybacks...' : ''}</div>
+                <HistoricalShares 
+                  data={selectedCompany?.historicalShares}
+                  isLoading={isLoading}
+                />
               </GraphicalCard>
             </div>
+
+            <CompanyProfile
+              isLoading={isLoading}
+              profile={selectedCompany?.outlook?.profile}
+            />
+
             <CompanyNews 
               isLoading={isLoading}
               news={selectedCompany?.outlook?.stockNews}
