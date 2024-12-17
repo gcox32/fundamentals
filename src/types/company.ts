@@ -1,5 +1,3 @@
-
-
 export interface CompanyCalendarEvents {
     symbol: string;
     maxAge: number;
@@ -250,6 +248,25 @@ interface CompanyFinancialsQuarter {
     costOfRevenue: number;
     grossProfit: number;
     grossProfitRatio: number;
+}
+
+export interface RevenueBySegment {
+  [segment: string]: number;
+}
+
+export interface RevenueBySegmentDate {
+  [date: string]: RevenueBySegment;
+}
+
+export interface RevenueBySegmentData {
+  [index: string]: RevenueBySegmentDate;
+}
+
+export interface HistoricalRevenueBySegment {
+  symbol: string;
+  data: RevenueBySegmentData;
+  lastUpdated?: number;
+  ttl?: number;
 }
 
 export interface CompanyOutlook {

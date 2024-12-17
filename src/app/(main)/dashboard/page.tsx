@@ -12,11 +12,12 @@ import CompanyMetricsOverview from "@/src/components/dashboard/CompanyMetricsOve
 import StockOverview from "@/src/components/dashboard/StockOverview";
 import styles from './styles.module.css';
 import { fetchDashboardData } from '@/utils/fetchDashboardData';
-import type { StockQuote, HistoricalPriceData } from '@/types/stock';
-import type { CompanyOutlook } from '@/types/company';
+import type { StockQuote, HistoricalPriceData, HistoricalSharesOutstanding } from '@/types/stock';
+import type { CompanyOutlook, HistoricalRevenueBySegment } from '@/types/company';
 import HistoricalPrice from "@/components/dashboard/HistoricalPrice";
 import HistoricalShares from "@/components/dashboard/HistoricalShares";
-import type { HistoricalSharesOutstanding } from '@/types/stock';
+import RevenueBySegment from "@/components/dashboard/RevenueBySegment";
+
 interface SelectedCompany {
   symbol: string;
   name: string;
@@ -26,6 +27,7 @@ interface SelectedCompany {
   outlook?: CompanyOutlook;
   historicalPrice?: HistoricalPriceData;
   historicalShares?: HistoricalSharesOutstanding;
+  revenueBySegment?: HistoricalRevenueBySegment;
 }
 
 export default function Dashboard() {
@@ -73,6 +75,13 @@ export default function Dashboard() {
         setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, historicalShares: data } : null);
       }, (error) => {
         console.error('Failed to fetch historical shares data:', error);
+      });
+
+      // Revenue by Segment
+      fetchDashboardData('company/revenue-by-segment', company.symbol, (data) => {
+        setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, revenueBySegment: data } : null);
+      }, (error) => {
+        console.error('Failed to fetch revenue segments:', error);
       });
 
     } catch (error) {
@@ -127,8 +136,11 @@ export default function Dashboard() {
                 />
               </GraphicalCard>
               
-              <GraphicalCard title="Revenue" isLoading={isLoading}>
-                <div>{isLoading ? 'Loading revenue...' : ''}</div>
+              <GraphicalCard title="Revenue by Segment" isLoading={isLoading}>
+                <RevenueBySegment 
+                  data={selectedCompany?.revenueBySegment}
+                  isLoading={isLoading}
+                />
               </GraphicalCard>
               
               <GraphicalCard title="Dividend History" isLoading={isLoading}>

@@ -3,6 +3,7 @@ export const API_TTL = {
         EVENTS: 7 * 24 * 60 * 60,      // 7 days
         NEWS: 6 * 60 * 60,             // 6 hours
         OUTLOOK: 1 * 24 * 60 * 60,     // 1 day
+        REVENUE_BY_SEGMENT: 7 * 24 * 60 * 60, // 7 days
     },
     STOCK: {
         QUOTE: 15 * 60,                 // 15 minutes
@@ -16,6 +17,7 @@ export const API_ENDPOINTS = {
         EVENTS: 'v1/markets/stock/modules',
         NEWS: 'v3/stock_news',
         OUTLOOK: 'v4/company-outlook',
+        REVENUE_BY_SEGMENT: 'v4/revenue-product-segmentation',
     },
     STOCK: {
         QUOTE: 'v3/quote/<ticker>',
@@ -29,6 +31,7 @@ export const DYNAMODB_TABLES = {
         EVENTS: 'Fundamental-CompanyEvents',
         NEWS: 'Fundamental-MarketNews',
         OUTLOOK: 'Fundamental-CompanyOutlook',
+        REVENUE_BY_SEGMENT: 'Fundamental-HistoricalRevenueBySegment',
     },
     STOCK: {
         QUOTE: 'Fundamental-StockQuote',
