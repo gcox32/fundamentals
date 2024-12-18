@@ -11,6 +11,7 @@ import {
 import { HistoricalPriceData } from '@/types/stock';
 import { formatPrice } from '@/utils/format';
 import graphStyles from '../DashboardCard/GraphicalCard/styles.module.css';
+import { useChartContext } from '../DashboardCard/GraphicalCard/ChartContext';
 
 interface HistoricalPriceProps {
   data?: HistoricalPriceData;
@@ -18,6 +19,8 @@ interface HistoricalPriceProps {
 }
 
 export default function HistoricalPrice({ data, isLoading }: HistoricalPriceProps) {
+  const { isExpanded } = useChartContext();
+
   if (isLoading || !data?.historical) {
     return <div className={graphStyles.loading}>Loading price history...</div>;
   }
@@ -30,13 +33,16 @@ export default function HistoricalPrice({ data, isLoading }: HistoricalPriceProp
         <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
-
             dataKey="date" 
             tickFormatter={(date) => new Date(date).toLocaleDateString()}
             interval="preserveStartEnd"
+            angle={isExpanded ? -45 : 0}
+            textAnchor={isExpanded ? "end" : "middle"}
+            height={isExpanded ? 60 : 30}
+            hide={!isExpanded}
           />
           <YAxis 
-            hide
+            hide={!isExpanded}
             domain={['auto', 'auto']}
             tickFormatter={(value) => formatPrice(value)}
           />

@@ -129,3 +129,7 @@ body {
 .app-container.no-sidebar {
   padding-left: 0;
 }
+
+.recharts-surface {
+  overflow: visible;
+}

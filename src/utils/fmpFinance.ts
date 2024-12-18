@@ -36,11 +36,6 @@ export async function fetchFMPData<T extends CacheableData, R = any>({
   transform
 }: FetchOptions<T, R>): Promise<T> {
   try {
-    console.log('=== FMP Data Fetch Start ===');
-    console.log('Cache Key:', cacheKey);
-    console.log('Table Name:', tableName);
-    console.log('Endpoint:', endpoint);
-
     // Check cache first
     console.log('Checking DynamoDB cache...');
     const cacheResult = await docClient.send(
@@ -73,11 +68,11 @@ export async function fetchFMPData<T extends CacheableData, R = any>({
     const response = await fetch(fullEndpoint);
 
     if (!response.ok) {
-      console.error('FMP API Error:', {
+      console.error('API Error:', {
         status: response.status,
         statusText: response.statusText
       });
-      throw new Error(`FMP API responded with status: ${response.status}`);
+      throw new Error(`API responded with status: ${response.status}`);
     }
 
     const rawData = await response.json() as R;
@@ -90,7 +85,6 @@ export async function fetchFMPData<T extends CacheableData, R = any>({
     } as unknown as T);
 
     // Cache the response
-    console.log('Caching response in DynamoDB...');
     const putItem = {
       symbol: cacheKey,
       data: transformedData,
@@ -103,8 +97,6 @@ export async function fetchFMPData<T extends CacheableData, R = any>({
         Item: putItem
       })
     );
-    console.log('Successfully cached data');
-    console.log('=== FMP Data Fetch Complete ===');
 
     return transformedData;
   } catch (error) {

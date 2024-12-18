@@ -11,13 +11,15 @@ import {
 import type { HistoricalDividendData } from '@/types/stock';
 import graphStyles from '../DashboardCard/GraphicalCard/styles.module.css';
 import { formatPrice } from '@/utils/format';
-
+import { useChartContext } from '../DashboardCard/GraphicalCard/ChartContext';
 interface DividendHistoryProps {
   data?: HistoricalDividendData;
   isLoading: boolean;
+  noData?: boolean | undefined;
 }
 
 export default function DividendHistory({ data, isLoading }: DividendHistoryProps) {
+  const { isExpanded } = useChartContext();
   if (isLoading) {
     return <div className={graphStyles.loading}>Loading dividend history...</div>;
   }
@@ -41,13 +43,17 @@ export default function DividendHistory({ data, isLoading }: DividendHistoryProp
             dataKey="date" 
             tickFormatter={(date) => new Date(date).toLocaleDateString()}
             interval="preserveStartEnd"
+            angle={isExpanded ? -45 : 0}
+            textAnchor={isExpanded ? "end" : "middle"}
+            height={isExpanded ? 60 : 30}
+            hide={!isExpanded}
           />
           <YAxis 
-            hide={true}
+            hide={!isExpanded}
             tickFormatter={(value) => formatPrice(value)}
           />
           <Tooltip
-            formatter={(value: number) => [`$${formatPrice(value)}`, 'Dividend']}
+            formatter={(value: number) => [`${formatPrice(value)}`, 'Dividend']}
             labelFormatter={(label) => new Date(label).toLocaleDateString()}
           />
           <Bar

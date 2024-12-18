@@ -11,6 +11,7 @@ import {
 import type { HistoricalSharesOutstanding } from '@/types/stock';
 import graphStyles from '../DashboardCard/GraphicalCard/styles.module.css';
 import { formatLargeNumber } from '@/utils/format';
+import { useChartContext } from '../DashboardCard/GraphicalCard/ChartContext';
 
 interface HistoricalSharesProps {
   data?: HistoricalSharesOutstanding;
@@ -18,11 +19,12 @@ interface HistoricalSharesProps {
 }
 
 export default function HistoricalShares({ data, isLoading }: HistoricalSharesProps) {
+  const { isExpanded } = useChartContext();
+
   if (isLoading || !data) {
     return <div className={graphStyles.loading}>Loading shares outstanding history...</div>;
   }
 
-  // Convert object with numeric keys to array, filtering out non-numeric keys
   const chartData = [...data.historical]
     .map(value => ({
       ...value,
@@ -39,9 +41,13 @@ export default function HistoricalShares({ data, isLoading }: HistoricalSharesPr
             dataKey="date" 
             tickFormatter={(date) => new Date(date).toLocaleDateString()}
             interval="preserveStartEnd"
+            angle={isExpanded ? -45 : 0}
+            textAnchor={isExpanded ? "end" : "middle"}
+            height={isExpanded ? 60 : 30}
+            hide={!isExpanded}
           />
           <YAxis 
-            hide
+            hide={!isExpanded}
             domain={['auto', 'auto']}
             tickFormatter={(value) => formatLargeNumber(value)}
           />

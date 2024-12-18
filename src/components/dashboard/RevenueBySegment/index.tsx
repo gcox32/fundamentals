@@ -12,7 +12,7 @@ import {
 import type { HistoricalRevenueBySegment } from '@/types/company';
 import graphStyles from '../DashboardCard/GraphicalCard/styles.module.css';
 import { formatLargeNumber } from '@/utils/format';
-
+import { useChartContext } from '../DashboardCard/GraphicalCard/ChartContext';
 interface HistoricalRevenueBySegmentProps {
   data?: HistoricalRevenueBySegment;
   isLoading: boolean;
@@ -33,6 +33,8 @@ const COLOR_PALETTE = [
 ];
 
 export default function RevenueBySegment({ data, isLoading }: HistoricalRevenueBySegmentProps) {
+  const { isExpanded } = useChartContext();
+
   if (isLoading || !data) {
     return <div className={graphStyles.loading}>Loading revenue segments...</div>;
   }
@@ -78,12 +80,16 @@ export default function RevenueBySegment({ data, isLoading }: HistoricalRevenueB
         <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
+            angle={isExpanded ? -45 : 0}
+            textAnchor={isExpanded ? "end" : "middle"}
+            height={isExpanded ? 60 : 30}
+            hide={!isExpanded}
             dataKey="date" 
             tickFormatter={(date) => new Date(date).toLocaleDateString()}
             interval="preserveStartEnd"
           />
           <YAxis 
-            hide={true}
+            hide={!isExpanded}
             tickFormatter={(value) => formatLargeNumber(value)}
           />
           <Tooltip

@@ -90,7 +90,7 @@ export default function Dashboard() {
       fetchDashboardData('stock/historical/dividends', company.symbol, (data) => {
         setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, dividendHistory: data } : null);
       }, (error) => {
-        // console.error('Failed to fetch dividend history:', error);
+        // console.error('No dividend history found:', error);
         setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, dividendHistory: { symbol: prev.symbol, historical: [], lastUpdated: Date.now() } } : null);
       });
 
@@ -153,7 +153,7 @@ export default function Dashboard() {
                 />
               </GraphicalCard>
               
-              <GraphicalCard title="Dividend History" isLoading={isLoading}>
+              <GraphicalCard title="Dividend History" isLoading={isLoading} noData={!selectedCompany?.dividendHistory?.historical?.length as boolean}>
                 <DividendHistory 
                   data={selectedCompany?.dividendHistory}
                   isLoading={isLoading}
