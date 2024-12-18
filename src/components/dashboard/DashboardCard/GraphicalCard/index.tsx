@@ -11,14 +11,32 @@ interface GraphicalCardProps {
     children: React.ReactNode;
     onClick?: () => void;
     noData?: boolean;
+    timeframe: string;
 }
 
-export default function GraphicalCard({ title, isLoading, children, onClick, noData }: GraphicalCardProps) {
+export default function GraphicalCard({ 
+    title, 
+    isLoading, 
+    children, 
+    onClick, 
+    noData,
+    timeframe 
+}: GraphicalCardProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleExpand = (e: React.MouseEvent) => {
         e.stopPropagation();
         setIsModalOpen(true);
+    };
+
+    const contextValue = {
+        isExpanded: false,
+        timeframe
+    };
+
+    const modalContextValue = {
+        isExpanded: true,
+        timeframe
     };
 
     return (
@@ -28,7 +46,7 @@ export default function GraphicalCard({ title, isLoading, children, onClick, noD
                 isLoading={isLoading}
                 className={styles.graphicalCard}
             >
-                <ChartContext.Provider value={{ isExpanded: false }}>
+                <ChartContext.Provider value={contextValue}>
                     <div onClick={onClick} className={styles.clickableContent}>
                         {children}
                         {!isLoading && !noData && (
@@ -46,7 +64,7 @@ export default function GraphicalCard({ title, isLoading, children, onClick, noD
                 onClose={() => setIsModalOpen(false)}
                 title={title}
             >
-                <ChartContext.Provider value={{ isExpanded: true }}>
+                <ChartContext.Provider value={modalContextValue}>
                     <div className={styles.expandedContent}>
                         {children}
                     </div>

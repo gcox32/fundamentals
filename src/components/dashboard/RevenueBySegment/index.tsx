@@ -13,6 +13,8 @@ import type { HistoricalRevenueBySegment } from '@/types/company';
 import graphStyles from '../DashboardCard/GraphicalCard/styles.module.css';
 import { formatLargeNumber } from '@/utils/format';
 import { useChartContext } from '../DashboardCard/GraphicalCard/ChartContext';
+import { filterDataByTimeframe } from '@/utils/timeframeFilter';
+
 interface HistoricalRevenueBySegmentProps {
   data?: HistoricalRevenueBySegment;
   isLoading: boolean;
@@ -33,7 +35,7 @@ const COLOR_PALETTE = [
 ];
 
 export default function RevenueBySegment({ data, isLoading }: HistoricalRevenueBySegmentProps) {
-  const { isExpanded } = useChartContext();
+  const { isExpanded, timeframe } = useChartContext();
 
   if (isLoading || !data) {
     return <div className={graphStyles.loading}>Loading revenue segments...</div>;
@@ -43,7 +45,7 @@ export default function RevenueBySegment({ data, isLoading }: HistoricalRevenueB
   const chartData = useMemo(() => {
     if (!data.data) return [];
 
-    return Object.entries(data.data)
+    const allData = Object.entries(data.data)
       .sort((a, b) => Number(a[0]) - Number(b[0])) // Sort by numeric index
       .map(([_, dateData]) => {
         const [[date, segments]] = Object.entries(dateData);
@@ -53,7 +55,9 @@ export default function RevenueBySegment({ data, isLoading }: HistoricalRevenueB
         };
       })
       .reverse(); // Most recent first
-  }, [data]);
+
+    return filterDataByTimeframe(allData, timeframe);
+  }, [data, timeframe]);
 
   // Get all unique segment names
   const segments = useMemo(() => {

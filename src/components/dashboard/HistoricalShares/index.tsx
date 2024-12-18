@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   ResponsiveContainer,
   BarChart,
@@ -12,6 +12,7 @@ import type { HistoricalSharesOutstanding } from '@/types/stock';
 import graphStyles from '../DashboardCard/GraphicalCard/styles.module.css';
 import { formatLargeNumber } from '@/utils/format';
 import { useChartContext } from '../DashboardCard/GraphicalCard/ChartContext';
+import { filterDataByTimeframe } from '@/utils/timeframeFilter';
 
 interface HistoricalSharesProps {
   data?: HistoricalSharesOutstanding;
@@ -19,18 +20,22 @@ interface HistoricalSharesProps {
 }
 
 export default function HistoricalShares({ data, isLoading }: HistoricalSharesProps) {
-  const { isExpanded } = useChartContext();
+  const { isExpanded, timeframe } = useChartContext();
 
   if (isLoading || !data) {
     return <div className={graphStyles.loading}>Loading shares outstanding history...</div>;
   }
 
-  const chartData = [...data.historical]
-    .map(value => ({
-      ...value,
-      outstandingShares: Number(value.outstandingShares)
-    }))
-    .reverse();
+  const chartData = useMemo(() => {
+    const allData = [...data.historical]
+      .map(value => ({
+        ...value,
+        outstandingShares: Number(value.outstandingShares)
+      }))
+      .reverse();
+
+    return filterDataByTimeframe(allData, timeframe);
+  }, [data, timeframe]);
 
   return (
     <div className={graphStyles.chartContainer}>

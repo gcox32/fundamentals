@@ -135,32 +135,30 @@ export default function Dashboard() {
             <TimeframeSelector
               selectedTimeframe={selectedTimeframe}
               setSelectedTimeframe={setSelectedTimeframe}
-              selectedSegment={selectedSegment}
-              setSelectedSegment={setSelectedSegment}
             />
             <div className={styles.cardGrid}>
-              <GraphicalCard title="Price History" isLoading={isLoading}>
+              <GraphicalCard title="Price History" isLoading={isLoading} timeframe={selectedTimeframe}>
                 <HistoricalPrice 
                   data={selectedCompany?.historicalPrice}
                   isLoading={isLoading}
                 />
               </GraphicalCard>
               
-              <GraphicalCard title="Revenue by Segment" isLoading={isLoading}>
+              <GraphicalCard title="Revenue by Segment" isLoading={isLoading} timeframe={selectedTimeframe}>
                 <RevenueBySegment 
                   data={selectedCompany?.revenueBySegment}
                   isLoading={isLoading}
                 />
               </GraphicalCard>
               
-              <GraphicalCard title="Dividend History" isLoading={isLoading} noData={!selectedCompany?.dividendHistory?.historical?.length as boolean}>
+              <GraphicalCard title="Dividend History" isLoading={isLoading} noData={!selectedCompany?.dividendHistory?.historical?.length as boolean} timeframe={selectedTimeframe}>
                 <DividendHistory 
                   data={selectedCompany?.dividendHistory}
                   isLoading={isLoading}
                 />
               </GraphicalCard>
               
-              <GraphicalCard title="Shares Outstanding" isLoading={isLoading}>
+              <GraphicalCard title="Shares Outstanding" isLoading={isLoading} timeframe={selectedTimeframe}>
                 <HistoricalShares 
                   data={selectedCompany?.historicalShares}
                   isLoading={isLoading}

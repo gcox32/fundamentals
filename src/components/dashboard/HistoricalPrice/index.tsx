@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   ResponsiveContainer,
   LineChart,
@@ -12,6 +12,7 @@ import { HistoricalPriceData } from '@/types/stock';
 import { formatPrice } from '@/utils/format';
 import graphStyles from '../DashboardCard/GraphicalCard/styles.module.css';
 import { useChartContext } from '../DashboardCard/GraphicalCard/ChartContext';
+import { filterDataByTimeframe } from '@/utils/timeframeFilter';
 
 interface HistoricalPriceProps {
   data?: HistoricalPriceData;
@@ -19,13 +20,16 @@ interface HistoricalPriceProps {
 }
 
 export default function HistoricalPrice({ data, isLoading }: HistoricalPriceProps) {
-  const { isExpanded } = useChartContext();
+  const { isExpanded, timeframe } = useChartContext();
 
   if (isLoading || !data?.historical) {
     return <div className={graphStyles.loading}>Loading price history...</div>;
   }
 
-  const chartData = [...data.historical].reverse();
+  const chartData = useMemo(() => {
+    const allData = [...data.historical].reverse();
+    return filterDataByTimeframe(allData, timeframe);
+  }, [data, timeframe]);
 
   return (
     <div className={graphStyles.chartContainer}>

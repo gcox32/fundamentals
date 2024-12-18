@@ -3,13 +3,11 @@
 import React from 'react';
 import styles from './styles.module.css';
 import { TimeframeSelectorProps } from './types';
-import { timeframes, segments } from './config';
+import { timeframes } from './config';
 
 export default function TimeframeSelector({
   selectedTimeframe,
-  setSelectedTimeframe,
-  selectedSegment,
-  setSelectedSegment
+  setSelectedTimeframe
 }: TimeframeSelectorProps) {
   return (
     <div className={styles.container}>
@@ -27,21 +25,6 @@ export default function TimeframeSelector({
         ))}
       </div>
 
-      <div className={styles.divider} />
-
-      <div className={styles.selectorGroup}>
-        {segments.map((segment) => (
-          <button
-            key={segment.value}
-            className={`${styles.selectorButton} ${
-              selectedSegment === segment.value ? styles.selected : ''
-            }`}
-            onClick={() => setSelectedSegment(segment.value)}
-          >
-            {segment.label}
-          </button>
-        ))}
-      </div>
     </div>
   );
 } 

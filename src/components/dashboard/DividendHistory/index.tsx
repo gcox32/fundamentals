@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   ResponsiveContainer,
   BarChart,
@@ -12,6 +12,8 @@ import type { HistoricalDividendData } from '@/types/stock';
 import graphStyles from '../DashboardCard/GraphicalCard/styles.module.css';
 import { formatPrice } from '@/utils/format';
 import { useChartContext } from '../DashboardCard/GraphicalCard/ChartContext';
+import { filterDataByTimeframe } from '@/utils/timeframeFilter';
+
 interface DividendHistoryProps {
   data?: HistoricalDividendData;
   isLoading: boolean;
@@ -19,7 +21,8 @@ interface DividendHistoryProps {
 }
 
 export default function DividendHistory({ data, isLoading }: DividendHistoryProps) {
-  const { isExpanded } = useChartContext();
+  const { isExpanded, timeframe } = useChartContext();
+  
   if (isLoading) {
     return <div className={graphStyles.loading}>Loading dividend history...</div>;
   }
@@ -32,7 +35,10 @@ export default function DividendHistory({ data, isLoading }: DividendHistoryProp
     );
   }
 
-  const chartData = [...data.historical].reverse();
+  const chartData = useMemo(() => {
+    const allData = [...data.historical].reverse();
+    return filterDataByTimeframe(allData, timeframe);
+  }, [data, timeframe]);
 
   return (
     <div className={graphStyles.chartContainer}>
