@@ -52,7 +52,7 @@
 }
 
 .modalContent {
-    height: calc(90vh - 100px);
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -133,3 +133,11 @@ body {
 .recharts-surface {
   overflow: visible;
 }
+
+.recharts-responsive-container {
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
