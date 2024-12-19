@@ -86,3 +86,11 @@ export const formatNewsDate = (dateString: string) => {
         year: 'numeric'
     });
 };
+
+export const getQuarterFromDate = (date: string | Date): string => {
+  const d = new Date(date);
+  const month = d.getMonth();
+  const quarter = Math.floor(month / 3) + 1;
+  const year = d.getFullYear();
+  return `Q${quarter} ${year}`;
+};

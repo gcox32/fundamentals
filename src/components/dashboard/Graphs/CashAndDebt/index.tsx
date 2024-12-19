@@ -29,7 +29,8 @@ export default function CashAndDebt({ data, isLoading }: CashAndDebtProps) {
     const allData = data.data.map(statement => ({
       date: statement.date,
       cash: statement.cashAndCashEquivalents,
-      debt: statement.longTermDebt
+      debt: statement.longTermDebt,
+      label: `${statement.period} ${statement.calendarYear}`
     })).reverse(); // Most recent first
 
     return filterDataByTimeframe(allData, timeframe);
@@ -49,8 +50,7 @@ export default function CashAndDebt({ data, isLoading }: CashAndDebtProps) {
             textAnchor={isExpanded ? "end" : "middle"}
             height={isExpanded ? 60 : 30}
             hide={!isExpanded}
-            dataKey="date" 
-            tickFormatter={(date) => new Date(date).toLocaleDateString()}
+            dataKey="label"
             interval="preserveStartEnd"
           />
           <YAxis 
@@ -59,7 +59,7 @@ export default function CashAndDebt({ data, isLoading }: CashAndDebtProps) {
           />
           <Tooltip
             formatter={(value: number, name: string) => [`$${formatLargeNumber(value)}`, name]}
-            labelFormatter={(label) => new Date(label).toLocaleDateString()}
+            labelFormatter={(label) => label}
           />
           {isExpanded && <Legend />}
           <Bar

@@ -29,7 +29,8 @@ export default function NetIncome({ data, isLoading }: NetIncomeProps) {
     const allData = data.data.map(statement => ({
       date: statement.date,
       netIncome: statement.netIncome,
-      netIncomeRatio: statement.netIncomeRatio
+      netIncomeRatio: statement.netIncomeRatio,
+      label: `${statement.period} ${statement.calendarYear}`
     })).reverse(); // Most recent first
 
     return filterDataByTimeframe(allData, timeframe);
@@ -49,8 +50,7 @@ export default function NetIncome({ data, isLoading }: NetIncomeProps) {
             textAnchor={isExpanded ? "end" : "middle"}
             height={isExpanded ? 60 : 30}
             hide={!isExpanded}
-            dataKey="date" 
-            tickFormatter={(date) => new Date(date).toLocaleDateString()}
+            dataKey="label"
             interval="preserveStartEnd"
           />
           <YAxis 
@@ -62,7 +62,7 @@ export default function NetIncome({ data, isLoading }: NetIncomeProps) {
               name === 'Net Income' ? `$${formatLargeNumber(value)}` : `${(value * 100).toFixed(2)}%`,
               name
             ]}
-            labelFormatter={(label) => new Date(label).toLocaleDateString()}
+            labelFormatter={(label) => label}
           />
           {isExpanded && <Legend />}
           <Bar
@@ -70,7 +70,6 @@ export default function NetIncome({ data, isLoading }: NetIncomeProps) {
             fill="#2196F3"
             name="Net Income"
           />
-
         </BarChart>
       </ResponsiveContainer>
     </div>

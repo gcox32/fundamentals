@@ -41,7 +41,8 @@ export default function ROCE({ incomeStatement, balanceSheetStatement, isLoading
         
         return {
           date: statement.date,
-          roce: capitalEmployed > 0 ? (ebit / capitalEmployed) * 100 : 0 // Convert to percentage
+          roce: capitalEmployed > 0 ? (ebit / capitalEmployed) * 100 : 0, // Convert to percentage
+          label: `${statement.period} ${statement.calendarYear}`
         };
       })
       .reverse(); // Most recent first
@@ -63,8 +64,7 @@ export default function ROCE({ incomeStatement, balanceSheetStatement, isLoading
             textAnchor={isExpanded ? "end" : "middle"}
             height={isExpanded ? 60 : 30}
             hide={!isExpanded}
-            dataKey="date" 
-            tickFormatter={(date) => new Date(date).toLocaleDateString()}
+            dataKey="label"
             interval="preserveStartEnd"
           />
           <YAxis 
@@ -73,7 +73,7 @@ export default function ROCE({ incomeStatement, balanceSheetStatement, isLoading
           />
           <Tooltip
             formatter={(value: number) => [formatPercent(value / 100), 'ROCE']}
-            labelFormatter={(label) => new Date(label).toLocaleDateString()}
+            labelFormatter={(label) => label}
           />
           <Bar
             dataKey="roce"

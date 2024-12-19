@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 import type { HistoricalDividendData } from '@/types/stock';
 import graphStyles from '@/components/dashboard/DashboardCard/GraphicalCard/styles.module.css';
-import { formatPrice } from '@/utils/format';
+import { formatPrice, getQuarterFromDate } from '@/utils/format';
 import { useChartContext } from '@/components/dashboard/DashboardCard/GraphicalCard/ChartContext';
 import { filterDataByTimeframe } from '@/utils/timeframeFilter';
 
@@ -25,7 +25,10 @@ export default function DividendHistory({ data, isLoading }: DividendHistoryProp
 
   const chartData = useMemo(() => {
     if (!data?.historical?.length) return [];
-    const allData = [...data.historical].reverse();
+    const allData = [...data.historical].map(item => ({
+      ...item,
+      label: getQuarterFromDate(item.date)
+    })).reverse();
     return filterDataByTimeframe(allData, timeframe);
   }, [data, timeframe]);
   
@@ -47,8 +50,7 @@ export default function DividendHistory({ data, isLoading }: DividendHistoryProp
         <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
-            dataKey="date" 
-            tickFormatter={(date) => new Date(date).toLocaleDateString()}
+            dataKey="label"
             interval="preserveStartEnd"
             angle={isExpanded ? -45 : 0}
             textAnchor={isExpanded ? "end" : "middle"}
@@ -61,7 +63,7 @@ export default function DividendHistory({ data, isLoading }: DividendHistoryProp
           />
           <Tooltip
             formatter={(value: number) => [`${formatPrice(value)}`, 'Dividend']}
-            labelFormatter={(label) => new Date(label).toLocaleDateString()}
+            labelFormatter={(label) => label}
           />
           <Bar
             dataKey="adjDividend"
@@ -72,4 +74,4 @@ export default function DividendHistory({ data, isLoading }: DividendHistoryProp
       </ResponsiveContainer>
     </div>
   );
-} 
+}

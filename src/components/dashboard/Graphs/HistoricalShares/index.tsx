@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 import type { HistoricalSharesOutstanding } from '@/types/stock';
 import graphStyles from '@/components/dashboard/DashboardCard/GraphicalCard/styles.module.css';
-import { formatLargeNumber } from '@/utils/format';
+import { formatLargeNumber, getQuarterFromDate } from '@/utils/format';
 import { useChartContext } from '@/components/dashboard/DashboardCard/GraphicalCard/ChartContext';
 import { filterDataByTimeframe } from '@/utils/timeframeFilter';
 
@@ -28,7 +28,8 @@ export default function HistoricalShares({ data, isLoading }: HistoricalSharesPr
     const allData = [...data.historical]
       .map(value => ({
         ...value,
-        outstandingShares: Number(value.outstandingShares)
+        outstandingShares: Number(value.outstandingShares),
+        label: getQuarterFromDate(value.date)
       }))
       .reverse();
 
@@ -45,8 +46,7 @@ export default function HistoricalShares({ data, isLoading }: HistoricalSharesPr
         <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
-            dataKey="date" 
-            tickFormatter={(date) => new Date(date).toLocaleDateString()}
+            dataKey="label"
             interval="preserveStartEnd"
             angle={isExpanded ? -45 : 0}
             textAnchor={isExpanded ? "end" : "middle"}
@@ -60,14 +60,15 @@ export default function HistoricalShares({ data, isLoading }: HistoricalSharesPr
           />
           <Tooltip
             formatter={(value: number) => [formatLargeNumber(value), 'Shares']}
-            labelFormatter={(label) => new Date(label).toLocaleDateString()}
+            labelFormatter={(label) => label}
           />
           <Bar
             dataKey="outstandingShares"
             fill="#8884d8"
+            name="Shares Outstanding"
           />
         </BarChart>
       </ResponsiveContainer>
     </div>
   );
-} 
+}

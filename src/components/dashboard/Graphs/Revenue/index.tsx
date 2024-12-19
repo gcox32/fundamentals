@@ -27,7 +27,8 @@ export default function Revenue({ data, isLoading }: RevenueProps) {
 
     const allData = data.data.map(statement => ({
       date: statement.date,
-      revenue: statement.revenue
+      revenue: statement.revenue,
+      label: `${statement.period} ${statement.calendarYear}`
     })).reverse(); // Most recent first
 
     return filterDataByTimeframe(allData, timeframe);
@@ -47,8 +48,7 @@ export default function Revenue({ data, isLoading }: RevenueProps) {
             textAnchor={isExpanded ? "end" : "middle"}
             height={isExpanded ? 60 : 30}
             hide={!isExpanded}
-            dataKey="date" 
-            tickFormatter={(date) => new Date(date).toLocaleDateString()}
+            dataKey="label"
             interval="preserveStartEnd"
           />
           <YAxis 
@@ -57,7 +57,7 @@ export default function Revenue({ data, isLoading }: RevenueProps) {
           />
           <Tooltip
             formatter={(value: number) => [`$${formatLargeNumber(value)}`, 'Revenue']}
-            labelFormatter={(label) => new Date(label).toLocaleDateString()}
+            labelFormatter={(label) => label}
           />
           <Bar
             dataKey="revenue"
