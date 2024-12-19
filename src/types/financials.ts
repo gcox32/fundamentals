@@ -47,6 +47,18 @@ export interface HistoricalIncomeStatement {
 }
 
 export interface BalanceSheetStatement {
+    date: string;
+    symbol: string;
+    reportedCurrency: string;
+    cik: string;
+    fillingDate: string;
+    acceptedDate: string;
+    calendarYear: string;
+    period: string;
+    cashAndCashEquivalents: number;
+    shortTermInvestments: number;
+    cashAndShortTermInvestments: number;
+    netReceivables: number; 
     inventory: number;
     otherCurrentAssets: number;
     totalCurrentAssets: number;

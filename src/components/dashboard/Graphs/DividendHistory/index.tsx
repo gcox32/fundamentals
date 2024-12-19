@@ -9,9 +9,9 @@ import {
   CartesianGrid
 } from 'recharts';
 import type { HistoricalDividendData } from '@/types/stock';
-import graphStyles from '../DashboardCard/GraphicalCard/styles.module.css';
+import graphStyles from '@/components/dashboard/DashboardCard/GraphicalCard/styles.module.css';
 import { formatPrice } from '@/utils/format';
-import { useChartContext } from '../DashboardCard/GraphicalCard/ChartContext';
+import { useChartContext } from '@/components/dashboard/DashboardCard/GraphicalCard/ChartContext';
 import { filterDataByTimeframe } from '@/utils/timeframeFilter';
 
 interface DividendHistoryProps {
