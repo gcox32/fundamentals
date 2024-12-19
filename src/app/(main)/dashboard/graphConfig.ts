@@ -7,7 +7,8 @@ import {
     FreeCashFlow,
     NetIncome,
     CashAndDebt,
-    Expenses
+    Expenses,
+    Margins
   } from "@/components/dashboard/Graphs";
 
 export const graphCards = [
@@ -51,6 +52,11 @@ export const graphCards = [
     title: "Free Cash Flow",
     Component: FreeCashFlow,
     dataKey: "cashFlowStatement"
+  },
+  {
+    title: "Margins",
+    Component: Margins,
+    dataKey: "incomeStatement"
   },
   {
     title: "Cash and Debt",
