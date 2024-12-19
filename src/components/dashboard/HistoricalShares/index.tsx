@@ -22,11 +22,9 @@ interface HistoricalSharesProps {
 export default function HistoricalShares({ data, isLoading }: HistoricalSharesProps) {
   const { isExpanded, timeframe } = useChartContext();
 
-  if (isLoading || !data) {
-    return <div className={graphStyles.loading}>Loading shares outstanding history...</div>;
-  }
-
   const chartData = useMemo(() => {
+    if (!data?.historical) return [];
+
     const allData = [...data.historical]
       .map(value => ({
         ...value,
@@ -36,6 +34,10 @@ export default function HistoricalShares({ data, isLoading }: HistoricalSharesPr
 
     return filterDataByTimeframe(allData, timeframe);
   }, [data, timeframe]);
+
+  if (isLoading || !data) {
+    return <div className={graphStyles.loading}>Loading shares outstanding history...</div>;
+  }
 
   return (
     <div className={graphStyles.chartContainer}>

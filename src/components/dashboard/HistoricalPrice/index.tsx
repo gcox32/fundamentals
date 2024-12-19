@@ -22,14 +22,15 @@ interface HistoricalPriceProps {
 export default function HistoricalPrice({ data, isLoading }: HistoricalPriceProps) {
   const { isExpanded, timeframe } = useChartContext();
 
-  if (isLoading || !data?.historical) {
-    return <div className={graphStyles.loading}>Loading price history...</div>;
-  }
-
   const chartData = useMemo(() => {
+    if (!data?.historical) return [];
     const allData = [...data.historical].reverse();
     return filterDataByTimeframe(allData, timeframe);
   }, [data, timeframe]);
+
+  if (isLoading || !data?.historical) {
+    return <div className={graphStyles.loading}>Loading price history...</div>;
+  }
 
   return (
     <div className={graphStyles.chartContainer}>

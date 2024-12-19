@@ -16,8 +16,9 @@ import type { StockQuote, HistoricalPriceData, HistoricalSharesOutstanding, Hist
 import type { CompanyOutlook, HistoricalRevenueBySegment } from '@/types/company';
 import HistoricalPrice from "@/components/dashboard/HistoricalPrice";
 import HistoricalShares from "@/components/dashboard/HistoricalShares";
-import RevenueBySegment from "@/components/dashboard/RevenueBySegment";
+import Revenue from "@/src/components/dashboard/Revenue";
 import DividendHistory from "@/components/dashboard/DividendHistory";
+import type { HistoricalIncomeStatement, HistoricalCashFlowStatement, HistoricalBalanceSheetStatement } from '@/types/financials';
 
 interface SelectedCompany {
   symbol: string;
@@ -28,15 +29,16 @@ interface SelectedCompany {
   outlook?: CompanyOutlook;
   historicalPrice?: HistoricalPriceData;
   historicalShares?: HistoricalSharesOutstanding;
-  revenueBySegment?: HistoricalRevenueBySegment;
   dividendHistory?: HistoricalDividendData;
+  incomeStatement?: HistoricalIncomeStatement;
+  cashFlowStatement?: HistoricalCashFlowStatement;
+  balanceSheetStatement?: HistoricalBalanceSheetStatement;
 }
 
 export default function Dashboard() {
   const [selectedCompany, setSelectedCompany] = useState<SelectedCompany | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTimeframe, setSelectedTimeframe] = useState('5Y');
-  const [selectedSegment, setSelectedSegment] = useState('daily');
 
   const handleCompanySelect = async (company: { symbol: string; name: string; exchange: string }) => {
     console.log('Company selected:', company);
@@ -79,19 +81,33 @@ export default function Dashboard() {
         console.error('Failed to fetch historical shares data:', error);
       });
 
-      // Revenue by Segment
-      fetchDashboardData('company/revenue-by-segment', company.symbol, (data) => {
-        setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, revenueBySegment: data } : null);
-      }, (error) => {
-        console.error('Failed to fetch revenue segments:', error);
-      });
-
       // Dividend History
       fetchDashboardData('stock/historical/dividends', company.symbol, (data) => {
         setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, dividendHistory: data } : null);
       }, (error) => {
         // console.error('No dividend history found:', error);
         setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, dividendHistory: { symbol: prev.symbol, historical: [], lastUpdated: Date.now() } } : null);
+      });
+
+      // Income Statement
+      fetchDashboardData('company/income', company.symbol, (data) => {
+        setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, incomeStatement: data } : null);
+      }, (error) => {
+        console.error('Failed to fetch income statement:', error);
+      });
+
+      // Cash Flow Statement
+      fetchDashboardData('company/cash-flow', company.symbol, (data) => {
+        setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, cashFlowStatement: data } : null);
+      }, (error) => {
+        console.error('Failed to fetch cash flow statement:', error);
+      });
+
+      // Balance Sheet Statement
+      fetchDashboardData('company/balance-sheet', company.symbol, (data) => {
+        setSelectedCompany((prev: SelectedCompany | null) => prev ? { ...prev, balanceSheetStatement: data } : null);
+      }, (error) => {
+        console.error('Failed to fetch balance sheet statement:', error);
       });
 
     } catch (error) {
@@ -144,9 +160,9 @@ export default function Dashboard() {
                 />
               </GraphicalCard>
               
-              <GraphicalCard title="Revenue by Segment" isLoading={isLoading} timeframe={selectedTimeframe}>
-                <RevenueBySegment 
-                  data={selectedCompany?.revenueBySegment}
+              <GraphicalCard title="Revenue" isLoading={isLoading} timeframe={selectedTimeframe}>
+                <Revenue 
+                  data={selectedCompany?.incomeStatement}
                   isLoading={isLoading}
                 />
               </GraphicalCard>
