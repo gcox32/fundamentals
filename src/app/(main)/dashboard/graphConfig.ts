@@ -6,7 +6,8 @@ import {
     ROCE,
     FreeCashFlow,
     NetIncome,
-    CashAndDebt
+    CashAndDebt,
+    Expenses
   } from "@/components/dashboard/Graphs";
 
 export const graphCards = [
@@ -23,6 +24,11 @@ export const graphCards = [
   {
     title: "Net Income",
     Component: NetIncome,
+    dataKey: "incomeStatement"
+  },
+  {
+    title: "Expenses",
+    Component: Expenses,
     dataKey: "incomeStatement"
   },
   {

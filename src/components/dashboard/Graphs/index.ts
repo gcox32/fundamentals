@@ -6,3 +6,4 @@ export { default as ROCE } from './ROCE';
 export { default as FreeCashFlow } from './FreeCashFlow'; 
 export { default as CashAndDebt } from './CashAndDebt';
 export { default as NetIncome } from './NetIncome';
+export { default as Expenses } from './Expenses';
