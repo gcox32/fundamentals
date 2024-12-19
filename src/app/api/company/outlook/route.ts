@@ -10,11 +10,13 @@ interface CompanyOutlookCache {
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
-    const symbol = searchParams.get('symbol')?.toUpperCase();
+    let symbol = searchParams.get('symbol')?.toUpperCase();
 
     if (!symbol) {
         return Response.json({ error: 'Symbol is required' }, { status: 400 });
     }
+
+    symbol = symbol.replace('.', '-');
 
     try {
         const response = await fetchFMPData<CompanyOutlookCache>({

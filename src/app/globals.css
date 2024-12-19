@@ -141,3 +141,7 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.recharts-legend-wrapper {
+  transform: translateY(20px);
+}

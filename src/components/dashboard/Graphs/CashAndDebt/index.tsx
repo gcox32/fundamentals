@@ -9,18 +9,18 @@ import {
   CartesianGrid,
   Legend
 } from 'recharts';
-import type { HistoricalCashFlowStatement } from '@/types/financials';
+import type { HistoricalBalanceSheetStatement } from '@/types/financials';
 import graphStyles from '@/components/dashboard/DashboardCard/GraphicalCard/styles.module.css';
 import { formatLargeNumber } from '@/utils/format';
 import { useChartContext } from '@/components/dashboard/DashboardCard/GraphicalCard/ChartContext';
 import { filterDataByTimeframe } from '@/utils/timeframeFilter';
 
-interface FreeCashFlowProps {
-  data?: HistoricalCashFlowStatement;
+interface CashAndDebtProps {
+  data?: HistoricalBalanceSheetStatement;
   isLoading: boolean;
 }
 
-export default function FreeCashFlow({ data, isLoading }: FreeCashFlowProps) {
+export default function CashAndDebt({ data, isLoading }: CashAndDebtProps) {
   const { isExpanded, timeframe } = useChartContext();
 
   const chartData = useMemo(() => {
@@ -28,15 +28,15 @@ export default function FreeCashFlow({ data, isLoading }: FreeCashFlowProps) {
 
     const allData = data.data.map(statement => ({
       date: statement.date,
-      freeCashFlow: statement.freeCashFlow,
-      stockCompensation: statement.stockBasedCompensation
+      cash: statement.cashAndCashEquivalents,
+      debt: statement.longTermDebt
     })).reverse(); // Most recent first
 
     return filterDataByTimeframe(allData, timeframe);
   }, [data, timeframe]);
 
   if (isLoading || !data) {
-    return <div className={graphStyles.loading}>Loading free cash flow...</div>;
+    return <div className={graphStyles.loading}>Loading cash and debt...</div>;
   }
 
   return (
@@ -63,14 +63,14 @@ export default function FreeCashFlow({ data, isLoading }: FreeCashFlowProps) {
           />
           {isExpanded && <Legend />}
           <Bar
-            dataKey="freeCashFlow"
+            dataKey="cash"
             fill="#4CAF50"
-            name="Free Cash Flow"
+            name="Cash"
           />
           <Bar
-            dataKey="stockCompensation"
-            fill="#FF9800"
-            name="Stock Compensation"
+            dataKey="debt"
+            fill="#f44336"
+            name="Debt"
           />
         </BarChart>
       </ResponsiveContainer>

@@ -4,7 +4,9 @@ import {
     Revenue,
     DividendHistory,
     ROCE,
-    FreeCashFlow
+    FreeCashFlow,
+    NetIncome,
+    CashAndDebt
   } from "@/components/dashboard/Graphs";
 
 export const graphCards = [
@@ -16,6 +18,11 @@ export const graphCards = [
   {
     title: "Revenue",
     Component: Revenue,
+    dataKey: "incomeStatement"
+  },
+  {
+    title: "Net Income",
+    Component: NetIncome,
     dataKey: "incomeStatement"
   },
   {
@@ -38,5 +45,10 @@ export const graphCards = [
     title: "Free Cash Flow",
     Component: FreeCashFlow,
     dataKey: "cashFlowStatement"
+  },
+  {
+    title: "Cash and Debt",
+    Component: CashAndDebt,
+    dataKey: "balanceSheetStatement"
   }
 ]; 

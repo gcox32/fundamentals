@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { FaSearch, FaTimesCircle } from 'react-icons/fa';
-import { exchanges } from './config';
+import { assetTypes } from './config';
 import styles from './styles.module.css';
 import Image from 'next/image';
 import { StockResult } from './types';
 
-export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { symbol: string; name: string, exchange: string }) => void }) {
+export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { symbol: string; name: string, assetType: string }) => void }) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedExchange, setSelectedExchange] = useState('NYSE');
+  const [selectedAssetType, setSelectedAssetType] = useState('STOCK');
   const [isFocused, setIsFocused] = useState(false);
   const [results, setResults] = useState<StockResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -26,7 +26,7 @@ export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { sym
 
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/stocks/search?q=${encodeURIComponent(searchQuery)}&exchange=${encodeURIComponent(selectedExchange)}`);
+        const response = await fetch(`/api/stocks/search?q=${encodeURIComponent(searchQuery)}&type=${encodeURIComponent(selectedAssetType)}`);
         if (!response.ok) throw new Error('Search failed');
         const data = await response.json();
         setResults(data);
@@ -40,7 +40,7 @@ export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { sym
 
     const debounceTimer = setTimeout(fetchResults, 300);
     return () => clearTimeout(debounceTimer);
-  }, [searchQuery]);
+  }, [searchQuery, selectedAssetType]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowDown') {
@@ -69,7 +69,7 @@ export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { sym
     onSubmit({
       symbol: selectedResult.symbol,
       name: selectedResult.name,
-      exchange: selectedExchange
+      assetType: selectedAssetType
     });
     setSearchQuery('');
     setResults([]);
@@ -150,13 +150,13 @@ export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { sym
         <div className={styles.divider} />
 
         <select
-          value={selectedExchange}
-          onChange={(e) => setSelectedExchange(e.target.value)}
+          value={selectedAssetType}
+          onChange={(e) => setSelectedAssetType(e.target.value)}
           className={styles.exchangeSelect}
         >
-          {exchanges.map((exchange) => (
-            <option key={exchange.code} value={exchange.code}>
-              {exchange.code}
+          {assetTypes.map((type) => (
+            <option key={type.code} value={type.code}>
+              {type.name}
             </option>
           ))}
         </select>
@@ -164,7 +164,7 @@ export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { sym
         <button
           type="submit"
           className={styles.searchButton}
-          disabled={selectedExchange !== 'NYSE'}
+          disabled={!searchQuery.trim() || !selectedResult || selectedAssetType !== 'STOCK'}
         >
           <span className={styles.searchButtonText}>Search</span>
           <FaSearch className={styles.searchButtonIcon} />

@@ -4,3 +4,5 @@ export { default as Revenue } from './Revenue';
 export { default as DividendHistory } from './DividendHistory';
 export { default as ROCE } from './ROCE';
 export { default as FreeCashFlow } from './FreeCashFlow'; 
+export { default as CashAndDebt } from './CashAndDebt';
+export { default as NetIncome } from './NetIncome';

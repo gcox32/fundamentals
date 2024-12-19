@@ -9,18 +9,18 @@ import {
   CartesianGrid,
   Legend
 } from 'recharts';
-import type { HistoricalCashFlowStatement } from '@/types/financials';
+import type { HistoricalIncomeStatement } from '@/types/financials';
 import graphStyles from '@/components/dashboard/DashboardCard/GraphicalCard/styles.module.css';
 import { formatLargeNumber } from '@/utils/format';
 import { useChartContext } from '@/components/dashboard/DashboardCard/GraphicalCard/ChartContext';
 import { filterDataByTimeframe } from '@/utils/timeframeFilter';
 
-interface FreeCashFlowProps {
-  data?: HistoricalCashFlowStatement;
+interface NetIncomeProps {
+  data?: HistoricalIncomeStatement;
   isLoading: boolean;
 }
 
-export default function FreeCashFlow({ data, isLoading }: FreeCashFlowProps) {
+export default function NetIncome({ data, isLoading }: NetIncomeProps) {
   const { isExpanded, timeframe } = useChartContext();
 
   const chartData = useMemo(() => {
@@ -28,15 +28,15 @@ export default function FreeCashFlow({ data, isLoading }: FreeCashFlowProps) {
 
     const allData = data.data.map(statement => ({
       date: statement.date,
-      freeCashFlow: statement.freeCashFlow,
-      stockCompensation: statement.stockBasedCompensation
+      netIncome: statement.netIncome,
+      netIncomeRatio: statement.netIncomeRatio
     })).reverse(); // Most recent first
 
     return filterDataByTimeframe(allData, timeframe);
   }, [data, timeframe]);
 
   if (isLoading || !data) {
-    return <div className={graphStyles.loading}>Loading free cash flow...</div>;
+    return <div className={graphStyles.loading}>Loading net income data...</div>;
   }
 
   return (
@@ -58,20 +58,19 @@ export default function FreeCashFlow({ data, isLoading }: FreeCashFlowProps) {
             tickFormatter={(value) => formatLargeNumber(value)}
           />
           <Tooltip
-            formatter={(value: number, name: string) => [`$${formatLargeNumber(value)}`, name]}
+            formatter={(value: number, name: string) => [
+              name === 'Net Income' ? `$${formatLargeNumber(value)}` : `${(value * 100).toFixed(2)}%`,
+              name
+            ]}
             labelFormatter={(label) => new Date(label).toLocaleDateString()}
           />
           {isExpanded && <Legend />}
           <Bar
-            dataKey="freeCashFlow"
-            fill="#4CAF50"
-            name="Free Cash Flow"
+            dataKey="netIncome"
+            fill="#2196F3"
+            name="Net Income"
           />
-          <Bar
-            dataKey="stockCompensation"
-            fill="#FF9800"
-            name="Stock Compensation"
-          />
+
         </BarChart>
       </ResponsiveContainer>
     </div>

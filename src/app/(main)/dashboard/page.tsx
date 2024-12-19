@@ -20,14 +20,15 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTimeframe, setSelectedTimeframe] = useState('5Y');
 
-  const handleCompanySelect = async (company: { symbol: string; name: string; exchange: string }) => {
+  const handleCompanySelect = async (company: { symbol: string; name: string; assetType: string }) => {
     setIsLoading(true);
     
     // Initialize with basic company info and null values for all data fields
     const initialCompany: SelectedCompany = {
       symbol: company.symbol,
       name: company.name,
-      exchange: company.exchange,
+      assetType: company.assetType,
+      exchange: undefined,
       quote: undefined,
       events: undefined,
       outlook: undefined,

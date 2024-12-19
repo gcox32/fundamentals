@@ -21,14 +21,14 @@ export default function CompanyHeader({
     marketStatus: 'regular'
   } : undefined;
 
-  const displayExchange = quote?.exchange || exchange;
+  const displayExchange = quote?.exchange || '';
 
   return (
     <OverviewCard title="" isLoading={isLoading} className={styles.headerCard}>
       <div className={styles.companyHeaderContainer}>
         <div className={styles.logoContainer}>
           <Image
-            src={isLoading ? '/images/placeholder.png' : `https://assets.letmedemo.com/public/fundamental/icons/companies/${symbol}.png`}
+            src={isLoading ? '/images/placeholder.png' : `https://assets.letmedemo.com/public/fundamental/icons/companies/${symbol.replace('.', '')}.png`}
             alt={`${name} logo`}
             width={68}
             height={68}
@@ -44,7 +44,7 @@ export default function CompanyHeader({
             {isLoading ? 'Loading' : name}
           </h2>
           <span className={`${styles.companySymbol} ${isLoading ? loadingStyles.pulse : ''}`}>
-            {isLoading ? 'Loading' : symbol} | {isLoading ? 'Loading' : displayExchange}
+            {isLoading ? 'Loading' : symbol} {isLoading ? '| Loading' : `| ${displayExchange}`}
           </span>
         </div>
       </div>

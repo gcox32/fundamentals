@@ -27,7 +27,8 @@ export interface CompanyType {
 export interface SelectedCompany {
     symbol: string;
     name: string;
-    exchange: string;
+    assetType: string;
+    exchange: string | undefined;
     quote?: StockQuote;
     events?: any;
     outlook?: CompanyOutlook;
