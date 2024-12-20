@@ -20,7 +20,7 @@ interface RevenueProps {
 }
 
 export default function Revenue({ data, isLoading }: RevenueProps) {
-  const { isExpanded, timeframe } = useChartContext();
+  const { isExpanded, timeframe, isTTM } = useChartContext();
 
   const chartData = useMemo(() => {
     if (!data?.data) return [];
@@ -31,8 +31,24 @@ export default function Revenue({ data, isLoading }: RevenueProps) {
       label: `${statement.period} ${statement.calendarYear}`
     })).reverse(); // Most recent first
 
-    return filterDataByTimeframe(allData, timeframe);
-  }, [data, timeframe]);
+    console.log('Timeframe:', timeframe);
+    console.log('TTM mode:', isTTM); // For debugging
+
+    const processedData = isTTM
+      ? allData.map((item, index, array) => {
+          if (index < 3) return item;
+          const ttmRevenue = array
+            .slice(index - 3, index + 1)
+            .reduce((sum, curr) => sum + (curr.revenue || 0), 0);
+          return {
+            ...item,
+            revenue: ttmRevenue
+          };
+        })
+      : allData;
+
+    return filterDataByTimeframe(processedData, timeframe);
+  }, [data, timeframe, isTTM]);
 
   if (isLoading || !data) {
     return <div className={graphStyles.loading}>Loading revenue...</div>;

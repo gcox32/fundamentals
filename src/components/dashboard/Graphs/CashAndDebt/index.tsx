@@ -21,7 +21,7 @@ interface CashAndDebtProps {
 }
 
 export default function CashAndDebt({ data, isLoading }: CashAndDebtProps) {
-  const { isExpanded, timeframe } = useChartContext();
+  const { isExpanded, timeframe, isTTM } = useChartContext();
 
   const chartData = useMemo(() => {
     if (!data?.data) return [];
@@ -33,8 +33,14 @@ export default function CashAndDebt({ data, isLoading }: CashAndDebtProps) {
       label: `${statement.period} ${statement.calendarYear}`
     })).reverse(); // Most recent first
 
-    return filterDataByTimeframe(allData, timeframe);
-  }, [data, timeframe]);
+    // Note: For balance sheet items like Cash and Debt, we use the latest quarter's values
+    // instead of summing them, as these are point-in-time values, not flow values
+    const processedData = isTTM
+      ? allData.map((item) => item) // Just pass through the data as is
+      : allData;
+
+    return filterDataByTimeframe(processedData, timeframe);
+  }, [data, timeframe, isTTM]);
 
   if (isLoading || !data) {
     return <div className={graphStyles.loading}>Loading cash and debt...</div>;

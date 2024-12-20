@@ -21,7 +21,7 @@ interface NetIncomeProps {
 }
 
 export default function NetIncome({ data, isLoading }: NetIncomeProps) {
-  const { isExpanded, timeframe } = useChartContext();
+  const { isExpanded, timeframe, isTTM } = useChartContext();
 
   const chartData = useMemo(() => {
     if (!data?.data) return [];
@@ -29,12 +29,24 @@ export default function NetIncome({ data, isLoading }: NetIncomeProps) {
     const allData = data.data.map(statement => ({
       date: statement.date,
       netIncome: statement.netIncome,
-      netIncomeRatio: statement.netIncomeRatio,
       label: `${statement.period} ${statement.calendarYear}`
     })).reverse(); // Most recent first
 
-    return filterDataByTimeframe(allData, timeframe);
-  }, [data, timeframe]);
+    const processedData = isTTM
+      ? allData.map((item, index, array) => {
+          if (index < 3) return item;
+          const ttmNetIncome = array
+            .slice(index - 3, index + 1)
+            .reduce((sum, curr) => sum + (curr.netIncome || 0), 0);
+          return {
+            ...item,
+            netIncome: ttmNetIncome
+          };
+        })
+      : allData;
+
+    return filterDataByTimeframe(processedData, timeframe);
+  }, [data, timeframe, isTTM]);
 
   if (isLoading || !data) {
     return <div className={graphStyles.loading}>Loading net income data...</div>;

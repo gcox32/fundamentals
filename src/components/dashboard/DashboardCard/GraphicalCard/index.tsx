@@ -12,6 +12,7 @@ interface GraphicalCardProps {
     onClick?: () => void;
     noData?: boolean;
     timeframe: string;
+    isTTM: boolean;
 }
 
 export default function GraphicalCard({ 
@@ -20,7 +21,8 @@ export default function GraphicalCard({
     children, 
     onClick, 
     noData,
-    timeframe 
+    timeframe,
+    isTTM
 }: GraphicalCardProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -31,12 +33,14 @@ export default function GraphicalCard({
 
     const contextValue = {
         isExpanded: false,
-        timeframe
+        timeframe,
+        isTTM
     };
 
     const modalContextValue = {
         isExpanded: true,
-        timeframe
+        timeframe,
+        isTTM
     };
 
     return (

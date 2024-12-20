@@ -21,7 +21,7 @@ interface MarginsProps {
 }
 
 export default function Margins({ data, isLoading }: MarginsProps) {
-  const { isExpanded, timeframe } = useChartContext();
+  const { isExpanded, timeframe, isTTM } = useChartContext();
 
   const chartData = useMemo(() => {
     if (!data?.data) return [];
@@ -32,22 +32,44 @@ export default function Margins({ data, isLoading }: MarginsProps) {
       const operatingIncome = statement.operatingIncome || 0;
       const netIncome = statement.netIncome || 0;
 
-      // Calculate margins as percentages
-      const grossMargin = revenue ? (grossProfit / revenue) * 100 : 0;
-      const operatingMargin = revenue ? (operatingIncome / revenue) * 100 : 0;
-      const netMargin = revenue ? (netIncome / revenue) * 100 : 0;
-
       return {
         date: statement.date,
-        grossMargin,
-        operatingMargin,
-        netMargin,
+        revenue,
+        grossProfit,
+        operatingIncome,
+        netIncome,
+        grossMargin: revenue ? (grossProfit / revenue) * 100 : 0,
+        operatingMargin: revenue ? (operatingIncome / revenue) * 100 : 0,
+        netMargin: revenue ? (netIncome / revenue) * 100 : 0,
         label: `${statement.period} ${statement.calendarYear}`
       };
     }).reverse(); // Most recent first
 
-    return filterDataByTimeframe(allData, timeframe);
-  }, [data, timeframe]);
+    const processedData = isTTM
+      ? allData.map((item, index, array) => {
+          if (index < 3) return item;
+          const ttmData = array.slice(index - 3, index + 1).reduce((acc, curr) => ({
+            revenue: (acc.revenue || 0) + (curr.revenue || 0),
+            grossProfit: (acc.grossProfit || 0) + (curr.grossProfit || 0),
+            operatingIncome: (acc.operatingIncome || 0) + (curr.operatingIncome || 0),
+            netIncome: (acc.netIncome || 0) + (curr.netIncome || 0),
+          }), { revenue: 0, grossProfit: 0, operatingIncome: 0, netIncome: 0 });
+          
+          return {
+            ...item,
+            revenue: ttmData.revenue,
+            grossProfit: ttmData.grossProfit,
+            operatingIncome: ttmData.operatingIncome,
+            netIncome: ttmData.netIncome,
+            grossMargin: ttmData.revenue ? (ttmData.grossProfit / ttmData.revenue) * 100 : 0,
+            operatingMargin: ttmData.revenue ? (ttmData.operatingIncome / ttmData.revenue) * 100 : 0,
+            netMargin: ttmData.revenue ? (ttmData.netIncome / ttmData.revenue) * 100 : 0
+          };
+        })
+      : allData;
+
+    return filterDataByTimeframe(processedData, timeframe);
+  }, [data, timeframe, isTTM]);
 
   if (isLoading || !data) {
     return <div className={graphStyles.loading}>Loading margins data...</div>;

@@ -21,20 +21,38 @@ interface FreeCashFlowProps {
 }
 
 export default function FreeCashFlow({ data, isLoading }: FreeCashFlowProps) {
-  const { isExpanded, timeframe } = useChartContext();
+  const { isExpanded, timeframe, isTTM } = useChartContext();
 
   const chartData = useMemo(() => {
     if (!data?.data) return [];
 
     const allData = data.data.map(statement => ({
       date: statement.date,
-      freeCashFlow: statement.freeCashFlow,
-      stockCompensation: statement.stockBasedCompensation,
+      operatingCashFlow: statement.operatingCashFlow,
+      capitalExpenditure: statement.capitalExpenditure,
+      freeCashFlow: statement.operatingCashFlow - Math.abs(statement.capitalExpenditure),
       label: `${statement.period} ${statement.calendarYear}`
     })).reverse(); // Most recent first
 
-    return filterDataByTimeframe(allData, timeframe);
-  }, [data, timeframe]);
+    const processedData = isTTM
+      ? allData.map((item, index, array) => {
+          if (index < 3) return item;
+          const ttmData = array.slice(index - 3, index + 1).reduce((acc, curr) => ({
+            operatingCashFlow: (acc.operatingCashFlow || 0) + (curr.operatingCashFlow || 0),
+            capitalExpenditure: (acc.capitalExpenditure || 0) + (curr.capitalExpenditure || 0),
+          }), { operatingCashFlow: 0, capitalExpenditure: 0 });
+          
+          return {
+            ...item,
+            operatingCashFlow: ttmData.operatingCashFlow,
+            capitalExpenditure: ttmData.capitalExpenditure,
+            freeCashFlow: ttmData.operatingCashFlow - Math.abs(ttmData.capitalExpenditure)
+          };
+        })
+      : allData;
+
+    return filterDataByTimeframe(processedData, timeframe);
+  }, [data, timeframe, isTTM]);
 
   if (isLoading || !data) {
     return <div className={graphStyles.loading}>Loading free cash flow...</div>;

@@ -21,7 +21,7 @@ interface DividendHistoryProps {
 }
 
 export default function DividendHistory({ data, isLoading }: DividendHistoryProps) {
-  const { isExpanded, timeframe } = useChartContext();
+  const { isExpanded, timeframe, isTTM } = useChartContext();
 
   const chartData = useMemo(() => {
     if (!data?.historical?.length) return [];
@@ -29,8 +29,22 @@ export default function DividendHistory({ data, isLoading }: DividendHistoryProp
       ...item,
       label: getQuarterFromDate(item.date)
     })).reverse();
-    return filterDataByTimeframe(allData, timeframe);
-  }, [data, timeframe]);
+
+    const processedData = isTTM
+      ? allData.map((item, index, array) => {
+          if (index < 3) return item;
+          const ttmDividend = array
+            .slice(index - 3, index + 1)
+            .reduce((sum, curr) => sum + (curr.adjDividend || 0), 0);
+          return {
+            ...item,
+            adjDividend: ttmDividend
+          };
+        })
+      : allData;
+
+    return filterDataByTimeframe(processedData, timeframe);
+  }, [data, timeframe, isTTM]);
   
   if (isLoading) {
     return <div className={graphStyles.loading}>Loading dividend history...</div>;

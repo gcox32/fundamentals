@@ -21,7 +21,7 @@ interface ROCEProps {
 }
 
 export default function ROCE({ incomeStatement, balanceSheetStatement, isLoading }: ROCEProps) {
-  const { isExpanded, timeframe } = useChartContext();
+  const { isExpanded, timeframe, isTTM } = useChartContext();
 
   const chartData = useMemo(() => {
     if (!incomeStatement?.data || !balanceSheetStatement?.data) return [];
@@ -41,14 +41,33 @@ export default function ROCE({ incomeStatement, balanceSheetStatement, isLoading
         
         return {
           date: statement.date,
+          ebit,
+          capitalEmployed,
           roce: capitalEmployed > 0 ? (ebit / capitalEmployed) * 100 : 0, // Convert to percentage
           label: `${statement.period} ${statement.calendarYear}`
         };
       })
       .reverse(); // Most recent first
 
-    return filterDataByTimeframe(allData, timeframe);
-  }, [incomeStatement, balanceSheetStatement, timeframe]);
+    const processedData = isTTM
+      ? allData.map((item, index, array) => {
+          if (index < 3) return item;
+          const ttmEBIT = array
+            .slice(index - 3, index + 1)
+            .reduce((sum, curr) => sum + (curr.ebit || 0), 0);
+          // Use latest quarter's capital employed for TTM ROCE
+          const latestCapitalEmployed = item.capitalEmployed;
+          
+          return {
+            ...item,
+            ebit: ttmEBIT,
+            roce: latestCapitalEmployed > 0 ? (ttmEBIT / latestCapitalEmployed) * 100 : 0
+          };
+        })
+      : allData;
+
+    return filterDataByTimeframe(processedData, timeframe);
+  }, [incomeStatement, balanceSheetStatement, timeframe, isTTM]);
 
   if (isLoading || !incomeStatement || !balanceSheetStatement) {
     return <div className={graphStyles.loading}>Loading ROCE...</div>;

@@ -19,6 +19,7 @@ export default function Dashboard() {
   const [selectedCompany, setSelectedCompany] = useState<SelectedCompany | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTimeframe, setSelectedTimeframe] = useState('5Y');
+  const [isTTM, setIsTTM] = useState(false);
 
   const handleCompanySelect = async (company: { symbol: string; name: string; assetType: string }) => {
     setIsLoading(true);
@@ -157,6 +158,8 @@ export default function Dashboard() {
             <TimeframeSelector
               selectedTimeframe={selectedTimeframe}
               setSelectedTimeframe={setSelectedTimeframe}
+              isTTM={isTTM}
+              setIsTTM={setIsTTM}
             />
             <div className={styles.cardGrid}>
               {graphCards.map(({ title, Component, dataKey, noDataCheck }) => (
@@ -165,6 +168,7 @@ export default function Dashboard() {
                   title={title} 
                   isLoading={isLoading}
                   timeframe={selectedTimeframe}
+                  isTTM={isTTM}
                   noData={noDataCheck ? noDataCheck(selectedCompany?.[dataKey as keyof SelectedCompany]) : undefined}
                 >
                   <Component 

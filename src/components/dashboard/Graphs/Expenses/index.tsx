@@ -11,7 +11,7 @@ import {
 } from 'recharts';
 import type { HistoricalIncomeStatement } from '@/types/financials';
 import graphStyles from '@/components/dashboard/DashboardCard/GraphicalCard/styles.module.css';
-import styles from './styles.module.css';
+import styles from '@/components/common/Toggle/styles.module.css';
 import { formatLargeNumber } from '@/utils/format';
 import { useChartContext } from '@/components/dashboard/DashboardCard/GraphicalCard/ChartContext';
 import { filterDataByTimeframe } from '@/utils/timeframeFilter';
@@ -22,46 +22,78 @@ interface ExpensesProps {
   isLoading: boolean;
 }
 
+// Define expense categories with their display names and colors
+const expenseCategories = [
+  { key: 'costOfRevenue', name: 'Cost of Revenue', color: '#FF9800' },
+  { key: 'researchAndDevelopment', name: 'R&D', color: '#4CAF50' },
+  { key: 'sellingGeneralAndAdmin', name: 'SG&A', color: '#2196F3' },
+  { key: 'depreciationAndAmortization', name: 'D&A', color: '#E91E63' },
+  { key: 'interestExpense', name: 'Interest', color: '#9C27B0' },
+  { key: 'otherExpenses', name: 'Other', color: '#607D8B' },
+  { key: 'incomeTaxExpense', name: 'Income Tax', color: '#673AB7' }
+] as const;
+
+type ExpenseCategory = typeof expenseCategories[number]['key'];
+
 export default function Expenses({ data, isLoading }: ExpensesProps) {
-  const { isExpanded, timeframe } = useChartContext();
+  const { isExpanded, timeframe, isTTM } = useChartContext();
   const [showBreakdown, setShowBreakdown] = useState(false);
 
   const chartData = useMemo(() => {
     if (!data?.data) return [];
 
     const allData = data.data.map(statement => {
-      const expenseCategories = {
-        costOfRevenue: statement.costOfRevenue,
-        researchAndDevelopment: statement.researchAndDevelopmentExpenses,
-        sellingGeneralAndAdmin: statement.sellingGeneralAndAdministrativeExpenses,
-        depreciationAndAmortization: statement.depreciationAndAmortization,
-        interestExpense: statement.interestExpense,
-        incomeTaxExpense: statement.incomeTaxExpense,
+      // Calculate base expense values
+      const expenseValues = {
+        costOfRevenue: statement.costOfRevenue || 0,
+        researchAndDevelopment: statement.researchAndDevelopmentExpenses || 0,
+        sellingGeneralAndAdmin: statement.sellingGeneralAndAdministrativeExpenses || 0,
+        depreciationAndAmortization: statement.depreciationAndAmortization || 0,
+        interestExpense: statement.interestExpense || 0,
+        incomeTaxExpense: statement.incomeTaxExpense || 0,
+        otherExpenses: (statement.otherExpenses || 0) + (statement.operatingExpenses || 0)
       };
 
+      // Calculate total expenses
+      const totalExpenses = Object.values(expenseValues).reduce((sum, value) => sum + value, 0);
+
       return {
-        ...expenseCategories,
-        totalExpenses: Object.values(expenseCategories).reduce((sum, value) => sum + (value || 0), 0),
         date: statement.date,
-        label: `${statement.period} ${statement.calendarYear}`
+        label: `${statement.period} ${statement.calendarYear}`,
+        ...expenseValues,
+        totalExpenses
       };
     }).reverse(); // Most recent first
 
-    return filterDataByTimeframe(allData, timeframe);
-  }, [data, timeframe]);
+    const processedData = isTTM
+      ? allData.map((item, index, array) => {
+          if (index < 3) return item;
+
+          // Calculate TTM by summing the last 4 quarters for each expense category
+          const ttmData = array.slice(index - 3, index + 1).reduce((acc, curr) => {
+            expenseCategories.forEach(({ key }) => {
+              acc[key] = (acc[key] || 0) + (curr[key] || 0);
+            });
+            return acc;
+          }, {} as Record<ExpenseCategory, number>);
+
+          // Calculate total TTM expenses
+          const totalTTMExpenses = Object.values(ttmData).reduce((sum, value) => sum + value, 0);
+
+          return {
+            ...item,
+            ...ttmData,
+            totalExpenses: totalTTMExpenses
+          };
+        })
+      : allData;
+
+    return filterDataByTimeframe(processedData, timeframe);
+  }, [data, timeframe, isTTM]);
 
   if (isLoading || !data) {
     return <div className={graphStyles.loading}>Loading expenses data...</div>;
   }
-
-  const expenseCategories = [
-    { key: 'costOfRevenue', name: 'Cost of Revenue', color: '#FF9800' },
-    { key: 'researchAndDevelopment', name: 'R&D', color: '#4CAF50' },
-    { key: 'sellingGeneralAndAdmin', name: 'SG&A', color: '#2196F3' },
-    { key: 'depreciationAndAmortization', name: 'Depreciation & Amortization', color: '#E91E63' },
-    { key: 'interestExpense', name: 'Interest Expense', color: '#9C27B0' },
-    { key: 'incomeTaxExpense', name: 'Income Tax', color: '#673AB7' }
-  ];
 
   return (
     <div className={graphStyles.chartContainer}>
@@ -102,15 +134,7 @@ export default function Expenses({ data, isLoading }: ExpensesProps) {
           <Tooltip
             formatter={(value: number, name: string) => {
               const formattedValue = `$${formatLargeNumber(value)}`;
-              const displayName = {
-                totalExpenses: 'Total Expenses',
-                costOfRevenue: 'Cost of Revenue',
-                researchAndDevelopment: 'R&D',
-                sellingGeneralAndAdmin: 'Selling, General & Admin',
-                depreciationAndAmortization: 'Depreciation & Amortization',
-                interestExpense: 'Interest Expense',
-                incomeTaxExpense: 'Income Tax'
-              }[name] || name;
+              const displayName = expenseCategories.find(cat => cat.key === name)?.name || name;
               return [formattedValue, displayName];
             }}
             labelFormatter={(label) => label}
@@ -118,13 +142,13 @@ export default function Expenses({ data, isLoading }: ExpensesProps) {
           {isExpanded && showBreakdown && <Legend />}
           
           {showBreakdown && isExpanded ? (
-            expenseCategories.map(category => (
+            expenseCategories.map(({ key, name, color }) => (
               <Bar
-                key={category.key}
-                dataKey={category.key}
+                key={key}
+                dataKey={key}
                 stackId="expenses"
-                fill={category.color}
-                name={category.name}
+                fill={color}
+                name={name}
               />
             ))
           ) : (
