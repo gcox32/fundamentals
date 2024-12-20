@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   ResponsiveContainer,
   BarChart,
@@ -22,6 +22,19 @@ interface CashAndDebtProps {
 
 export default function CashAndDebt({ data, isLoading }: CashAndDebtProps) {
   const { isExpanded, timeframe, isTTM } = useChartContext();
+  const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
+
+  const toggleSeries = (dataKey: string) => {
+    setHiddenSeries(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(dataKey)) {
+        newSet.delete(dataKey);
+      } else {
+        newSet.add(dataKey);
+      }
+      return newSet;
+    });
+  };
 
   const chartData = useMemo(() => {
     if (!data?.data) return [];
@@ -67,16 +80,27 @@ export default function CashAndDebt({ data, isLoading }: CashAndDebtProps) {
             formatter={(value: number, name: string) => [`$${formatLargeNumber(value)}`, name]}
             labelFormatter={(label) => label}
           />
-          {isExpanded && <Legend />}
+          {isExpanded && (
+            <Legend 
+              onClick={(e) => {
+                if (typeof e.dataKey === 'string') {
+                  toggleSeries(e.dataKey);
+                }
+              }}
+              wrapperStyle={{ cursor: 'pointer' }}
+            />
+          )}
           <Bar
             dataKey="cash"
             fill="#4CAF50"
             name="Cash"
+            hide={hiddenSeries.has('cash')}
           />
           <Bar
             dataKey="debt"
             fill="#f44336"
             name="Debt"
+            hide={hiddenSeries.has('debt')}
           />
         </BarChart>
       </ResponsiveContainer>

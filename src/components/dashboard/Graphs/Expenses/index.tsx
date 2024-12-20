@@ -38,6 +38,19 @@ type ExpenseCategory = typeof expenseCategories[number]['key'];
 export default function Expenses({ data, isLoading }: ExpensesProps) {
   const { isExpanded, timeframe, isTTM } = useChartContext();
   const [showBreakdown, setShowBreakdown] = useState(false);
+  const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
+
+  const toggleSeries = (dataKey: string) => {
+    setHiddenSeries(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(dataKey)) {
+        newSet.delete(dataKey);
+      } else {
+        newSet.add(dataKey);
+      }
+      return newSet;
+    });
+  };
 
   const chartData = useMemo(() => {
     if (!data?.data) return [];
@@ -120,12 +133,12 @@ export default function Expenses({ data, isLoading }: ExpensesProps) {
         <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
+            dataKey="label"
+            interval="preserveStartEnd"
             angle={isExpanded ? -45 : 0}
             textAnchor={isExpanded ? "end" : "middle"}
             height={isExpanded ? 60 : 30}
             hide={!isExpanded}
-            dataKey="label"
-            interval="preserveStartEnd"
           />
           <YAxis 
             hide={!isExpanded}
@@ -139,7 +152,16 @@ export default function Expenses({ data, isLoading }: ExpensesProps) {
             }}
             labelFormatter={(label) => label}
           />
-          {isExpanded && showBreakdown && <Legend />}
+          {isExpanded && showBreakdown && (
+            <Legend 
+              onClick={(e) => {
+                if (typeof e.dataKey === 'string') {
+                  toggleSeries(e.dataKey);
+                }
+              }}
+              wrapperStyle={{ cursor: 'pointer' }}
+            />
+          )}
           
           {showBreakdown && isExpanded ? (
             expenseCategories.map(({ key, name, color }) => (
@@ -149,6 +171,7 @@ export default function Expenses({ data, isLoading }: ExpensesProps) {
                 stackId="expenses"
                 fill={color}
                 name={name}
+                hide={hiddenSeries.has(key)}
               />
             ))
           ) : (

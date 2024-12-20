@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   ResponsiveContainer,
   BarChart,
@@ -22,6 +22,19 @@ interface FreeCashFlowProps {
 
 export default function FreeCashFlow({ data, isLoading }: FreeCashFlowProps) {
   const { isExpanded, timeframe, isTTM } = useChartContext();
+  const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
+
+  const toggleSeries = (dataKey: string) => {
+    setHiddenSeries(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(dataKey)) {
+        newSet.delete(dataKey);
+      } else {
+        newSet.add(dataKey);
+      }
+      return newSet;
+    });
+  };
 
   const chartData = useMemo(() => {
     if (!data?.data) return [];
@@ -30,6 +43,7 @@ export default function FreeCashFlow({ data, isLoading }: FreeCashFlowProps) {
       date: statement.date,
       operatingCashFlow: statement.operatingCashFlow,
       capitalExpenditure: statement.capitalExpenditure,
+      stockCompensation: statement.stockBasedCompensation,
       freeCashFlow: statement.operatingCashFlow - Math.abs(statement.capitalExpenditure),
       label: `${statement.period} ${statement.calendarYear}`
     })).reverse(); // Most recent first
@@ -40,12 +54,14 @@ export default function FreeCashFlow({ data, isLoading }: FreeCashFlowProps) {
           const ttmData = array.slice(index - 3, index + 1).reduce((acc, curr) => ({
             operatingCashFlow: (acc.operatingCashFlow || 0) + (curr.operatingCashFlow || 0),
             capitalExpenditure: (acc.capitalExpenditure || 0) + (curr.capitalExpenditure || 0),
-          }), { operatingCashFlow: 0, capitalExpenditure: 0 });
+            stockCompensation: (acc.stockCompensation || 0) + (curr.stockCompensation || 0),
+          }), { operatingCashFlow: 0, capitalExpenditure: 0, stockCompensation: 0 });
           
           return {
             ...item,
             operatingCashFlow: ttmData.operatingCashFlow,
             capitalExpenditure: ttmData.capitalExpenditure,
+            stockCompensation: ttmData.stockCompensation,
             freeCashFlow: ttmData.operatingCashFlow - Math.abs(ttmData.capitalExpenditure)
           };
         })
@@ -79,16 +95,27 @@ export default function FreeCashFlow({ data, isLoading }: FreeCashFlowProps) {
             formatter={(value: number, name: string) => [`$${formatLargeNumber(value)}`, name]}
             labelFormatter={(label) => label}
           />
-          {isExpanded && <Legend />}
+          {isExpanded && (
+            <Legend 
+              onClick={(e) => {
+                if (typeof e.dataKey === 'string') {
+                  toggleSeries(e.dataKey);
+                }
+              }}
+              wrapperStyle={{ cursor: 'pointer' }}
+            />
+          )}
           <Bar
             dataKey="freeCashFlow"
             fill="#4CAF50"
             name="Free Cash Flow"
+            hide={hiddenSeries.has('freeCashFlow')}
           />
           <Bar
             dataKey="stockCompensation"
             fill="#FF9800"
             name="Stock Compensation"
+            hide={!isExpanded || hiddenSeries.has('stockCompensation')}
           />
         </BarChart>
       </ResponsiveContainer>

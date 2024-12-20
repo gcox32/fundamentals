@@ -16,12 +16,12 @@ interface ThemeContextType {
 }
 
 const defaultDashboardComponents: DashboardComponent[] = [
-  { id: 'stock-overview', title: 'Stock Overview', isVisible: true },
-  { id: 'metrics-overview', title: 'Metrics Overview', isVisible: true },
-  { id: 'company-events', title: 'Company Events', isVisible: true },
-  { id: 'charts', title: 'Charts & Graphs', isVisible: true },
-  { id: 'company-profile', title: 'Company Profile', isVisible: true },
-  { id: 'company-news', title: 'Company News', isVisible: true },
+  { id: 'stock-overview', title: 'Overview', isVisible: true },
+  { id: 'metrics-overview', title: 'Metrics', isVisible: true },
+  { id: 'company-events', title: 'Events', isVisible: true },
+  { id: 'charts', title: 'Graphs', isVisible: true },
+  { id: 'company-profile', title: 'Profile', isVisible: true },
+  { id: 'company-news', title: 'News', isVisible: true },
 ];
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   ResponsiveContainer,
   LineChart,
@@ -22,6 +22,19 @@ interface MarginsProps {
 
 export default function Margins({ data, isLoading }: MarginsProps) {
   const { isExpanded, timeframe, isTTM } = useChartContext();
+  const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
+
+  const toggleSeries = (dataKey: string) => {
+    setHiddenSeries(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(dataKey)) {
+        newSet.delete(dataKey);
+      } else {
+        newSet.add(dataKey);
+      }
+      return newSet;
+    });
+  };
 
   const chartData = useMemo(() => {
     if (!data?.data) return [];
@@ -96,7 +109,16 @@ export default function Margins({ data, isLoading }: MarginsProps) {
             formatter={(value: number) => `${formatPercent(value)}`}
             labelFormatter={(label) => label}
           />
-          {isExpanded && <Legend />}
+          {isExpanded && (
+            <Legend 
+              onClick={(e) => {
+                if (typeof e.dataKey === 'string') {
+                  toggleSeries(e.dataKey);
+                }
+              }}
+              wrapperStyle={{ cursor: 'pointer' }}
+            />
+          )}
           
           <Line
             type="monotone"
@@ -105,6 +127,7 @@ export default function Margins({ data, isLoading }: MarginsProps) {
             name="Gross Margin"
             strokeWidth={2}
             dot={false}
+            hide={hiddenSeries.has('grossMargin')}
           />
           <Line
             type="monotone"
@@ -113,6 +136,7 @@ export default function Margins({ data, isLoading }: MarginsProps) {
             name="Operating Margin"
             strokeWidth={2}
             dot={false}
+            hide={hiddenSeries.has('operatingMargin')}
           />
           <Line
             type="monotone"
@@ -121,6 +145,7 @@ export default function Margins({ data, isLoading }: MarginsProps) {
             name="Net Margin"
             strokeWidth={2}
             dot={false}
+            hide={hiddenSeries.has('netMargin')}
           />
         </LineChart>
       </ResponsiveContainer>
