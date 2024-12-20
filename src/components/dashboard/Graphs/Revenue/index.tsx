@@ -13,7 +13,7 @@ import type { HistoricalIncomeStatement } from '@/types/financials';
 import type { HistoricalRevenueBySegment, HistoricalRevenueByGeography } from '@/types/company';
 import graphStyles from '@/components/dashboard/DashboardCard/GraphicalCard/styles.module.css';
 import styles from '@/components/common/Toggle/styles.module.css';
-import { formatLargeNumber } from '@/utils/format';
+import { formatLargeNumber, getQuarterFromDate } from '@/utils/format';
 import { useChartContext } from '@/components/dashboard/DashboardCard/GraphicalCard/ChartContext';
 import { filterDataByTimeframe } from '@/utils/timeframeFilter';
 import clsx from 'clsx';
@@ -47,6 +47,19 @@ export default function Revenue({
 }: RevenueProps) {
   const { isExpanded, timeframe, isTTM } = useChartContext();
   const [selectedView, setSelectedView] = useState<RevenueView>('total');
+  const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
+
+  const toggleSeries = (dataKey: string) => {
+    setHiddenSeries(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(dataKey)) {
+        newSet.delete(dataKey);
+      } else {
+        newSet.add(dataKey);
+      }
+      return newSet;
+    });
+  };
 
   console.log('Revenue component props:', { data, segmentData, geographyData, isLoading });
 
@@ -88,7 +101,7 @@ export default function Revenue({
           const [[date, segments]] = Object.entries(dateData);
           const baseData: ChartDataItem = {
             date,
-            label: date, // We'll format this properly later
+            label: getQuarterFromDate(date),
             total: Object.values(segments).reduce((sum, value) => sum + (value || 0), 0)
           };
 
@@ -131,7 +144,7 @@ export default function Revenue({
           const [[date, regions]] = Object.entries(dateData);
           const baseData: ChartDataItem = {
             date,
-            label: date, // We'll format this properly later
+            label: getQuarterFromDate(date),
             total: Object.values(regions).reduce((sum, value) => sum + (value || 0), 0)
           };
 
@@ -263,7 +276,16 @@ export default function Revenue({
             ]}
             labelFormatter={(label) => label}
           />
-          {selectedView !== 'total' && <Legend />}
+          {selectedView !== 'total' && (
+            <Legend 
+              onClick={(e) => {
+                if (typeof e.dataKey === 'string') {
+                  toggleSeries(e.dataKey);
+                }
+              }}
+              wrapperStyle={{ cursor: 'pointer' }}
+            />
+          )}
           {selectedView === 'total' ? (
             <Bar
               dataKey="revenue"
@@ -278,6 +300,7 @@ export default function Revenue({
                 stackId="revenue"
                 fill={COLORS[index % COLORS.length]}
                 name={key}
+                hide={hiddenSeries.has(key)}
               />
             ))
           )}
