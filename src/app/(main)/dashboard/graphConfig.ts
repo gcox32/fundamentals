@@ -21,7 +21,8 @@ export const graphCards = [
   {
     title: "Revenue",
     Component: Revenue,
-    dataKey: "incomeStatement"
+    dataKey: ["incomeStatement", "revenueBySegment", "revenueByGeography"],
+    // noDataCheck: (data: any) => !data?.data?.length
   },
   {
     title: "Net Income",

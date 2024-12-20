@@ -282,3 +282,22 @@ export interface CompanyOutlook {
   financialsAnnual?: Array<CompanyFinancialsAnnual>;
   financialsQuarter?: Array<CompanyFinancialsQuarter>;
 }
+
+export interface RevenueByGeography {
+  [geography: string]: number;
+}
+
+export interface RevenueByGeographyDate {
+  [date: string]: RevenueByGeography;
+}
+
+export interface RevenueByGeographyData {
+  [index: string]: RevenueByGeographyDate;
+}
+
+export interface HistoricalRevenueByGeography {
+  symbol: string;
+  data: RevenueByGeographyData;
+  lastUpdated?: number;
+  ttl?: number;
+}

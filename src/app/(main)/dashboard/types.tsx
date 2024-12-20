@@ -1,6 +1,6 @@
 import type { PriceInfoProps } from '@/components/dashboard/Overview/CompanyHeader/PriceInfo/types';
 import type { StockQuote } from '@/types/stock';
-import type { CompanyOutlook } from '@/types/company';
+import type { CompanyOutlook, HistoricalRevenueByGeography, HistoricalRevenueBySegment } from '@/types/company';
 import type { HistoricalPriceData, HistoricalSharesOutstanding, HistoricalDividendData } from '@/types/stock';
 import type { HistoricalIncomeStatement, HistoricalCashFlowStatement, HistoricalBalanceSheetStatement } from '@/types/financials';
 
@@ -38,4 +38,6 @@ export interface SelectedCompany {
     incomeStatement?: HistoricalIncomeStatement;
     cashFlowStatement?: HistoricalCashFlowStatement;
     balanceSheetStatement?: HistoricalBalanceSheetStatement;
+    revenueBySegment?: HistoricalRevenueBySegment;
+    revenueByGeography?: HistoricalRevenueByGeography;
   }

@@ -59,7 +59,9 @@ export default function Dashboard() {
       dividendHistory: undefined,
       incomeStatement: undefined,
       cashFlowStatement: undefined,
-      balanceSheetStatement: undefined
+      balanceSheetStatement: undefined,
+      revenueBySegment: undefined,
+      revenueByGeography: undefined
     };
     
     setSelectedCompany(initialCompany);
@@ -136,6 +138,18 @@ export default function Dashboard() {
       fetchDashboardData('company/balance-sheet', company.symbol,
         updateCompanyData('balanceSheetStatement'),
         handleError('balanceSheetStatement')
+      );
+
+      // Revenue by Segment
+      fetchDashboardData('company/revenue-by-segment', company.symbol,
+        updateCompanyData('revenueBySegment'),
+        handleError('revenueBySegment')
+      );
+
+      // Revenue by Geography
+      fetchDashboardData('company/revenue-by-geography', company.symbol,
+        updateCompanyData('revenueByGeography'),
+        handleError('revenueByGeography')
       );
 
     } catch (error) {

@@ -26,6 +26,10 @@
   width: 136px;
 }
 
+.tripleToggle .toggleButton {
+  width: 120px;
+}
+
 .toggleButton.active {
   color: #fff;
 }
@@ -37,7 +41,6 @@
 .slider {
   position: absolute;
   top: 4px;
-  width: calc(50% - 4px);
   height: calc(100% - 8px);
   background: #2196F3;
   border-radius: 16px;
@@ -45,10 +48,32 @@
   z-index: 0;
 }
 
-.sliderLeft {
+/* For double toggle */
+.toggleWrapper:not(.tripleToggle) .slider {
+  width: calc(50% - 4px);
+}
+
+.toggleWrapper:not(.tripleToggle) .sliderLeft {
   left: 4px;
 }
 
-.sliderRight {
+.toggleWrapper:not(.tripleToggle) .sliderRight {
   left: 50%;
+}
+
+/* For triple toggle */
+.tripleToggle .slider {
+  width: calc(33.33% - 4px);
+}
+
+.tripleToggle .sliderLeft {
+  left: 4px;
+}
+
+.tripleToggle .sliderCenter {
+  left: calc(33.33% + 2px);
+}
+
+.tripleToggle .sliderRight {
+  left: calc(66.66% + 0px);
 } 
