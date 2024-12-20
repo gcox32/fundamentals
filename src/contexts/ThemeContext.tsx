@@ -1,38 +1,85 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+interface DashboardComponent {
+  id: string;
+  title: string;
+  isVisible: boolean;
+  isRequired?: boolean;
+}
+
 interface ThemeContextType {
   isDarkMode: boolean;
   toggleDarkMode: () => void;
+  dashboardComponents: DashboardComponent[];
+  toggleComponent: (id: string) => void;
+  resetDashboardLayout: () => void;
 }
+
+const defaultDashboardComponents: DashboardComponent[] = [
+  { id: 'stock-overview', title: 'Stock Overview', isVisible: true },
+  { id: 'metrics-overview', title: 'Metrics Overview', isVisible: true },
+  { id: 'company-events', title: 'Company Events', isVisible: true },
+  { id: 'charts', title: 'Charts & Graphs', isVisible: true },
+  { id: 'company-profile', title: 'Company Profile', isVisible: true },
+  { id: 'company-news', title: 'Company News', isVisible: true },
+];
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [dashboardComponents, setDashboardComponents] = useState<DashboardComponent[]>(defaultDashboardComponents);
 
   useEffect(() => {
     setIsClient(true);
     const stored = localStorage.getItem('darkMode');
+    const storedLayout = localStorage.getItem('dashboardLayout');
+    
     if (stored !== null) {
       setIsDarkMode(JSON.parse(stored));
     } else {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setIsDarkMode(prefersDark);
     }
+
+    if (storedLayout !== null) {
+      setDashboardComponents(JSON.parse(storedLayout));
+    }
   }, []);
 
   useEffect(() => {
     if (isClient) {
       localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
+      localStorage.setItem('dashboardLayout', JSON.stringify(dashboardComponents));
       document.documentElement.classList.toggle('dark-mode', isDarkMode);
     }
-  }, [isDarkMode, isClient]);
+  }, [isDarkMode, isClient, dashboardComponents]);
 
   const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
 
+  const toggleComponent = (id: string) => {
+    setDashboardComponents(prev => 
+      prev.map(component => 
+        component.id === id && !component.isRequired
+          ? { ...component, isVisible: !component.isVisible }
+          : component
+      )
+    );
+  };
+
+  const resetDashboardLayout = () => {
+    setDashboardComponents(defaultDashboardComponents);
+  };
+
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
+    <ThemeContext.Provider value={{ 
+      isDarkMode, 
+      toggleDarkMode, 
+      dashboardComponents,
+      toggleComponent,
+      resetDashboardLayout
+    }}>
       {children}
     </ThemeContext.Provider>
   );
