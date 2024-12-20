@@ -8,3 +8,4 @@ export { default as CashAndDebt } from './CashAndDebt';
 export { default as NetIncome } from './NetIncome';
 export { default as Expenses } from './Expenses';
 export { default as Margins } from './Margins';
+export { default as ROIC } from './ROIC';   

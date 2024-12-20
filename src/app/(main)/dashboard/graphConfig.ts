@@ -8,7 +8,8 @@ import {
     NetIncome,
     CashAndDebt,
     Expenses,
-    Margins
+    Margins,
+    ROIC
   } from "@/components/dashboard/Graphs";
 
 export const graphCards = [
@@ -62,5 +63,10 @@ export const graphCards = [
     title: "Cash and Debt",
     Component: CashAndDebt,
     dataKey: "balanceSheetStatement"
+  },
+  {
+    title: "Return on Invested Capital",
+    Component: ROIC,
+    dataKey: ["incomeStatement", "balanceSheetStatement"]
   }
 ]; 

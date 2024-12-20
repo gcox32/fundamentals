@@ -31,9 +31,6 @@ export default function Revenue({ data, isLoading }: RevenueProps) {
       label: `${statement.period} ${statement.calendarYear}`
     })).reverse(); // Most recent first
 
-    console.log('Timeframe:', timeframe);
-    console.log('TTM mode:', isTTM); // For debugging
-
     const processedData = isTTM
       ? allData.map((item, index, array) => {
           if (index < 3) return item;

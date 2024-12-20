@@ -26,8 +26,8 @@ interface ExpensesProps {
 const expenseCategories = [
   { key: 'costOfRevenue', name: 'Cost of Revenue', color: '#FF9800' },
   { key: 'researchAndDevelopment', name: 'R&D', color: '#4CAF50' },
-  { key: 'sellingGeneralAndAdmin', name: 'SG&A', color: '#2196F3' },
-  { key: 'depreciationAndAmortization', name: 'D&A', color: '#E91E63' },
+  { key: 'sellingGeneralAndAdmin', name: 'Selling, General & Admin', color: '#2196F3' },
+  { key: 'depreciationAndAmortization', name: 'Depreciation & Amortization', color: '#E91E63' },
   { key: 'interestExpense', name: 'Interest', color: '#9C27B0' },
   { key: 'otherExpenses', name: 'Other', color: '#607D8B' },
   { key: 'incomeTaxExpense', name: 'Income Tax', color: '#673AB7' }
