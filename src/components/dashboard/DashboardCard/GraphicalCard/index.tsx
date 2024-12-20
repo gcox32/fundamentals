@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import DashboardCard from '../index';
 import styles from './styles.module.css';
-import { FaExpandAlt } from 'react-icons/fa';
+import { FaExpandAlt, FaGripVertical } from 'react-icons/fa';
 import Modal from './Modal';
 import { ChartContext } from './ChartContext';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface GraphicalCardProps {
+    id: string;
     title: string;
     isLoading?: boolean;
     children: React.ReactNode;
@@ -16,6 +19,7 @@ interface GraphicalCardProps {
 }
 
 export default function GraphicalCard({ 
+    id,
     title, 
     isLoading, 
     children, 
@@ -25,6 +29,21 @@ export default function GraphicalCard({
     isTTM
 }: GraphicalCardProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging
+    } = useSortable({ id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+    };
 
     const handleExpand = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -45,23 +64,34 @@ export default function GraphicalCard({
 
     return (
         <>
-            <DashboardCard 
-                title={title} 
-                isLoading={isLoading}
-                className={styles.graphicalCard}
-            >
-                <ChartContext.Provider value={contextValue}>
-                    <div onClick={onClick} className={styles.clickableContent}>
-                        {children}
-                        {!isLoading && !noData && (
-                            <FaExpandAlt 
-                                className={styles.expandIcon} 
-                                onClick={handleExpand}
-                            />
-                        )}
-                    </div>
-                </ChartContext.Provider>
-            </DashboardCard>
+            <div ref={setNodeRef} style={style}>
+                <DashboardCard 
+                    title={title} 
+                    isLoading={isLoading}
+                    className={`${styles.graphicalCard} ${isDragging ? styles.dragging : ''}`}
+                >
+                    <ChartContext.Provider value={contextValue}>
+                        <div onClick={onClick} className={styles.clickableContent}>
+                            <div className={styles.cardHeader}>
+                                <div 
+                                    className={styles.dragHandle}
+                                    {...attributes}
+                                    {...listeners}
+                                >
+                                    <FaGripVertical />
+                                </div>
+                                {!isLoading && !noData && (
+                                    <FaExpandAlt 
+                                        className={styles.expandIcon} 
+                                        onClick={handleExpand}
+                                    />
+                                )}
+                            </div>
+                            {children}
+                        </div>
+                    </ChartContext.Provider>
+                </DashboardCard>
+            </div>
 
             <Modal
                 isOpen={isModalOpen}

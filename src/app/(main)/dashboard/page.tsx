@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StockSearchBar from "@/components/dashboard/StockSearchBar";
 import CompanyHeader from "@/components/dashboard/Overview/CompanyHeader";
 import TimeframeSelector from "@/components/dashboard/TimeframeSelector";
@@ -14,12 +14,32 @@ import styles from './styles.module.css';
 import { fetchDashboardData } from '@/utils/fetchDashboardData';
 import { graphCards } from './graphConfig';
 import { SelectedCompany } from './types';
+import DraggableCardGrid from '@/components/dashboard/DraggableCardGrid';
+
+const DEFAULT_CARD_ORDER = graphCards.map((card, index) => `graph-${index}`);
 
 export default function Dashboard() {
   const [selectedCompany, setSelectedCompany] = useState<SelectedCompany | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTimeframe, setSelectedTimeframe] = useState('5Y');
   const [isTTM, setIsTTM] = useState(false);
+  const [cardOrder, setCardOrder] = useState<string[]>(() => {
+    if (typeof window !== 'undefined') {
+      const savedOrder = localStorage.getItem('graphCardOrder');
+      return savedOrder ? JSON.parse(savedOrder) : DEFAULT_CARD_ORDER;
+    }
+    return DEFAULT_CARD_ORDER;
+  });
+
+  useEffect(() => {
+    if (cardOrder !== DEFAULT_CARD_ORDER) {
+      localStorage.setItem('graphCardOrder', JSON.stringify(cardOrder));
+    }
+  }, [cardOrder]);
+
+  const handleOrderChange = (newOrder: string[]) => {
+    setCardOrder(newOrder);
+  };
 
   const handleCompanySelect = async (company: { symbol: string; name: string; assetType: string }) => {
     setIsLoading(true);
@@ -161,26 +181,36 @@ export default function Dashboard() {
               isTTM={isTTM}
               setIsTTM={setIsTTM}
             />
-            <div className={styles.cardGrid}>
-              {graphCards.map(({ title, Component, dataKey, noDataCheck }) => (
-                <GraphicalCard 
-                  key={title}
-                  title={title} 
-                  isLoading={isLoading}
-                  timeframe={selectedTimeframe}
-                  isTTM={isTTM}
-                  noData={noDataCheck ? noDataCheck(selectedCompany?.[dataKey as keyof SelectedCompany]) : undefined}
-                >
-                  <Component 
-                    {...(Array.isArray(dataKey) 
-                      ? dataKey.reduce((acc, key) => ({ ...acc, [key]: selectedCompany?.[key as keyof SelectedCompany] }), {})
-                      : { data: selectedCompany?.[dataKey as keyof SelectedCompany] }
-                    )}
+            <DraggableCardGrid
+              cardIds={cardOrder}
+              onOrderChange={handleOrderChange}
+            >
+              {cardOrder.map(id => {
+                const index = parseInt(id.split('-')[1]);
+                const card = graphCards[index];
+                if (!card) return null;
+
+                return (
+                  <GraphicalCard
+                    key={id}
+                    id={id}
+                    title={card.title}
                     isLoading={isLoading}
-                  />
-                </GraphicalCard>
-              ))}
-            </div>
+                    timeframe={selectedTimeframe}
+                    isTTM={isTTM}
+                    noData={card.noDataCheck ? card.noDataCheck(selectedCompany?.[card.dataKey as keyof SelectedCompany]) : undefined}
+                  >
+                    <card.Component
+                      {...(Array.isArray(card.dataKey)
+                        ? card.dataKey.reduce((acc, key) => ({ ...acc, [key]: selectedCompany?.[key as keyof SelectedCompany] }), {})
+                        : { data: selectedCompany?.[card.dataKey as keyof SelectedCompany] }
+                      )}
+                      isLoading={isLoading}
+                    />
+                  </GraphicalCard>
+                );
+              })}
+            </DraggableCardGrid>
 
             <CompanyProfile
               isLoading={isLoading}
