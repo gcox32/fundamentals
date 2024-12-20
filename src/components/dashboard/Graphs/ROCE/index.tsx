@@ -36,8 +36,8 @@ export default function ROCE({ incomeStatement, balanceSheetStatement, isLoading
       .filter(statement => balanceSheetMap[statement.date]) // Only include dates where we have both statements
       .map(statement => {
         const balanceSheetData = balanceSheetMap[statement.date];
-        const capitalEmployed = (balanceSheetData.totalAssets - balanceSheetData.totalLiabilities) / 2;
-        const ebit = statement.operatingIncome - statement.operatingExpenses;
+        const capitalEmployed = balanceSheetData.totalAssets - balanceSheetData.totalCurrentLiabilities;
+        const ebit = statement.operatingIncome;
         
         return {
           date: statement.date,
