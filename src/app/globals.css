@@ -145,3 +145,9 @@ body {
 .recharts-legend-wrapper {
   transform: translateY(20px);
 }
+
+@media (max-width: 768px) {
+  .recharts-responsive-container {
+    height: auto;
+  }
+}

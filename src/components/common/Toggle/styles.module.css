@@ -77,3 +77,9 @@
 .tripleToggle .sliderRight {
   left: calc(66.66% + 0px);
 } 
+
+@media (max-width: 768px) {
+  .toggleButton {
+    max-width: 116px;
+  }
+}

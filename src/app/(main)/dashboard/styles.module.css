@@ -18,21 +18,21 @@
   background: var(--active-accent);
   color: #ffffff;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
+  border: 1px solid black;
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
   transition: opacity 0.2s ease;
-  border: none;
 }
 
 .showAllButton:hover {
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 @media (max-width: 768px) {
   .chartControls {
     flex-direction: column;
-    gap: 1rem;
+    padding: 0 0 1rem 0;
   }
 } 
