@@ -58,3 +58,11 @@
     justify-content: center;
     align-items: center;
 } 
+
+.modalContent > div {
+    width: 100%;
+}
+
+.modalContent > div ~ div {
+    width: unset;
+}

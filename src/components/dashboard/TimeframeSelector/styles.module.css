@@ -45,10 +45,12 @@
   margin: 0 0.5rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .container {
     flex-direction: column;
     gap: 0.5rem;
+    width: 100%;
+    flex-wrap: wrap;
   }
 
   .divider {
@@ -59,6 +61,13 @@
 
   .selectorGroup {
     width: 100%;
+    justify-content: center;
+  }
+
+  .chartControls {
+    flex-direction: column;
+    padding: 0 0 1rem 0;
+    flex-wrap: wrap;
     justify-content: center;
   }
 } 

@@ -18,11 +18,13 @@
   background: var(--active-accent);
   color: #ffffff;
   padding: 0.5rem 1rem;
-  border-radius: 8px;
+  border-radius: 16px;
   border: 1px solid black;
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
+  margin: 0 1rem;
+  width: 220px;
   transition: opacity 0.2s ease;
 }
 
@@ -34,5 +36,7 @@
   .chartControls {
     flex-direction: column;
     padding: 0 0 1rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 } 
