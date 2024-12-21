@@ -1,4 +1,38 @@
 .dashboardContainer {
   background-image: linear-gradient(to bottom, var(--background-secondary), var(--background));
   border-radius: 16px;
+  width: 100%;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.chartControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+}
+
+.showAllButton {
+  background: var(--active-accent);
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  border: none;
+}
+
+.showAllButton:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .chartControls {
+    flex-direction: column;
+    gap: 1rem;
+  }
 } 

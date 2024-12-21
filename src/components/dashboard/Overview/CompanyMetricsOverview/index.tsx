@@ -1,16 +1,38 @@
 import React from 'react';
 import styles from './styles.module.css';
 import { CompanyRatios } from '@/types/company';
+import { CashFlowStatement } from '@/types/financials';
 import OverviewCard from '@/components/dashboard/DashboardCard/OverviewCard';
 import { formatPercent, formatNumber, formatPrice } from '@/utils/format';
 
 interface CompanyMetricsOverviewProps {
   isLoading: boolean;
   ratios?: CompanyRatios[];
+  cashFlow?: CashFlowStatement[];
+  marketCap?: number;
 }
 
-export default function CompanyMetricsOverview({ isLoading, ratios }: CompanyMetricsOverviewProps) {
+export default function CompanyMetricsOverview({ 
+  isLoading, 
+  ratios, 
+  cashFlow,
+  marketCap 
+}: CompanyMetricsOverviewProps) {
   const latestRatios = ratios?.[0];
+  const latestCashFlow = cashFlow?.[0];
+
+  // Calculate FCF metrics
+  const fcfYield = marketCap && latestCashFlow?.freeCashFlow
+    ? (latestCashFlow.freeCashFlow / marketCap) * 100
+    : undefined;
+
+  const fcfYieldAdjusted = marketCap && latestCashFlow?.freeCashFlow && latestCashFlow?.stockBasedCompensation
+    ? ((latestCashFlow.freeCashFlow - latestCashFlow.stockBasedCompensation) / marketCap) * 100
+    : undefined;
+
+  const sbcImpact = latestCashFlow?.stockBasedCompensation && latestCashFlow?.freeCashFlow
+    ? (latestCashFlow.stockBasedCompensation / latestCashFlow.freeCashFlow) * 100
+    : undefined;
 
   return (
     <OverviewCard title="Financial Metrics" isLoading={isLoading}>
@@ -36,16 +58,16 @@ export default function CompanyMetricsOverview({ isLoading, ratios }: CompanyMet
         <div className={styles.metricSection}>
           <h4 className={styles.sectionTitle}>Cash Flow</h4>
           <div className={styles.metric}>
-            <span className={styles.label}>FCF per Share</span>
-            <span className={styles.value}>{formatPrice(latestRatios?.freeCashFlowPerShareTTM)}</span>
+            <span className={styles.label}>FCF Yield</span>
+            <span className={styles.value}>{formatPercent(fcfYield)}</span>
           </div>
           <div className={styles.metric}>
-            <span className={styles.label}>Operating CF Ratio</span>
-            <span className={styles.value}>{formatNumber(latestRatios?.operatingCashFlowSalesRatioTTM)}</span>
+            <span className={styles.label}>FCF Yield (ex-SBC)</span>
+            <span className={styles.value}>{formatPercent(fcfYieldAdjusted)}</span>
           </div>
           <div className={styles.metric}>
-            <span className={styles.label}>CF Coverage</span>
-            <span className={styles.value}>{formatNumber(latestRatios?.cashFlowCoverageRatiosTTM)}</span>
+            <span className={styles.label}>SBC Impact</span>
+            <span className={styles.value}>{formatPercent(sbcImpact)}</span>
           </div>
         </div>
 
@@ -63,23 +85,6 @@ export default function CompanyMetricsOverview({ isLoading, ratios }: CompanyMet
           <div className={styles.metric}>
             <span className={styles.label}>Dividend per Share</span>
             <span className={styles.value}>{formatPrice(latestRatios?.dividendPerShareTTM)}</span>
-          </div>
-        </div>
-
-        {/* Debt Metrics */}
-        <div className={styles.metricSection}>
-          <h4 className={styles.sectionTitle}>Cash & Debt</h4>
-          <div className={styles.metric}>
-            <span className={styles.label}>Current Ratio</span>
-            <span className={styles.value}>{formatNumber(latestRatios?.currentRatioTTM)}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>Total Debt/Capital</span>
-            <span className={styles.value}>{formatPercent(latestRatios?.totalDebtToCapitalizationTTM)}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>CF/Debt Ratio</span>
-            <span className={styles.value}>{formatNumber(latestRatios?.cashFlowToDebtRatioTTM)}</span>
           </div>
         </div>
 

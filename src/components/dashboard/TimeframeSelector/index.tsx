@@ -27,6 +27,9 @@ export default function TimeframeSelector({
           </button>
         ))}
       </div>
+      
+      <div className={styles.divider} />
+      
       <div className={toggleStyles.toggleWrapper}>
         <button
           onClick={() => setIsTTM(false)}

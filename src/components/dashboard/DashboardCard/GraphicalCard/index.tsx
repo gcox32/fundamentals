@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DashboardCard from '../index';
 import styles from './styles.module.css';
-import { FaExpandAlt, FaGripVertical } from 'react-icons/fa';
+import { FaExpandAlt, FaGripVertical, FaEyeSlash } from 'react-icons/fa';
 import Modal from './Modal';
 import { ChartContext } from './ChartContext';
 import { useSortable } from '@dnd-kit/sortable';
@@ -16,17 +16,19 @@ interface GraphicalCardProps {
     noData?: boolean;
     timeframe: string;
     isTTM: boolean;
+    onHide?: (id: string) => void;
 }
 
-export default function GraphicalCard({ 
+export default function GraphicalCard({
     id,
-    title, 
-    isLoading, 
-    children, 
-    onClick, 
+    title,
+    isLoading,
+    children,
+    onClick,
     noData,
     timeframe,
-    isTTM
+    isTTM,
+    onHide
 }: GraphicalCardProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -50,6 +52,11 @@ export default function GraphicalCard({
         setIsModalOpen(true);
     };
 
+    const handleHide = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onHide?.(id);
+    };
+
     const contextValue = {
         isExpanded: false,
         timeframe,
@@ -65,27 +72,36 @@ export default function GraphicalCard({
     return (
         <>
             <div ref={setNodeRef} style={style}>
-                <DashboardCard 
-                    title={title} 
+                <DashboardCard
+                    title={title}
                     isLoading={isLoading}
                     className={`${styles.graphicalCard} ${isDragging ? styles.dragging : ''}`}
                 >
                     <ChartContext.Provider value={contextValue}>
                         <div onClick={onClick} className={styles.clickableContent}>
                             <div className={styles.cardHeader}>
-                                <div 
+                                <div
                                     className={styles.dragHandle}
                                     {...attributes}
                                     {...listeners}
                                 >
                                     <FaGripVertical />
                                 </div>
-                                {!isLoading && !noData && (
-                                    <FaExpandAlt 
-                                        className={styles.expandIcon} 
-                                        onClick={handleExpand}
+
+                                <div className={styles.cardActions}>
+                                    <FaEyeSlash
+                                        className={styles.hideIcon}
+                                        onClick={handleHide}
+                                        title="Hide graph"
                                     />
-                                )}
+                                    {!isLoading && !noData && (
+                                        <FaExpandAlt
+                                            className={styles.expandIcon}
+                                            onClick={handleExpand}
+                                            title="Expand graph"
+                                        />
+                                    )}
+                                </div>
                             </div>
                             {children}
                         </div>

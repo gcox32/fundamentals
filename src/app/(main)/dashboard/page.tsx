@@ -31,6 +31,13 @@ export default function Dashboard() {
     }
     return DEFAULT_CARD_ORDER;
   });
+  const [hiddenCards, setHiddenCards] = useState<Set<string>>(() => {
+    if (typeof window !== 'undefined') {
+      const savedHidden = localStorage.getItem('hiddenGraphCards');
+      return new Set(savedHidden ? JSON.parse(savedHidden) : []);
+    }
+    return new Set();
+  });
 
   useEffect(() => {
     if (cardOrder !== DEFAULT_CARD_ORDER) {
@@ -38,13 +45,25 @@ export default function Dashboard() {
     }
   }, [cardOrder]);
 
+  useEffect(() => {
+    localStorage.setItem('hiddenGraphCards', JSON.stringify(Array.from(hiddenCards)));
+  }, [hiddenCards]);
+
   const handleOrderChange = (newOrder: string[]) => {
     setCardOrder(newOrder);
   };
 
+  const handleHideCard = (id: string) => {
+    setHiddenCards(prev => new Set([...prev, id]));
+  };
+
+  const handleShowAllCards = () => {
+    setHiddenCards(new Set());
+  };
+
   const handleCompanySelect = async (company: { symbol: string; name: string; assetType: string }) => {
     setIsLoading(true);
-    
+
     // Initialize with basic company info and null values for all data fields
     const initialCompany: SelectedCompany = {
       symbol: company.symbol,
@@ -63,14 +82,14 @@ export default function Dashboard() {
       revenueBySegment: undefined,
       revenueByGeography: undefined
     };
-    
+
     setSelectedCompany(initialCompany);
 
     const updateCompanyData = (key: keyof SelectedCompany) => (data: any) => {
       setSelectedCompany(prev => prev ? { ...prev, [key]: data } : null);
     };
 
-    const handleError = (key: keyof SelectedCompany, defaultValue?: any, silent=false) => (error: any) => {
+    const handleError = (key: keyof SelectedCompany, defaultValue?: any, silent = false) => (error: any) => {
       if (!silent) {
         console.error(`Failed to fetch ${key}:`, error);
       }
@@ -81,7 +100,7 @@ export default function Dashboard() {
 
     try {
       // Events
-      fetchDashboardData('company/events', company.symbol, 
+      fetchDashboardData('company/events', company.symbol,
         updateCompanyData('events'),
         handleError('events')
       );
@@ -113,13 +132,13 @@ export default function Dashboard() {
       // Dividend History
       fetchDashboardData('stock/historical/dividends', company.symbol,
         updateCompanyData('dividendHistory'),
-        handleError('dividendHistory', { 
-          symbol: company.symbol, 
-          historical: [], 
-          lastUpdated: Date.now() 
+        handleError('dividendHistory', {
+          symbol: company.symbol,
+          historical: [],
+          lastUpdated: Date.now()
         },
-        true
-      )
+          true
+        )
       );
 
       // Income Statement
@@ -163,12 +182,12 @@ export default function Dashboard() {
     <div className={styles.dashboardContainer}>
       <div className="container mx-auto px-4 py-8">
         <StockSearchBar onSubmit={handleCompanySelect} />
-        
+
         {(selectedCompany || isLoading) && (
           <>
-            <CompanyHeader 
-              symbol={selectedCompany?.symbol || '' } 
-              name={selectedCompany?.name || ''} 
+            <CompanyHeader
+              symbol={selectedCompany?.symbol || ''}
+              name={selectedCompany?.name || ''}
               exchange={selectedCompany?.exchange || ''}
               isLoading={isLoading}
               quote={selectedCompany?.quote}
@@ -186,53 +205,65 @@ export default function Dashboard() {
               <CompanyMetricsOverview
                 isLoading={isLoading}
                 ratios={selectedCompany?.outlook?.ratios}
+                cashFlow={selectedCompany?.cashFlowStatement?.data}
+                marketCap={selectedCompany?.quote?.marketCap}
               />
             </VisibilityWrapper>
 
             <VisibilityWrapper componentId="company-events">
-              <CompanyEvents 
+              <CompanyEvents
                 isLoading={isLoading}
                 events={selectedCompany?.events}
               />
             </VisibilityWrapper>
 
-            <TimeframeSelector
-              selectedTimeframe={selectedTimeframe}
-              setSelectedTimeframe={setSelectedTimeframe}
-              isTTM={isTTM}
-              setIsTTM={setIsTTM}
-            />
-
             <VisibilityWrapper componentId="charts">
+              <div className={styles.chartControls}>
+                <TimeframeSelector
+                  selectedTimeframe={selectedTimeframe}
+                  setSelectedTimeframe={setSelectedTimeframe}
+                  isTTM={isTTM}
+                  setIsTTM={setIsTTM}
+                />
+                <button
+                  onClick={handleShowAllCards}
+                  className={styles.showAllButton}
+                >
+                  Show All Graphs
+                </button>
+              </div>
               <DraggableCardGrid
-                cardIds={cardOrder}
+                cardIds={cardOrder.filter(id => !hiddenCards.has(id))}
                 onOrderChange={handleOrderChange}
               >
-                {cardOrder.map(id => {
-                  const index = parseInt(id.split('-')[1]);
-                  const card = graphCards[index];
-                  if (!card) return null;
+                {cardOrder
+                  .filter(id => !hiddenCards.has(id))
+                  .map(id => {
+                    const index = parseInt(id.split('-')[1]);
+                    const card = graphCards[index];
+                    if (!card) return null;
 
-                  return (
-                    <GraphicalCard
-                      key={id}
-                      id={id}
-                      title={card.title}
-                      isLoading={isLoading}
-                      timeframe={selectedTimeframe}
-                      isTTM={isTTM}
-                      noData={card.noDataCheck ? card.noDataCheck(selectedCompany?.[card.dataKey as keyof SelectedCompany]) : undefined}
-                    >
-                      <card.Component
-                        {...(Array.isArray(card.dataKey)
-                          ? card.dataKey.reduce((acc, key) => ({ ...acc, [key]: selectedCompany?.[key as keyof SelectedCompany] }), {})
-                          : { data: selectedCompany?.[card.dataKey as keyof SelectedCompany] }
-                        )}
+                    return (
+                      <GraphicalCard
+                        key={id}
+                        id={id}
+                        title={card.title}
                         isLoading={isLoading}
-                      />
-                    </GraphicalCard>
-                  );
-                })}
+                        timeframe={selectedTimeframe}
+                        isTTM={isTTM}
+                        noData={card.noDataCheck ? card.noDataCheck(selectedCompany?.[card.dataKey as keyof SelectedCompany]) : undefined}
+                        onHide={handleHideCard}
+                      >
+                        <card.Component
+                          {...(Array.isArray(card.dataKey)
+                            ? card.dataKey.reduce((acc, key) => ({ ...acc, [key]: selectedCompany?.[key as keyof SelectedCompany] }), {})
+                            : { data: selectedCompany?.[card.dataKey as keyof SelectedCompany] }
+                          )}
+                          isLoading={isLoading}
+                        />
+                      </GraphicalCard>
+                    );
+                  })}
               </DraggableCardGrid>
             </VisibilityWrapper>
 
