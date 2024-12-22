@@ -30,3 +30,15 @@
   background: var(--primary-color);
   color: white;
 } 
+
+@media (max-width: 912px) {
+  .container {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    font-size: 8px;
+  }
+}

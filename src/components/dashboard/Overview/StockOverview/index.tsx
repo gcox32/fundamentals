@@ -13,7 +13,7 @@ interface StockOverviewProps {
 
 export default function StockOverview({ isLoading, quote, profile }: StockOverviewProps) {
   return (
-    <OverviewCard title="Stock Overview" isLoading={isLoading}>
+    <OverviewCard title="Trading" isLoading={isLoading}>
       <div className={styles.metricsGrid}>
         <div className={styles.metricSection}>
           <h4 className={styles.sectionTitle}>Trading Info</h4>
