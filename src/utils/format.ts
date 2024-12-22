@@ -34,7 +34,10 @@ export const formatNumber = (value?: number) => {
 
 export const formatPrice = (value?: number) => {
     if (!value) return '--';
-    return `$${value.toFixed(2)}`;
+    return `$${value.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    })}`;
 };
 
 export const formatDate = (event?: { raw: number; fmt: string } | Array<{ raw: number; fmt: string }>) => {

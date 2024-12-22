@@ -83,7 +83,7 @@ export default function HistoricalPrice({ data, isLoading }: HistoricalPriceProp
             tickFormatter={(value) => formatPrice(value)}
           />
           <Tooltip
-            formatter={(value: number) => [formatPrice(value), 'Price']}
+            formatter={(value: number, name: string) => [formatPrice(value), name]}
             labelFormatter={(label) => new Date(label).toLocaleDateString()}
           />
           {isExpanded && (
@@ -106,7 +106,6 @@ export default function HistoricalPrice({ data, isLoading }: HistoricalPriceProp
             hide={hiddenSeries.has('close')}
           />
           {isExpanded && (
-            <>
               <Line
                 type="monotone"
                 dataKey="ma50"
@@ -115,6 +114,8 @@ export default function HistoricalPrice({ data, isLoading }: HistoricalPriceProp
                 name="50 Day MA"
                 hide={hiddenSeries.has('ma50')}
               />
+          )}
+          {isExpanded && (
               <Line
                 type="monotone"
                 dataKey="ma200"
@@ -123,7 +124,6 @@ export default function HistoricalPrice({ data, isLoading }: HistoricalPriceProp
                 name="200 Day MA"
                 hide={hiddenSeries.has('ma200')}
               />
-            </>
           )}
         </LineChart>
       </ResponsiveContainer>

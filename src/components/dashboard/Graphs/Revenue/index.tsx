@@ -61,8 +61,6 @@ export default function Revenue({
     });
   };
 
-  console.log('Revenue component props:', { data, segmentData, geographyData, isLoading });
-
   const chartData = useMemo(() => {
     if (selectedView === 'total' && data?.data) {
       const allData = data.data.map(statement => ({
@@ -112,22 +110,22 @@ export default function Revenue({
           return baseData;
         });
 
-      if (isTTM) {
-        return processedData.map((item, index, array) => {
-          if (index < 3) return item;
-          const ttmData = { ...item };
-          Object.keys(segments).forEach(segment => {
-            ttmData[segment] = array
-              .slice(index - 3, index + 1)
-              .reduce((sum, curr) => sum + (Number(curr[segment]) || 0), 0);
-          });
-          ttmData.total = Object.keys(segments)
-            .reduce((sum, segment) => sum + Number(ttmData[segment]), 0);
-          return ttmData;
-        });
-      }
+      const processedDataWithTTM = isTTM
+        ? processedData.map((item, index, array) => {
+            if (index < 3) return item;
+            const ttmData = { ...item };
+            Array.from(segments).forEach(segment => {
+              ttmData[segment] = array
+                .slice(index - 3, index + 1)
+                .reduce((sum, curr) => sum + (Number(curr[segment]) || 0), 0);
+            });
+            ttmData.total = Array.from(segments)
+              .reduce((sum, segment) => sum + Number(ttmData[segment]), 0);
+            return ttmData;
+          })
+        : processedData;
 
-      return filterDataByTimeframe(processedData, timeframe);
+      return filterDataByTimeframe(processedDataWithTTM, timeframe);
     }
 
     if (selectedView === 'region' && geographyData?.data) {
@@ -155,22 +153,22 @@ export default function Revenue({
           return baseData;
         });
 
-      if (isTTM) {
-        return processedData.map((item, index, array) => {
-          if (index < 3) return item;
-          const ttmData = { ...item };
-          Object.keys(regions).forEach(region => {
-            ttmData[region] = array
-              .slice(index - 3, index + 1)
-              .reduce((sum, curr) => sum + (Number(curr[region]) || 0), 0);
-          });
-          ttmData.total = Object.keys(regions)
-            .reduce((sum, region) => sum + Number(ttmData[region]), 0);
-          return ttmData;
-        });
-      }
+      const processedDataWithTTM = isTTM
+        ? processedData.map((item, index, array) => {
+            if (index < 3) return item;
+            const ttmData = { ...item };
+            Array.from(regions).forEach(region => {
+              ttmData[region] = array
+                .slice(index - 3, index + 1)
+                .reduce((sum, curr) => sum + (Number(curr[region]) || 0), 0);
+            });
+            ttmData.total = Array.from(regions)
+              .reduce((sum, region) => sum + Number(ttmData[region]), 0);
+            return ttmData;
+          })
+        : processedData;
 
-      return filterDataByTimeframe(processedData, timeframe);
+      return filterDataByTimeframe(processedDataWithTTM, timeframe);
     }
 
     return [];
