@@ -16,6 +16,7 @@ import { graphCards } from './graphConfig';
 import { SelectedCompany } from './types';
 import DraggableCardGrid from '@/components/dashboard/DraggableCardGrid';
 import VisibilityWrapper from '@/components/dashboard/VisibilityWrapper';
+import AssetTypeSelector from '@/components/dashboard/AssetTypeSelector';
 
 const DEFAULT_CARD_ORDER = graphCards.map((card, index) => `graph-${index}`);
 
@@ -38,6 +39,7 @@ export default function Dashboard() {
     }
     return new Set();
   });
+  const [selectedAssetType, setSelectedAssetType] = useState('STOCK');
 
   useEffect(() => {
     if (cardOrder !== DEFAULT_CARD_ORDER) {
@@ -181,7 +183,16 @@ export default function Dashboard() {
   return (
     <div className={styles.dashboardContainer}>
       <div className="container mx-auto px-4 py-8">
-        <StockSearchBar onSubmit={handleCompanySelect} />
+        <div>
+          <StockSearchBar 
+            onSubmit={handleCompanySelect} 
+            selectedAssetType={selectedAssetType} 
+          />
+          <AssetTypeSelector
+            selectedAssetType={selectedAssetType}
+            onAssetTypeChange={setSelectedAssetType}
+          />
+        </div>
 
         {(selectedCompany || isLoading) && (
           <>

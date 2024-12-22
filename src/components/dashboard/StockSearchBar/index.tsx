@@ -2,14 +2,17 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { FaSearch, FaTimesCircle } from 'react-icons/fa';
-import { assetTypes } from './config';
 import styles from './styles.module.css';
 import Image from 'next/image';
 import { StockResult } from './types';
 
-export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { symbol: string; name: string, assetType: string }) => void }) {
+interface StockSearchBarProps {
+  onSubmit: (company: { symbol: string; name: string, assetType: string }) => void;
+  selectedAssetType: string;
+}
+
+export default function StockSearchBar({ onSubmit, selectedAssetType }: StockSearchBarProps) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedAssetType, setSelectedAssetType] = useState('STOCK');
   const [isFocused, setIsFocused] = useState(false);
   const [results, setResults] = useState<StockResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -135,32 +138,7 @@ export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { sym
             </div>
           )}
         </div>
-
-        {searchQuery && (
-          <button
-            type="button"
-            onClick={() => setSearchQuery('')}
-            className={styles.clearButton}
-            aria-label="Clear search"
-          >
-            <FaTimesCircle />
-          </button>
-        )}
-
         <div className={styles.divider} />
-
-        <select
-          value={selectedAssetType}
-          onChange={(e) => setSelectedAssetType(e.target.value)}
-          className={styles.exchangeSelect}
-        >
-          {assetTypes.map((type) => (
-            <option key={type.code} value={type.code}>
-              {type.name}
-            </option>
-          ))}
-        </select>
-
         <button
           type="submit"
           className={styles.searchButton}
@@ -169,6 +147,8 @@ export default function StockSearchBar({ onSubmit }: { onSubmit: (company: { sym
           <span className={styles.searchButtonText}>Search</span>
           <FaSearch className={styles.searchButtonIcon} />
         </button>
+
+
       </div>
     </form>
   );
