@@ -5,12 +5,9 @@ const schema = a.schema({
     .model({
       id: a.id(),
       sub: a.string(),
-      profileId: a.string(),
-      profile: a.hasOne('Profile', 'profileId'),
-      portfolioId: a.string(),
-      portfolio: a.hasOne('Portfolio', 'portfolioId'),
-      pageSettingsId: a.string(),
-      pageSettings: a.hasOne('PageSettings', 'pageSettingsId'),
+      profile: a.hasOne('Profile', 'userId'),
+      portfolio: a.hasOne('Portfolio', 'userId'),
+      pageSettings: a.hasOne('PageSettings', 'userId'),
     })
     .authorization((allow) => [allow.groups(['admin','member'])]),
   Profile: a
@@ -18,6 +15,11 @@ const schema = a.schema({
       id: a.id(),
       userId: a.string(),
       user: a.belongsTo('User', 'userId'),
+      firstName: a.string(),
+      lastName: a.string(),
+      email: a.string(),
+      phone: a.string(),
+      avatar: a.string(),
     })
     .authorization((allow) => [allow.groups(['admin','member'])]),
   Account: a
