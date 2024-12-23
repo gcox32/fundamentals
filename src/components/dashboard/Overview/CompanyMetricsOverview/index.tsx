@@ -4,6 +4,9 @@ import { CompanyRatios } from '@/types/company';
 import { CashFlowStatement } from '@/types/financials';
 import OverviewCard from '@/components/dashboard/DashboardCard/OverviewCard';
 import { formatPercent, formatNumber, formatPrice } from '@/utils/format';
+import { FiInfo } from 'react-icons/fi';
+import Tooltip from '@/components/common/Tooltip';
+import { metricTooltips } from './tooltips';
 
 interface CompanyMetricsOverviewProps {
   isLoading: boolean;
@@ -11,6 +14,18 @@ interface CompanyMetricsOverviewProps {
   cashFlow?: CashFlowStatement[];
   marketCap?: number;
 }
+
+const MetricRow = ({ label, value, tooltipKey }: { label: string, value: React.ReactNode, tooltipKey: keyof typeof metricTooltips }) => (
+  <div className={styles.metric}>
+    <span className={styles.labelContainer}>
+      <span className={styles.label}>{label}</span>
+      <Tooltip content={metricTooltips[tooltipKey]}>
+        <FiInfo className={styles.infoIcon} />
+      </Tooltip>
+    </span>
+    <span className={styles.value}>{value}</span>
+  </div>
+);
 
 export default function CompanyMetricsOverview({ 
   isLoading, 
@@ -40,86 +55,101 @@ export default function CompanyMetricsOverview({
         {/* Valuation Metrics */}
         <div className={styles.metricSection}>
           <h4 className={styles.sectionTitle}>Valuation</h4>
-          <div className={styles.metric}>
-            <span className={styles.label}>P/E Ratio</span>
-            <span className={styles.value}>{formatNumber(latestRatios?.peRatioTTM)}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>PEG Ratio</span>
-            <span className={styles.value}>{formatNumber(latestRatios?.pegRatioTTM)}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>Price to Book</span>
-            <span className={styles.value}>{formatNumber(latestRatios?.priceToBookRatioTTM)}</span>
-          </div>
+          <MetricRow 
+            label="P/E Ratio" 
+            value={formatNumber(latestRatios?.peRatioTTM)} 
+            tooltipKey="peRatio" 
+          />
+          <MetricRow 
+            label="PEG Ratio" 
+            value={formatNumber(latestRatios?.pegRatioTTM)} 
+            tooltipKey="pegRatio" 
+          />
+          <MetricRow 
+            label="Price to Book" 
+            value={formatNumber(latestRatios?.priceToBookRatioTTM)} 
+            tooltipKey="priceToBook" 
+          />
         </div>
 
         {/* Free Cash Flow Metrics */}
         <div className={styles.metricSection}>
           <h4 className={styles.sectionTitle}>Cash Flow</h4>
-          <div className={styles.metric}>
-            <span className={styles.label}>FCF Yield</span>
-            <span className={styles.value}>{formatPercent(fcfYield)}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>FCF Yield (ex-SBC)</span>
-            <span className={styles.value}>{formatPercent(fcfYieldAdjusted)}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>SBC Impact</span>
-            <span className={styles.value}>{formatPercent(sbcImpact)}</span>
-          </div>
+          <MetricRow 
+            label="FCF Yield" 
+            value={formatPercent(fcfYield)} 
+            tooltipKey="fcfYield" 
+          />
+          <MetricRow 
+            label="FCF Yield (ex-SBC)" 
+            value={formatPercent(fcfYieldAdjusted)} 
+            tooltipKey="fcfYieldAdjusted" 
+          />
+          <MetricRow 
+            label="SBC Impact" 
+            value={formatPercent(sbcImpact)} 
+            tooltipKey="sbcImpact" 
+          />
         </div>
 
         {/* Dividend Metrics */}
         <div className={styles.metricSection}>
           <h4 className={styles.sectionTitle}>Dividends</h4>
-          <div className={styles.metric}>
-            <span className={styles.label}>Dividend Yield</span>
-            <span className={styles.value}>{formatPercent(latestRatios?.dividendYielPercentageTTM)}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>Payout Ratio</span>
-            <span className={styles.value}>{formatPercent(latestRatios?.payoutRatioTTM)}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>Dividend per Share</span>
-            <span className={styles.value}>{formatPrice(latestRatios?.dividendPerShareTTM)}</span>
-          </div>
+          <MetricRow 
+            label="Dividend Yield" 
+            value={formatPercent(latestRatios?.dividendYielPercentageTTM)} 
+            tooltipKey="dividendYield" 
+          />
+          <MetricRow 
+            label="Payout Ratio" 
+            value={formatPercent(latestRatios?.payoutRatioTTM)} 
+            tooltipKey="payoutRatio" 
+          />
+          <MetricRow 
+            label="Dividend per Share" 
+            value={formatPrice(latestRatios?.dividendPerShareTTM)} 
+            tooltipKey="dividendPerShare" 
+          />
         </div>
 
         {/* Returns Metrics */}
         <div className={styles.metricSection}>
           <h4 className={styles.sectionTitle}>Returns</h4>
-          <div className={styles.metric}>
-            <span className={styles.label}>Return on Equity</span>
-            <span className={styles.value}>{formatPercent(latestRatios?.returnOnEquityTTM)}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>Return on Assets</span>
-            <span className={styles.value}>{formatPercent(latestRatios?.returnOnAssetsTTM)}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>Return on Capital Employed</span>
-            <span className={styles.value}>{formatPercent(latestRatios?.returnOnCapitalEmployedTTM)}</span>
-          </div>
+          <MetricRow 
+            label="Return on Equity" 
+            value={formatPercent(latestRatios?.returnOnEquityTTM)} 
+            tooltipKey="returnOnEquity" 
+          />
+          <MetricRow 
+            label="Return on Assets" 
+            value={formatPercent(latestRatios?.returnOnAssetsTTM)} 
+            tooltipKey="returnOnAssets" 
+          />
+          <MetricRow 
+            label="ROCE" 
+            value={formatPercent(latestRatios?.returnOnCapitalEmployedTTM)} 
+            tooltipKey="returnOnCapital" 
+          />
         </div>
 
         {/* Profit Margins */}
         <div className={styles.metricSection}>
           <h4 className={styles.sectionTitle}>Profit Margins</h4>
-          <div className={styles.metric}>
-            <span className={styles.label}>Gross Margin</span>
-            <span className={styles.value}>{formatPercent(latestRatios?.grossProfitMarginTTM)}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>Operating Margin</span>
-            <span className={styles.value}>{formatPercent(latestRatios?.operatingProfitMarginTTM)}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>Net Margin</span>
-            <span className={styles.value}>{formatPercent(latestRatios?.netProfitMarginTTM)}</span>
-          </div>
+          <MetricRow 
+            label="Gross Margin" 
+            value={formatPercent(latestRatios?.grossProfitMarginTTM)} 
+            tooltipKey="grossMargin" 
+          />
+          <MetricRow 
+            label="Operating Margin" 
+            value={formatPercent(latestRatios?.operatingProfitMarginTTM)} 
+            tooltipKey="operatingMargin" 
+          />
+          <MetricRow 
+            label="Net Margin" 
+            value={formatPercent(latestRatios?.netProfitMarginTTM)} 
+            tooltipKey="netMargin" 
+          />
         </div>
       </div>
     </OverviewCard>

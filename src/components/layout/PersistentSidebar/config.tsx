@@ -8,13 +8,14 @@ import {
     FaBell,
     FaCalculator 
 } from 'react-icons/fa';
+import EventideIcon from '@/components/common/icons/EventideIcon';
 
 export const navGroups: NavGroup[] = [
     {
         title: 'Market Research',
         items: [
             { icon: <FaChartLine />, label: 'Overview', href: '/dashboard' },
-            { icon: <FaSearch />, label: 'Stock Screener', href: '/dashboard/screener' },
+            { icon: <EventideIcon />, label: 'Values Review', href: '/dashboard/values' },
             { icon: <FaNewspaper />, label: 'News & Analysis', href: '/dashboard/news' },
         ]
     },

@@ -34,15 +34,15 @@ export default function StockOverview({ isLoading, quote, profile }: StockOvervi
         <div className={styles.metricSection}>
           <h4 className={styles.sectionTitle}>Price Range</h4>
           <div className={styles.metric}>
-            <span className={styles.label}>52W High</span>
+            <span className={styles.label}>52-week High</span>
             <span className={styles.value}>{formatPrice(quote?.yearHigh)}</span>
           </div>
           <div className={styles.metric}>
-            <span className={styles.label}>52W Low</span>
+            <span className={styles.label}>52-week Low</span>
             <span className={styles.value}>{formatPrice(quote?.yearLow)}</span>
           </div>
           <div className={styles.metric}>
-            <span className={styles.label}>50D Avg</span>
+            <span className={styles.label}>50-day Average</span>
             <span className={styles.value}>{formatPrice(quote?.priceAvg50)}</span>
           </div>
         </div>

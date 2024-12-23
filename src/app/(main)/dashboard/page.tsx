@@ -164,13 +164,27 @@ export default function Dashboard() {
       // Revenue by Segment
       fetchDashboardData('company/revenue-by-segment', company.symbol,
         updateCompanyData('revenueBySegment'),
-        handleError('revenueBySegment')
+        handleError('revenueBySegment',
+          {
+            symbol: company.symbol,
+            historical: [],
+            lastUpdated: Date.now()
+          },
+          true
+        )
       );
 
       // Revenue by Geography
       fetchDashboardData('company/revenue-by-geography', company.symbol,
         updateCompanyData('revenueByGeography'),
-        handleError('revenueByGeography')
+        handleError('revenueByGeography',
+          {
+            symbol: company.symbol,
+            historical: [],
+            lastUpdated: Date.now()
+          },
+          true
+        )
       );
 
     } catch (error) {
