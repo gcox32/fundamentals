@@ -1,25 +1,31 @@
 import React, { useState } from 'react';
 import { useAuthenticator } from '@/src/hooks/useAuthenticator';
+import { AuthError } from '@aws-amplify/auth';
+import { Spinner } from '@/src/components/utils/Spinner';
 
 interface SignInFormProps {
   onStateChange: (state: string) => void;
   hideSignUp?: boolean;
+  onSignIn: (username: string, password: string) => Promise<void>;
 }
 
-export default function SignInForm({ onStateChange, hideSignUp }: SignInFormProps) {
+export default function SignInForm({ onStateChange, hideSignUp, onSignIn }: SignInFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { signIn } = useAuthenticator();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
     
     try {
-      await signIn(email, password);
-    } catch (err) {
-      setError('Invalid email or password');
+      await onSignIn(email, password);
+    } catch (err: any) {
+      setError(err.message || 'Invalid email or password');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -35,6 +41,7 @@ export default function SignInForm({ onStateChange, hideSignUp }: SignInFormProp
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          disabled={isLoading}
         />
       </div>
 
@@ -46,11 +53,23 @@ export default function SignInForm({ onStateChange, hideSignUp }: SignInFormProp
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          disabled={isLoading}
         />
       </div>
 
-      <button type="submit" className="submit-button">
-        Sign In
+      <button 
+        type="submit" 
+        className="submit-button"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <span className="button-content">
+            <Spinner size="small" color="white" />
+            <span className="button-text">Signing In...</span>
+          </span>
+        ) : (
+          'Sign In'
+        )}
       </button>
 
       <div className="auth-links">
@@ -58,6 +77,7 @@ export default function SignInForm({ onStateChange, hideSignUp }: SignInFormProp
           type="button" 
           onClick={() => onStateChange('forgotPassword')}
           className="text-button"
+          disabled={isLoading}
         >
           Forgot password?
         </button>
@@ -67,6 +87,7 @@ export default function SignInForm({ onStateChange, hideSignUp }: SignInFormProp
             type="button" 
             onClick={() => onStateChange('signUp')}
             className="text-button"
+            disabled={isLoading}
           >
             Create account
           </button>

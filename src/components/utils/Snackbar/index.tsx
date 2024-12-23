@@ -6,7 +6,7 @@ import './styles.css';
 
 interface SnackbarProps {
   message: string;
-  type: "success" | "error";
+  type: "success" | "error" | "info";
   visible: boolean;
 }
 

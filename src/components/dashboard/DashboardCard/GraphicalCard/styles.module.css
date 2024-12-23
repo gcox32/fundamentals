@@ -1,0 +1,102 @@
+.graphicalCard {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .graphicalCard {
+    padding: 1rem 0;
+  }
+}
+
+.graphicalCard h3 {
+  margin-bottom: 0;
+}
+
+.graphicalCard:hover {
+  box-shadow: 
+      0 6px 8px -1px rgba(0, 0, 0, 0.15),
+      0 3px 6px -1px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+}
+
+.clickableContent {
+  height: 100%;
+}
+
+.chartContainer {
+  width: 100%;
+  height: 360px;
+  padding: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  color: var(--text-secondary);
+} 
+
+.noData {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-secondary);
+  margin: 2rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.cardActions {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+    z-index: 1;
+}
+
+.hideIcon,
+.expandIcon {
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+
+.hideIcon:hover,
+.expandIcon:hover {
+    opacity: 1;
+}
+
+.expandIcon {
+    position: static;
+}
+
+.cardHeader {
+    position: static;
+    height: 24px;
+    margin-bottom: 8px;
+}
+
+.dragHandle {
+  cursor: grab;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.dragHandle:hover {
+  opacity: 1;
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}

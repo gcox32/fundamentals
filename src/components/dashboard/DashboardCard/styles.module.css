@@ -1,0 +1,24 @@
+.card {
+    background: var(--searchbar-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    height: 100%;
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.cardTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text);
+    text-align: center;
+}
+
+.cardContent {
+    height: 100%;
+}

@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { resetPassword, confirmResetPassword } from 'aws-amplify/auth';
+import { AuthError } from '@aws-amplify/auth';
+import { Spinner } from '@/src/components/utils/Spinner';
 
 interface ForgotPasswordFormProps {
   onStateChange: (state: string) => void;
@@ -10,22 +13,48 @@ export default function ForgotPasswordForm({ onStateChange }: ForgotPasswordForm
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [code, setCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
 
     try {
       if (!isCodeSent) {
-        // Simulate sending reset code
+        await resetPassword({ username: email });
         setIsCodeSent(true);
       } else {
-        // Simulate password reset
-        console.log('Password reset with:', { email, code, newPassword });
+        await confirmResetPassword({
+          username: email,
+          confirmationCode: code,
+          newPassword
+        });
         onStateChange('signIn');
       }
     } catch (err) {
-      setError('Failed to process request');
+      if (err instanceof AuthError) {
+        switch (err.name) {
+          case 'LimitExceededException':
+            setError('Too many attempts. Please try again later.');
+            break;
+          case 'CodeMismatchException':
+            setError('Invalid verification code');
+            break;
+          case 'InvalidPasswordException':
+            setError('Password does not meet requirements');
+            break;
+          case 'UserNotFoundException':
+            setError('No account found with this email');
+            break;
+          default:
+            setError('An error occurred during password reset');
+        }
+      } else {
+        setError('An unexpected error occurred');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -41,7 +70,7 @@ export default function ForgotPasswordForm({ onStateChange }: ForgotPasswordForm
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          disabled={isCodeSent}
+          disabled={isCodeSent || isLoading}
         />
       </div>
 
@@ -55,6 +84,7 @@ export default function ForgotPasswordForm({ onStateChange }: ForgotPasswordForm
               value={code}
               onChange={(e) => setCode(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -66,13 +96,27 @@ export default function ForgotPasswordForm({ onStateChange }: ForgotPasswordForm
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
         </>
       )}
 
-      <button type="submit" className="submit-button">
-        {isCodeSent ? 'Reset Password' : 'Send Code'}
+      <button 
+        type="submit" 
+        className="submit-button"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <span className="button-content">
+            <Spinner size="small" color="white" />
+            <span className="button-text">
+              {isCodeSent ? 'Resetting Password...' : 'Sending Code...'}
+            </span>
+          </span>
+        ) : (
+          isCodeSent ? 'Reset Password' : 'Send Code'
+        )}
       </button>
 
       <div className="auth-links">
@@ -80,6 +124,7 @@ export default function ForgotPasswordForm({ onStateChange }: ForgotPasswordForm
           type="button" 
           onClick={() => onStateChange('signIn')}
           className="text-button"
+          disabled={isLoading}
         >
           Back to Sign In
         </button>

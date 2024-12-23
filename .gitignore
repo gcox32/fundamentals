@@ -26,6 +26,12 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# local data
+db/
+tmp/
+yhfinance.json
+fmp.json
+
 # vercel
 .vercel
 

@@ -17,12 +17,12 @@
 
 .form-field label {
   font-weight: 500;
-  color: var(--text-primary);
+  color: #2a2a2a;
 }
 
 .form-field input {
   padding: 0.75rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid #2a2a2a;
   border-radius: 6px;
   font-size: 1rem;
 }
@@ -62,4 +62,31 @@
 
 .text-button:hover {
   text-decoration: underline;
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.button-text {
+  margin-left: 0.5rem;
+}
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.form-field input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.text-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 } 

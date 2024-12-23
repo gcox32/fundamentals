@@ -1,7 +1,6 @@
-export const exchanges = [
-  { code: 'NYSE', name: 'New York Stock Exchange' },
-  { code: 'NASDAQ', name: 'NASDAQ' },
-  { code: 'AMEX', name: 'American Stock Exchange' },
-  { code: 'TSX', name: 'Toronto Stock Exchange' },
-  { code: 'LSE', name: 'London Stock Exchange' },
+export const assetTypes = [
+  { code: 'STOCK', name: 'Stocks' },
+  { code: 'ETF', name: 'ETFs' },
+  { code: 'MUTF', name: 'Mutual Funds' },
+  { code: 'CRYPTO', name: 'Crypto' }
 ]; 

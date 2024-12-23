@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { useAuthenticator } from '@/src/hooks/useAuthenticator';
+import { signUp } from 'aws-amplify/auth';
+import { AuthError } from '@aws-amplify/auth';
+import { Spinner } from '@/src/components/utils/Spinner';
 
 interface SignUpFormProps {
   onStateChange: (state: string) => void;
@@ -13,7 +15,7 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
     username: ''
   });
   const [error, setError] = useState('');
-  const { signIn } = useAuthenticator();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -31,11 +33,37 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
       return;
     }
 
+    setIsLoading(true);
     try {
-      // In a real implementation, this would be signUp instead of signIn
-      await signIn(formData.email, formData.password);
+      await signUp({
+        username: formData.email,
+        password: formData.password,
+        options: {
+          userAttributes: {
+            email: formData.email,
+            preferred_username: formData.username
+          },
+          autoSignIn: true
+        }
+      });
+      onStateChange('confirmSignUp');
     } catch (err) {
-      setError('Failed to create account');
+      if (err instanceof AuthError) {
+        switch (err.name) {
+          case 'UsernameExistsException':
+            setError('An account with this email already exists');
+            break;
+          case 'InvalidPasswordException':
+            setError('Password does not meet requirements');
+            break;
+          default:
+            setError('Failed to create account');
+        }
+      } else {
+        setError('An unexpected error occurred');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -52,6 +80,7 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
           value={formData.username}
           onChange={handleChange}
           required
+          disabled={isLoading}
         />
       </div>
 
@@ -64,6 +93,7 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
           value={formData.email}
           onChange={handleChange}
           required
+          disabled={isLoading}
         />
       </div>
 
@@ -76,6 +106,7 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
           value={formData.password}
           onChange={handleChange}
           required
+          disabled={isLoading}
         />
       </div>
 
@@ -88,11 +119,23 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
           value={formData.confirmPassword}
           onChange={handleChange}
           required
+          disabled={isLoading}
         />
       </div>
 
-      <button type="submit" className="submit-button">
-        Create Account
+      <button 
+        type="submit" 
+        className="submit-button"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <span className="button-content">
+            <Spinner size="small" color="white" />
+            <span className="button-text">Creating Account...</span>
+          </span>
+        ) : (
+          'Create Account'
+        )}
       </button>
 
       <div className="auth-links">
@@ -100,6 +143,7 @@ export default function SignUpForm({ onStateChange }: SignUpFormProps) {
           type="button" 
           onClick={() => onStateChange('signIn')}
           className="text-button"
+          disabled={isLoading}
         >
           Already have an account? Sign in
         </button>

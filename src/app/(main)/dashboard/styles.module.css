@@ -1,0 +1,42 @@
+.dashboardContainer {
+  background-image: linear-gradient(to bottom, var(--background-secondary), var(--background));
+  border-radius: 16px;
+  width: 100%;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.chartControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+}
+
+.showAllButton {
+  background: var(--active-accent);
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 16px;
+  border: 1px solid black;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 0 1rem;
+  width: 220px;
+  transition: opacity 0.2s ease;
+}
+
+.showAllButton:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .chartControls {
+    flex-direction: column;
+    padding: 0 0 1rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+} 

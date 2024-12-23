@@ -5,23 +5,37 @@ import { FaCog, FaBars } from "react-icons/fa";
 import Sidebar from "@/src/components/layout/Sidebar";
 import PageSettingsSidebar from "@/src/components/layout/PageSettingsSidebar";
 import UserSidebar from "@/src/components/layout/UserSidebar";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import "./styles.css";
 import PersistentSidebar from "@/src/components/layout/PersistentSidebar";
 import { useSidebar } from "@/src/contexts/SidebarContext";
 import SearchBar from "@/src/components/layout/SearchBar";
+import { useAuthenticator } from "@/hooks/useAuthenticator";
 
 export default function Navigation() {
+    const { user, isAuthenticated } = useAuthenticator(context => ({
+        user: context.user,
+        isAuthenticated: context.isAuthenticated
+    }));
 
-    const user = {
-        name: 'Demo Account',
-        avatar: 'https://ui-avatars.com/api/?name=Demo+Account&background=random&color=fff&size=100.png'
-      };
-
-    const router = useRouter();
     const [pageSettingsSidebarOpen, setPageSettingsSidebarOpen] = useState(false);
     const [userSidebarOpen, setUserSidebarOpen] = useState(false);
-    const { isExpanded, setIsExpanded, isMobileView, setMobileOpen } = useSidebar();
+    const { isExpanded, isMobileView, setMobileOpen } = useSidebar();
+
+    if (!isAuthenticated) {
+        return (
+            <nav className="main-nav">
+                <div className="nav-controls">
+                    <Link href="/auth/sign-in" className="nav-link">
+                        Sign In
+                    </Link>
+                    <Link href="/auth/sign-up" className="nav-button">
+                        Get Started
+                    </Link>
+                </div>
+            </nav>
+        );
+    }
 
     return (
         <>
@@ -50,7 +64,7 @@ export default function Navigation() {
                         aria-label="User menu"
                         onClick={() => setUserSidebarOpen(true)}
                         style={{
-                            backgroundImage: `url(${user.avatar})`
+                            backgroundImage: `url(${user?.avatar || 'https://ui-avatars.com/api/?name=Demo+Account&background=random&color=fff&size=100.png'})`
                         }}
                     />
                 </div>

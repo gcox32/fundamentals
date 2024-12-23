@@ -1,0 +1,62 @@
+.priceContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.currentPrice {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.priceChangeContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.positive {
+  background: #9effc1;
+  color: darkgreen;
+  /* border: 1px solid darkgreen; */
+}
+
+.negative {
+  background: #f48686;
+  color: darkred;
+  /* border: 1px solid darkred; */
+}
+
+.afterHours {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+:global(.dark) .afterHours {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.marketStatus {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+:global(.dark) .marketStatus {
+  background: rgba(255, 255, 255, 0.1);
+} 

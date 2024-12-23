@@ -1,0 +1,85 @@
+.toggleContainer {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggleWrapper {
+  display: flex;
+  background: #f0f0f0;
+  border-radius: 20px;
+  padding: 4px;
+  position: relative;
+}
+
+.toggleButton {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  transition: color 0.3s;
+  width: 136px;
+}
+
+.tripleToggle .toggleButton {
+  width: 120px;
+}
+
+.toggleButton.active {
+  color: #fff;
+}
+
+.toggleButton.inactive {
+  color: #666;
+}
+
+.slider {
+  position: absolute;
+  top: 4px;
+  height: calc(100% - 8px);
+  background: #2196F3;
+  border-radius: 16px;
+  transition: left 0.3s;
+  z-index: 0;
+}
+
+/* For double toggle */
+.toggleWrapper:not(.tripleToggle) .slider {
+  width: calc(50% - 4px);
+}
+
+.toggleWrapper:not(.tripleToggle) .sliderLeft {
+  left: 4px;
+}
+
+.toggleWrapper:not(.tripleToggle) .sliderRight {
+  left: 50%;
+}
+
+/* For triple toggle */
+.tripleToggle .slider {
+  width: calc(33.33% - 4px);
+}
+
+.tripleToggle .sliderLeft {
+  left: 4px;
+}
+
+.tripleToggle .sliderCenter {
+  left: calc(33.33% + 2px);
+}
+
+.tripleToggle .sliderRight {
+  left: calc(66.66% + 0px);
+} 
+
+@media (max-width: 768px) {
+  .toggleButton {
+    max-width: 116px;
+  }
+}
