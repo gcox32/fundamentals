@@ -1,4 +1,4 @@
-import { PriceInfoProps } from '@/components/dashboard/CompanyHeader/PriceInfo/types';
+import { PriceInfoProps } from './PriceInfo/types';
 
 export interface CompanyHeaderProps {
     symbol: string;
