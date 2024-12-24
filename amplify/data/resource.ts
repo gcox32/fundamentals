@@ -6,7 +6,8 @@ const schema = a.schema({
       id: a.id(),
       sub: a.string(),
       profile: a.hasOne('Profile', 'userId'),
-      portfolio: a.hasOne('Portfolio', 'userId'),
+      portfolios: a.hasMany('Portfolio', 'userId'),
+      watchlists: a.hasMany('Watchlist', 'userId'),
       pageSettings: a.hasOne('PageSettings', 'userId'),
     })
     .authorization((allow) => [allow.groups(['admin','member'])]),
@@ -22,24 +23,11 @@ const schema = a.schema({
       avatar: a.string(),
     })
     .authorization((allow) => [allow.groups(['admin','member'])]),
-  Account: a
-    .model({
-      id: a.id(),
-      userId: a.string(),
-      user: a.belongsTo('User', 'userId'),
-      positions: a.hasMany('Position', 'accountId'),
-      type: a.string(),
-      name: a.string(),
-      description: a.string(),
-    })
-    .authorization((allow) => [allow.groups(['admin','member'])]),
   Position: a
     .model({
       id: a.id(),
       portfolioId: a.string(),
       portfolio: a.belongsTo('Portfolio', 'portfolioId'),
-      accountId: a.string(),
-      account: a.belongsTo('Account', 'accountId'),
       symbol: a.string(),
       costBasis: a.float(),
       quantity: a.float()
@@ -48,9 +36,28 @@ const schema = a.schema({
   Portfolio: a
     .model({
       id: a.id(),
+      name: a.string(),
       userId: a.string(),
       user: a.belongsTo('User', 'userId'),
       positions: a.hasMany('Position', 'portfolioId'),
+    })
+    .authorization((allow) => [allow.groups(['admin','member'])]),  
+  WatchedStock: a
+    .model({
+      id: a.id(),
+      symbol: a.string(),
+      name: a.string(),
+      watchlistId: a.string(),
+      watchlist: a.belongsTo('Watchlist', 'watchlistId'),
+    })
+    .authorization((allow) => [allow.groups(['admin','member'])]),  
+  Watchlist: a
+    .model({
+      id: a.id(),
+      name: a.string(),
+      userId: a.string(),
+      user: a.belongsTo('User', 'userId'),
+      positions: a.hasMany('WatchedStock', 'watchlistId'),
     })
     .authorization((allow) => [allow.groups(['admin','member'])]),  
   PageSettings: a
