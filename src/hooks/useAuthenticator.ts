@@ -40,7 +40,6 @@ export function useAuthenticator(selector?: (context: AuthContextType) => any) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        console.log('Checking authentication status...');
         const user = await getCurrentUser();
         setAuthState({
           user: {

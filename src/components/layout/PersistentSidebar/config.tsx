@@ -22,7 +22,7 @@ export const navGroups: NavGroup[] = [
     {
         title: 'Portfolio',
         items: [
-            { icon: <FaBriefcase />, label: 'Holdings', href: '/portfolio/holdings' },
+            { icon: <FaBriefcase />, label: 'Holdings', href: '/portfolio' },
             { icon: <FaChartBar />, label: 'Performance', href: '/portfolio/performance' },
             { icon: <FaBell />, label: 'Alerts', href: '/portfolio/alerts' },
         ]
@@ -30,7 +30,7 @@ export const navGroups: NavGroup[] = [
     {
         title: 'Tools',
         items: [
-            { icon: <FaCalculator />, label: 'Investment Calculator', href: '/tools/calculator' },
+            { icon: <FaCalculator />, label: 'Calculator', href: '/tools/calculator' },
         ]
     }
 ];
