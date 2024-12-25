@@ -3,6 +3,7 @@ import { FaTrash, FaPlus } from 'react-icons/fa';
 import { generateClient } from 'aws-amplify/api';
 import { type Schema } from '@/amplify/data/resource';
 import type { Position, PortfolioCardProps } from '@/types/portfolio';
+import { formatPrice } from '@/utils/format';
 
 const client = generateClient<Schema>();
 
@@ -86,22 +87,58 @@ export default function PortfolioCard({ portfolio, onDelete }: PortfolioCardProp
       <div className="space-y-4">
         {isLoading ? (
           <div className="text-center py-4">Loading positions...</div>
-        ) : positions.map((position) => (
-          <div key={position.id} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded">
-            <div>
-              <div className="font-medium">{position.symbol}</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                {position.quantity} shares @ ${position.costBasis.toFixed(2)}
-              </div>
-            </div>
-            <button
-              onClick={() => handleDeletePosition(position.id)}
-              className="text-red-200 hover:text-red-500 transition-colors"
-            >
-              <FaTrash />
-            </button>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead>
+                <tr>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Symbol</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Price</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Today</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total G/L</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">% of Portfolio</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cost Basis</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">52w Range</th>
+                  <th className="px-3 py-2"></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                {positions.map((position) => (
+                  <tr key={position.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <td className="px-3 py-2">
+                      <img 
+                        src={`https://assets.letmedemo.com/public/fundamental/icons/companies/${position.symbol.replace('.', '')}.png`} 
+                        alt={position.symbol}
+                        className="w-6 h-6"
+                        onError={(e) => (e.currentTarget.style.display = 'none')}
+                      />
+                    </td>
+                    <td className="px-3 py-2 font-medium">{position.symbol}</td>
+                    <td className="px-3 py-2">--</td>
+                    <td className="px-3 py-2">--</td>
+                    <td className="px-3 py-2">--</td>
+                    <td className="px-3 py-2">--</td>
+                    <td className="px-3 py-2">--</td>
+                    <td className="px-3 py-2">{position.quantity}</td>
+                    <td className="px-3 py-2">{formatPrice(position.costBasis)}</td>
+                    <td className="px-3 py-2">--</td>
+                    <td className="px-3 py-2">
+                      <button
+                        onClick={() => handleDeletePosition(position.id)}
+                        className="text-red-200 hover:text-red-500 transition-colors"
+                      >
+                        <FaTrash />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        ))}
+        )}
       </div>
 
       {isAddingPosition ? (
