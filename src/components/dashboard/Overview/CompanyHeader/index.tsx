@@ -34,8 +34,11 @@ export default function CompanyHeader({
             height={68}
             className={`${styles.logo} ${isLoading ? loadingStyles.pulse : ''}`}
             onError={(e) => {
-              e.currentTarget.src = 'https://assets.letmedemo.com/fundamental/icons/companies/placeholder.png';
-            }}
+              e.currentTarget.src = `https://storage.googleapis.com/iex/api/logos/${symbol}.png`;
+              e.currentTarget.onerror = () => {
+                  e.currentTarget.style.display = 'none';
+              };
+          }}
             unoptimized
           />
         </div>

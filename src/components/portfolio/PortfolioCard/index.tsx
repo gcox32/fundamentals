@@ -149,7 +149,12 @@ export default function PortfolioCard({ portfolio, onDelete }: PortfolioCardProp
                                                 src={`https://assets.letmedemo.com/public/fundamental/icons/companies/${position.symbol.replace('.', '')}.png`}
                                                 alt={position.symbol}
                                                 className="w-6 h-6"
-                                                onError={(e) => (e.currentTarget.style.display = 'none')}
+                                                onError={(e) => {
+                                                    e.currentTarget.src = `https://storage.googleapis.com/iex/api/logos/${position.symbol}.png`;
+                                                    e.currentTarget.onerror = () => {
+                                                        e.currentTarget.style.display = 'none';
+                                                    };
+                                                }}
                                             />
                                         </td>
                                         {/* Symbol and Company Name */}
