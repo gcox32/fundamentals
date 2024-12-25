@@ -117,6 +117,7 @@ export default function Portfolio() {
               setActivePortfolio(selected || null);
             }}
             className="p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+            style={{ color: 'black' }}
           >
             {portfolios.map(portfolio => (
               <option key={portfolio.id} value={portfolio.id}>
