@@ -7,4 +7,5 @@ import { data } from './data/resource';
  */
 defineBackend({
   auth,
+  data,
 });

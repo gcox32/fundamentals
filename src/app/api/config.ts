@@ -14,6 +14,7 @@ export const API_TTL = {
         HISTORICAL_PRICE: 1 * 24 * 60 * 60,     // 1 day
         HISTORICAL_SHARES_OUTSTANDING: 1 * 24 * 60 * 60,    // 1 day
         HISTORICAL_DIVIDENDS: 1 * 24 * 60 * 60,    // 1 day
+        BATCH_QUOTE: 15 * 60,                 // 15 minutes
     }
 } as const; 
 
@@ -33,6 +34,7 @@ export const API_ENDPOINTS = {
         HISTORICAL_PRICE: 'v3/historical-price-full/<ticker>',
         HISTORICAL_SHARES_OUTSTANDING: 'v4/historical/shares_float',
         HISTORICAL_DIVIDENDS: 'v3/historical-price-full/stock_dividend/<ticker>',
+        BATCH_QUOTE: 'v3/quote/<tickers>',
     }
 } as const; 
 
@@ -52,5 +54,6 @@ export const DYNAMODB_TABLES = {
         HISTORICAL_PRICE: 'Fundamental-StockHistoricalPrice',
         HISTORICAL_SHARES_OUTSTANDING: 'Fundamental-HistoricalSharesOutstanding',
         HISTORICAL_DIVIDENDS: 'Fundamental-HistoricalDividends',
+        BATCH_QUOTE: 'Fundamental-PortfolioBatchQuotes',
     }
 } as const; 

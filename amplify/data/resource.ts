@@ -1,53 +1,82 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 
-/*== STEP 1 ===============================================================
-The section below creates a Todo database table with a "content" field. Try
-adding a new "isDone" field as a boolean. The authorization rule below
-specifies that any unauthenticated user can "create", "read", "update", 
-and "delete" any "Todo" records.
-=========================================================================*/
 const schema = a.schema({
-  Todo: a
+  User: a
     .model({
-      content: a.string(),
+      id: a.id(),
+      sub: a.string(),
+      profile: a.hasOne('Profile', 'userId'),
+      portfolios: a.hasMany('Portfolio', 'userId'),
+      watchlists: a.hasMany('Watchlist', 'userId'),
+      pageSettings: a.hasOne('PageSettings', 'userId'),
     })
-    .authorization((allow) => [allow.guest()]),
+    .authorization((allow) => [allow.groups(['admin','member'])]),
+  Profile: a
+    .model({
+      id: a.id(),
+      userId: a.string(),
+      user: a.belongsTo('User', 'userId'),
+      firstName: a.string(),
+      lastName: a.string(),
+      email: a.string(),
+      phone: a.string(),
+      avatar: a.string(),
+    })
+    .authorization((allow) => [allow.groups(['admin','member'])]),
+  Position: a
+    .model({
+      id: a.id(),
+      portfolioId: a.string(),
+      portfolio: a.belongsTo('Portfolio', 'portfolioId'),
+      symbol: a.string(),
+      costBasis: a.float(),
+      quantity: a.float()
+    })
+    .authorization((allow) => [allow.groups(['admin','member'])]),
+  Portfolio: a
+    .model({
+      id: a.id(),
+      name: a.string(),
+      userId: a.string(),
+      user: a.belongsTo('User', 'userId'),
+      positions: a.hasMany('Position', 'portfolioId'),
+    })
+    .authorization((allow) => [allow.groups(['admin','member'])]),  
+  WatchedStock: a
+    .model({
+      id: a.id(),
+      symbol: a.string(),
+      name: a.string(),
+      watchlistId: a.string(),
+      watchlist: a.belongsTo('Watchlist', 'watchlistId'),
+    })
+    .authorization((allow) => [allow.groups(['admin','member'])]),  
+  Watchlist: a
+    .model({
+      id: a.id(),
+      name: a.string(),
+      userId: a.string(),
+      user: a.belongsTo('User', 'userId'),
+      positions: a.hasMany('WatchedStock', 'watchlistId'),
+    })
+    .authorization((allow) => [allow.groups(['admin','member'])]),  
+  PageSettings: a
+    .model({
+      id: a.id(),
+      userId: a.string(),
+      user: a.belongsTo('User', 'userId'),
+      settings: a.json(),
+    })
+    .authorization((allow) => [allow.groups(['admin','member'])]),  
 });
 
+// Used for code completion / highlighting when making requests from frontend
 export type Schema = ClientSchema<typeof schema>;
 
+// defines the data resource to be deployed
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: 'iam',
-  },
+    defaultAuthorizationMode: 'userPool'
+  }
 });
-
-/*== STEP 2 ===============================================================
-Go to your frontend source code. From your client-side code, generate a
-Data client to make CRUDL requests to your table. (THIS SNIPPET WILL ONLY
-WORK IN THE FRONTEND CODE FILE.)
-
-Using JavaScript or Next.js React Server Components, Middleware, Server 
-Actions or Pages Router? Review how to generate Data clients for those use
-cases: https://docs.amplify.aws/gen2/build-a-backend/data/connect-to-API/
-=========================================================================*/
-
-/*
-"use client"
-import { generateClient } from "aws-amplify/data";
-import type { Schema } from "@/amplify/data/resource";
-
-const client = generateClient<Schema>() // use this Data client for CRUDL requests
-*/
-
-/*== STEP 3 ===============================================================
-Fetch records from the database and use them in your frontend component.
-(THIS SNIPPET WILL ONLY WORK IN THE FRONTEND CODE FILE.)
-=========================================================================*/
-
-/* For example, in a React component, you can use this snippet in your
-  function's RETURN statement */
-// const { data: todos } = await client.models.Todo.list()
-
-// return <ul>{todos.map(todo => <li key={todo.id}>{todo.content}</li>)}</ul>
