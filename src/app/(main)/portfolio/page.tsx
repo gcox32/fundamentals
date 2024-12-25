@@ -7,6 +7,8 @@ import PortfolioCard from '@/components/portfolio/PortfolioCard';
 import CreatePortfolioButton from '@/components/portfolio/CreatePortfolioButton';
 import { useUser } from '@/contexts/UserContext';
 import styles from './styles.module.css';
+import Modal from '@/components/common/Modal';
+import type { Portfolio } from '@/types/portfolio';
 
 const client = generateClient<Schema>();
 
@@ -16,6 +18,7 @@ export default function Portfolio() {
   const [activePortfolio, setActivePortfolio] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [portfolioToDelete, setPortfolioToDelete] = useState<Portfolio | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -99,12 +102,12 @@ export default function Portfolio() {
 
   return (
     <div className={styles.container}>
-        {activePortfolio && (
-          <PortfolioCard
-            portfolio={activePortfolio}
-            onDelete={() => handleDeletePortfolio(activePortfolio.id)}
-          />
-        )}
+      {activePortfolio && (
+        <PortfolioCard
+          portfolio={activePortfolio}
+          onDelete={(portfolio) => setPortfolioToDelete(portfolio)}
+        />
+      )}
       <div className={`${styles.portfolioOptions} mt-auto`}>
         <div className="flex items-center gap-4 justify-end">
           <select
@@ -124,6 +127,38 @@ export default function Portfolio() {
           <CreatePortfolioButton onCreatePortfolio={handleCreatePortfolio} />
         </div>
       </div>
+
+      <Modal
+        isOpen={!!portfolioToDelete}
+        onClose={() => setPortfolioToDelete(null)}
+        title="Delete Portfolio"
+      >
+        <div className="space-y-4">
+          <p>
+            Are you sure you want to delete portfolio "{portfolioToDelete?.name}"? 
+            This action cannot be undone and will delete all positions within this portfolio.
+          </p>
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => setPortfolioToDelete(null)}
+              className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                if (portfolioToDelete) {
+                  handleDeletePortfolio(portfolioToDelete.id);
+                  setPortfolioToDelete(null);
+                }
+              }}
+              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+            >
+              Delete Portfolio
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

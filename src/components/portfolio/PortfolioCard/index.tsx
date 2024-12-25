@@ -2,32 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { FaTrash, FaPlus } from 'react-icons/fa';
 import { generateClient } from 'aws-amplify/api';
 import { type Schema } from '@/amplify/data/resource';
-import styles from './styles.module.css';
+import type { Position, PortfolioCardProps } from '@/types/portfolio';
 
 const client = generateClient<Schema>();
-
-type Position = {
-  id: string;
-  portfolioId: string;
-  symbol: string;
-  quantity: number;
-  costBasis: number;
-  createdAt: string;
-  updatedAt: string;
-};
-
-interface Portfolio {
-  id: string;
-  name: string;
-  positions: {
-    items: Position[];
-  };
-}
-
-interface PortfolioCardProps {
-  portfolio: Portfolio;
-  onDelete: (id: string) => void;
-}
 
 export default function PortfolioCard({ portfolio, onDelete }: PortfolioCardProps) {
   const [isAddingPosition, setIsAddingPosition] = useState(false);
@@ -95,7 +72,7 @@ export default function PortfolioCard({ portfolio, onDelete }: PortfolioCardProp
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl font-semibold text-center w-full">{portfolio.name}</h3>
         <button
-          onClick={() => onDelete(portfolio.id)}
+          onClick={() => onDelete(portfolio)}
           className="text-red-200 hover:text-red-500 transition-colors"
         >
           <FaTrash />

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import DashboardCard from '../index';
 import styles from './styles.module.css';
 import { FaExpandAlt, FaGripVertical, FaEyeSlash } from 'react-icons/fa';
-import Modal from './Modal';
+import Modal from '@/components/common/Modal';
 import { ChartContext } from './ChartContext';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -113,6 +113,7 @@ export default function GraphicalCard({
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 title={title}
+                maxWidth="90%"
             >
                 <ChartContext.Provider value={modalContextValue}>
                     <div className={styles.expandedContent}>

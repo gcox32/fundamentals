@@ -1,14 +1,22 @@
 import { useEffect, useRef } from 'react';
-import './styles.css';
+import { FaTimes } from 'react-icons/fa';
+import styles from './styles.module.css';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  maxWidth?: string;
 }
 
-export default function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export default function Modal({ 
+  isOpen, 
+  onClose, 
+  title, 
+  children,
+  maxWidth = '500px'
+}: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -40,13 +48,19 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container" ref={modalRef}>
-        <div className="modal-header">
-          <h4>{title}</h4>
-          <button className="modal-close" onClick={onClose}>×</button>
+    <div className={styles.overlay}>
+      <div 
+        className={styles.modal} 
+        ref={modalRef}
+        style={{ maxWidth }}
+      >
+        <div className={styles.modalHeader}>
+          <h2 className={styles.title}>{title}</h2>
+          <button onClick={onClose} className={styles.closeButton}>
+            <FaTimes />
+          </button>
         </div>
-        <div className="modal-content">
+        <div className={styles.modalContent}>
           {children}
         </div>
       </div>
