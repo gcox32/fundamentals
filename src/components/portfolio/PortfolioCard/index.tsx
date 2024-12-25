@@ -9,6 +9,11 @@ import PriceRangeIndicator from './PriceRangeIndicator';
 
 const client = generateClient<Schema>();
 
+type PositionWithStats = Position & {
+    value: number;
+    percentage: number;
+};
+
 export default function PortfolioCard({ portfolio, onDelete }: PortfolioCardProps) {
     const [isAddingPosition, setIsAddingPosition] = useState(false);
     const [newPosition, setNewPosition] = useState({ symbol: '', quantity: '', costBasis: '' });
@@ -18,6 +23,10 @@ export default function PortfolioCard({ portfolio, onDelete }: PortfolioCardProp
     const [isLoading, setIsLoading] = useState(true);
     const [editingPosition, setEditingPosition] = useState<string | null>(null);
     const [editForm, setEditForm] = useState({ quantity: '', costBasis: '' });
+    const [sortConfig, setSortConfig] = useState<{
+        key: string;
+        direction: 'asc' | 'desc' | null;
+    }>({ key: '', direction: null });
 
     useEffect(() => {
         fetchPositions();
@@ -96,17 +105,15 @@ export default function PortfolioCard({ portfolio, onDelete }: PortfolioCardProp
         }
     };
 
-    const calculatePortfolioStats = () => {
+    const calculatePortfolioStats = (): PositionWithStats[] => {
         const totalValue = positions.reduce((sum, pos) =>
             sum + (quotes[pos.symbol]?.price || 0) * pos.quantity, 0);
 
-        const positionsWithStats = positions.map(position => {
+        return positions.map(position => {
             const value = (quotes[position.symbol]?.price || 0) * position.quantity;
             const percentage = totalValue > 0 ? (value / totalValue) * 100 : 0;
             return { ...position, value, percentage };
-        });
-
-        return positionsWithStats.sort((a, b) => b.percentage - a.percentage);
+        }).sort((a, b) => b.percentage - a.percentage);
     };
 
     const handleEditPosition = async (positionId: string) => {
@@ -137,6 +144,87 @@ export default function PortfolioCard({ portfolio, onDelete }: PortfolioCardProp
         }
     };
 
+    const requestSort = (key: string) => {
+        setSortConfig(current => ({
+            key,
+            direction: 
+                current.key === key && current.direction === 'asc' 
+                    ? 'desc' 
+                    : 'asc',
+        }));
+    };
+
+    const SortableHeader = ({ label, sortKey }: { label: string; sortKey: string }) => (
+        <th 
+            className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+            onClick={() => requestSort(sortKey)}
+        >
+            <div className="flex items-center gap-1">
+                {label}
+                {sortConfig.key === sortKey && (
+                    <span className="text-xs">
+                        {sortConfig.direction === 'asc' ? '↑' : '↓'}
+                    </span>
+                )}
+            </div>
+        </th>
+    );
+
+    const sortData = (data: PositionWithStats[]) => {
+        if (!sortConfig.key || !sortConfig.direction) return data;
+
+        return [...data].sort((a, b) => {
+            let aValue: number | string;
+            let bValue: number | string;
+
+            switch (sortConfig.key) {
+                case 'symbol':
+                    aValue = a.symbol;
+                    bValue = b.symbol;
+                    break;
+                case 'price':
+                    aValue = quotes[a.symbol]?.price || 0;
+                    bValue = quotes[b.symbol]?.price || 0;
+                    break;
+                case 'todayGainLoss':
+                    aValue = ((quotes[a.symbol]?.price || 0) - (quotes[a.symbol]?.previousClose || 0)) * a.quantity;
+                    bValue = ((quotes[b.symbol]?.price || 0) - (quotes[b.symbol]?.previousClose || 0)) * b.quantity;
+                    break;
+                case 'totalGainLoss':
+                    aValue = ((quotes[a.symbol]?.price || 0) - a.costBasis) * a.quantity;
+                    bValue = ((quotes[b.symbol]?.price || 0) - b.costBasis) * b.quantity;
+                    break;
+                case 'value':
+                    aValue = (quotes[a.symbol]?.price || 0) * a.quantity;
+                    bValue = (quotes[b.symbol]?.price || 0) * b.quantity;
+                    break;
+                case 'percentage':
+                    aValue = a.percentage;
+                    bValue = b.percentage;
+                    break;
+                case 'quantity':
+                    aValue = a.quantity;
+                    bValue = b.quantity;
+                    break;
+                case 'costBasis':
+                    aValue = a.costBasis * a.quantity;
+                    bValue = b.costBasis * b.quantity;
+                    break;
+                case 'yearRange':
+                    aValue = (quotes[a.symbol]?.price / quotes[a.symbol]?.yearHigh) * 100;
+                    bValue = (quotes[b.symbol]?.price / quotes[b.symbol]?.yearHigh) * 100;
+                    break;
+                default:
+                    aValue = 0;
+                    bValue = 0;
+            }
+
+            if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+            if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+    };
+
     return (
         <div className="dark:bg-gray-800 rounded-lg shadow-lg p-6">
             <div className="flex justify-between items-center mb-4">
@@ -162,20 +250,20 @@ export default function PortfolioCard({ portfolio, onDelete }: PortfolioCardProp
                             <thead>
                                 <tr>
                                     <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
-                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Symbol</th>
-                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Price</th>
-                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Today G/L</th>
-                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total G/L</th>
-                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
-                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">% of Portfolio</th>
-                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
-                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cost Basis</th>
-                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">52w Range</th>
+                                    <SortableHeader label="Symbol" sortKey="symbol" />
+                                    <SortableHeader label="Last Price" sortKey="price" />
+                                    <SortableHeader label="Today G/L" sortKey="todayGainLoss" />
+                                    <SortableHeader label="Total G/L" sortKey="totalGainLoss" />
+                                    <SortableHeader label="Value" sortKey="value" />
+                                    <SortableHeader label="% of Portfolio" sortKey="percentage" />
+                                    <SortableHeader label="Quantity" sortKey="quantity" />
+                                    <SortableHeader label="Cost Basis" sortKey="costBasis" />
+                                    <SortableHeader label="52w Range" sortKey="yearRange" />
                                     <th className="px-3 py-2"></th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                                {calculatePortfolioStats().map((position) => (
+                                {sortData(calculatePortfolioStats()).map((position) => (
                                     <tr key={position.id} className="hover:bg-gray-300 dark:hover:bg-gray-600 group">
                                         {/* Company Logo */}
                                         <td className="px-3 py-2" style={{ minWidth: '60px' }}>
