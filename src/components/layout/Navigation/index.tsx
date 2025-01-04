@@ -13,12 +13,7 @@ import SearchBar from "@/src/components/layout/SearchBar";
 import { useAuthenticator } from "@/hooks/useAuthenticator";
 import { useUser } from '@/src/contexts/UserContext';
 
-interface NavigationProps {
-    hiddenCards: Set<string>;
-    onShowAllCards: () => void;
-}
-
-export default function Navigation({ hiddenCards, onShowAllCards }: NavigationProps) {
+export default function Navigation() {
     const { user: authUser, isAuthenticated } = useAuthenticator(context => ({
         user: context.user,
         isAuthenticated: context.isAuthenticated
