@@ -17,6 +17,10 @@ import { SelectedCompany } from './types';
 import DraggableCardGrid from '@/components/dashboard/DraggableCardGrid';
 import VisibilityWrapper from '@/components/dashboard/VisibilityWrapper';
 import AssetTypeSelector from '@/components/dashboard/AssetTypeSelector';
+import EventideOverview from "@/src/components/dashboard/Flourishing/Eventide";
+import GlassdoorOverview from "@/src/components/dashboard/Flourishing/Glassdoor";
+import ComparablyOverview from "@/src/components/dashboard/Flourishing/Comparably";
+import SocialsOverview from "@/src/components/dashboard/Flourishing/Socials";
 
 const DEFAULT_CARD_ORDER = graphCards.map((card, index) => `graph-${index}`);
 
@@ -324,6 +328,25 @@ export default function Dashboard() {
                       profile={selectedCompany?.outlook?.profile}
                     />
                   </VisibilityWrapper>
+
+                  <div className={styles.flourishingGrid}>
+                    <VisibilityWrapper componentId="eventide-overview">
+                      <EventideOverview isLoading={isLoading} />
+                    </VisibilityWrapper>
+
+                    <VisibilityWrapper componentId="glassdoor-overview">
+                      <GlassdoorOverview isLoading={isLoading} />
+                    </VisibilityWrapper>
+
+                    <VisibilityWrapper componentId="comparably-overview">
+                      <ComparablyOverview isLoading={isLoading} />
+                    </VisibilityWrapper>
+
+                    <VisibilityWrapper componentId="socials-overview">
+                      <SocialsOverview isLoading={isLoading} />
+                    </VisibilityWrapper>
+                  </div>
+
                   <VisibilityWrapper componentId="company-news">
                     <CompanyNews
                       isLoading={isLoading}

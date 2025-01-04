@@ -22,6 +22,10 @@ const defaultDashboardComponents: DashboardComponent[] = [
   { id: 'charts', title: 'Graphs', isVisible: true },
   { id: 'company-profile', title: 'Profile', isVisible: true },
   { id: 'company-news', title: 'News', isVisible: true },
+  { id: 'eventide-overview', title: 'Eventide', isVisible: true },
+  { id: 'glassdoor-overview', title: 'Glassdoor', isVisible: true },
+  { id: 'comparably-overview', title: 'Comparably', isVisible: true },
+  { id: 'socials-overview', title: 'Socials', isVisible: true },
 ];
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

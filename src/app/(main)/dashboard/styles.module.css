@@ -100,4 +100,17 @@
 .tabContent.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.flourishingGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+@media (max-width: 1024px) {
+  .flourishingGrid {
+    grid-template-columns: 1fr;
+  }
 } 
