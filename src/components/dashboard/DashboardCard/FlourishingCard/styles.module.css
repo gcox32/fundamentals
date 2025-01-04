@@ -69,4 +69,39 @@
 
 .cardContent {
   padding-top: 0.5rem;
+}
+
+.expandedContent {
+  padding: 1.5rem;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.expandedContent h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.expandedContent h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.expandedContent ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.expandedContent li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.expandedContent li:last-child {
+  border-bottom: none;
 } 

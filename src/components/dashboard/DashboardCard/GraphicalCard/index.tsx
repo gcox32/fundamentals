@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DashboardCard from '../index';
 import styles from './styles.module.css';
-import { FaExpandAlt, FaGripVertical, FaEyeSlash } from 'react-icons/fa';
+import { FaExpand, FaGripVertical, FaEyeSlash } from 'react-icons/fa';
 import Modal from '@/components/common/Modal';
 import { ChartContext } from './ChartContext';
 import { useSortable } from '@dnd-kit/sortable';
@@ -95,7 +95,7 @@ export default function GraphicalCard({
                                         title="Hide graph"
                                     />
                                     {!isLoading && !noData && (
-                                        <FaExpandAlt
+                                        <FaExpand
                                             className={styles.expandIcon}
                                             onClick={handleExpand}
                                             title="Expand graph"
