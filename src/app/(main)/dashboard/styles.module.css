@@ -39,4 +39,45 @@
     flex-wrap: wrap;
     justify-content: center;
   }
+}
+
+.controlsContainer {
+  margin-bottom: 2rem;
+}
+
+.tabsContainer {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tabButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease;
+  width: 50%;
+}
+
+.tabButton:hover {
+  color: var(--text);
+}
+
+.tabButton.active {
+  color: var(--text);
+}
+
+.tabButton.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--active-accent);
 } 
