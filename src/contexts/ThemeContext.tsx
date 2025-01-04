@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useHiddenCards } from './HiddenCardsContext';
 
 interface DashboardComponent {
   id: string;
@@ -22,11 +23,13 @@ const defaultDashboardComponents: DashboardComponent[] = [
   { id: 'charts', title: 'Graphs', isVisible: true },
   { id: 'company-profile', title: 'Profile', isVisible: true },
   { id: 'company-news', title: 'News', isVisible: true },
+  { id: 'flourishing-grid', title: 'Flourishing', isVisible: true },
 ];
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const { showAllCards } = useHiddenCards();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [dashboardComponents, setDashboardComponents] = useState<DashboardComponent[]>(defaultDashboardComponents);
@@ -70,6 +73,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const resetDashboardLayout = () => {
     setDashboardComponents(defaultDashboardComponents);
+    localStorage.removeItem('dashboardComponents');
+    showAllCards();
   };
 
   return (

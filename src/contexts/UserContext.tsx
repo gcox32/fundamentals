@@ -10,7 +10,7 @@ const client = generateClient<Schema>();
 type User = Schema['User'];
 
 interface UserContextType {
-  user: User | null;
+  user: (User & { profile?: { avatar?: string | null } }) | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -31,23 +31,30 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       try {
         const currentUser = await getCurrentUser();
         
-        // First, get all users to see what's available
-        const allUsersResult = await client.models.User.list({
-          authMode: 'userPool'
-        });
-        
         // Find the user in our database using their Cognito sub
         const userResult = await client.models.User.list({
           filter: { sub: { eq: currentUser.username } },
           authMode: 'userPool'
-        });
-
-        const user = userResult.data?.[0];
+        }) as unknown as { data: User[] };
+        
+        const user = userResult.data?.[0] as any;
         if (!user) {
           throw new Error('User not found in database');
         }
 
-        setUser(user as unknown as User);
+        // Fetch the associated profile
+        const profileResult = await client.models.Profile.list({
+          filter: { userId: { eq: user.id } },
+          authMode: 'userPool'
+        });
+
+        const profile = profileResult.data?.[0] as { avatar?: string | null };
+        const userData = {
+          ...user,
+          profile
+        };
+        
+        setUser(userData as UserContextType['user']);
       } catch (err) {
         console.error('Error fetching user:', err);
         setError('Failed to load user information');

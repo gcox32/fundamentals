@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './styles.module.css';
 import { MarketNews } from '@/types/company';
 import OverviewCard from '@/components/dashboard/DashboardCard/OverviewCard';
@@ -7,17 +7,40 @@ import { formatNewsDate } from '@/utils/format';
 
 interface CompanyNewsProps {
     isLoading?: boolean;
-    news?: MarketNews[];
+    symbol?: string;
 }
 
 const ITEMS_PER_PAGE = 5;
 
-export default function CompanyNews({ isLoading, news }: CompanyNewsProps) {
+export default function CompanyNews({ isLoading: parentLoading, symbol }: CompanyNewsProps) {
     const [currentPage, setCurrentPage] = useState(0);
+    const [news, setNews] = useState<MarketNews[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
-    if (isLoading) {
+    useEffect(() => {
+        async function fetchNews() {
+            if (!symbol) return;
+            
+            setIsLoading(true);
+            try {
+                const response = await fetch(`/api/market/news?symbol=${symbol}`);
+                if (!response.ok) throw new Error('Failed to fetch news');
+                const data = await response.json();
+                setNews(data);
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                setNews([]);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        fetchNews();
+    }, [symbol]);
+
+    if (parentLoading || isLoading) {
         return (
-            <OverviewCard title="Latest News" isLoading={isLoading}>
+            <OverviewCard title="Latest News" isLoading={true}>
                 <div className={styles.loading}>Loading news...</div>
             </OverviewCard>
         );
@@ -25,7 +48,7 @@ export default function CompanyNews({ isLoading, news }: CompanyNewsProps) {
 
     if (!news || news.length === 0) {
         return (
-            <OverviewCard title="Latest News" isLoading={isLoading}>
+            <OverviewCard title="Latest News" isLoading={false}>
                 <div className={styles.noNews}>No recent news available</div>
             </OverviewCard>
         );

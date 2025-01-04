@@ -143,6 +143,7 @@ nav {
   .sidebar-overlay.active {
     opacity: 1;
     visibility: visible;
+    overflow-y: scroll;
   }
   
   .sidebar {
@@ -154,7 +155,7 @@ nav {
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
     z-index: 999;
-    padding: 2rem 1rem 0 1rem;
+    padding: 1rem;
   }
   
   .sidebar.right {
@@ -188,6 +189,7 @@ nav {
     display: flex;
     flex-direction: column;
     position: relative;
+    overflow-y: scroll;
   }
   
   .user-info {
@@ -212,7 +214,7 @@ nav {
     font-size: 1rem;
     color: var(--sidebar-text);
     text-align: center;
-    margin: 1rem;
+    margin: 0 1rem 1rem 1rem;
   }
   
   .sidebar nav ul {

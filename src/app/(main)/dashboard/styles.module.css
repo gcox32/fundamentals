@@ -24,7 +24,7 @@
   font-weight: 500;
   cursor: pointer;
   margin: 0 1rem;
-  width: 220px;
+  width: 188px;
   transition: opacity 0.2s ease;
 }
 
@@ -38,5 +38,79 @@
     padding: 0 0 1rem 0;
     flex-wrap: wrap;
     justify-content: center;
+  }
+}
+
+.controlsContainer {
+  margin-bottom: 2rem;
+}
+
+.tabsContainer {
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+.tabButton {
+  padding: 1rem 2rem;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s ease;
+  position: relative;
+  width: 50%;
+  text-transform: uppercase;
+}
+
+.tabButton:hover {
+  color: var(--text);
+}
+
+.tabButton::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--active-accent);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.tabButton.active {
+  color: var(--text);
+}
+
+.tabButton.active::after {
+  transform: scaleX(1);
+}
+
+/* Add transition for tab content */
+.tabContent {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.tabContent.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.flourishingGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+@media (max-width: 1024px) {
+  .flourishingGrid {
+    grid-template-columns: 1fr;
   }
 } 

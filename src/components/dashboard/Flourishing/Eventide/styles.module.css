@@ -1,0 +1,122 @@
+.stakeholderSection,
+.business360Section,
+.valueAddSection {
+    margin-top: 2.5rem;
+}
+
+.stakeholderGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.stakeholderCard {
+    background: var(--card-background);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.stakeholderCard:hover {
+    transform: translateY(-2px);
+}
+
+.stakeholderIcon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1rem;
+    background: var(--active-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.stakeholderScore {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--active-accent);
+    margin: 0.5rem 0;
+}
+
+.screenGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.screenCard {
+    background: var(--card-background);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+}
+
+.screenScore {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--active-accent);
+    margin: 1rem 0;
+}
+
+.valueAddCard {
+    background: var(--card-background);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    margin: 1.5rem 0;
+}
+
+.valueAddScore {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--active-accent);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.valueAddScore span {
+    font-size: 4rem;
+}
+
+.valueAddDescription {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+}
+
+.valueAddEvidence {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.logoContainer {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.logoContainer:hover {
+    opacity: 1;
+}
+
+.logo {
+    filter: var(--svg-filter);
+}
+
+@media (max-width: 768px) {
+    .screenGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stakeholderGrid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}

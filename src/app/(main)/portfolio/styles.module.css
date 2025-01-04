@@ -13,6 +13,7 @@
 
 .portfolioOptions select {
   width: 200px;
+  cursor: pointer;
 }
 
 .portfolioGrid {

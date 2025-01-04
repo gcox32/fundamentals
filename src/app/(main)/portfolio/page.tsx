@@ -34,6 +34,8 @@ export default function Portfolio() {
   }, [portfolios]);
 
   const fetchPortfolios = async () => {
+    console.log('fetching portfolios');
+    console.log(user);
     if (!user) return;
     
     try {

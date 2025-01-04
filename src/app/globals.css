@@ -156,6 +156,10 @@ body {
   transform: translateY(20px);
 }
 
+input {
+  color: black;
+}
+
 @media (max-width: 768px) {
   .recharts-responsive-container {
     height: auto;

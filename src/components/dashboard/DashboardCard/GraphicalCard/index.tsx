@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DashboardCard from '../index';
 import styles from './styles.module.css';
-import { FaExpandAlt, FaGripVertical, FaEyeSlash } from 'react-icons/fa';
+import { FaExpand, FaGripVertical, FaEyeSlash } from 'react-icons/fa';
 import Modal from '@/components/common/Modal';
 import { ChartContext } from './ChartContext';
 import { useSortable } from '@dnd-kit/sortable';
@@ -31,6 +31,7 @@ export default function GraphicalCard({
     onHide
 }: GraphicalCardProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalTopPosition, setModalTopPosition] = useState(0);
 
     const {
         attributes,
@@ -49,6 +50,23 @@ export default function GraphicalCard({
 
     const handleExpand = (e: React.MouseEvent) => {
         e.stopPropagation();
+        
+        const clickY = e.clientY;
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        
+        // Calculate optimal modal position
+        const topPosition = Math.min(
+            Math.max(clickY + scrollY - 100, 0),
+            document.body.scrollHeight - windowHeight
+        );
+        
+        // Scroll to the clicked position
+        window.scrollTo({
+            top: topPosition,
+            behavior: 'smooth'
+        });
+
         setIsModalOpen(true);
     };
 
@@ -77,35 +95,26 @@ export default function GraphicalCard({
                     isLoading={isLoading}
                     className={`${styles.graphicalCard} ${isDragging ? styles.dragging : ''}`}
                 >
-                    <ChartContext.Provider value={contextValue}>
-                        <div onClick={onClick} className={styles.clickableContent}>
-                            <div className={styles.cardHeader}>
-                                <div
-                                    className={styles.dragHandle}
-                                    {...attributes}
-                                    {...listeners}
-                                >
-                                    <FaGripVertical />
-                                </div>
-
-                                <div className={styles.cardActions}>
-                                    <FaEyeSlash
-                                        className={styles.hideIcon}
-                                        onClick={handleHide}
-                                        title="Hide graph"
-                                    />
-                                    {!isLoading && !noData && (
-                                        <FaExpandAlt
-                                            className={styles.expandIcon}
-                                            onClick={handleExpand}
-                                            title="Expand graph"
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                            {children}
+                    <div className={styles.cardHeader}>
+                        <FaGripVertical className={styles.dragHandle} {...listeners} {...attributes} />
+                        <div className={styles.cardActions}>
+                            <FaEyeSlash
+                                className={styles.hideIcon}
+                                onClick={handleHide}
+                                title="Hide card"
+                            />
+                            <FaExpand
+                                className={styles.expandIcon}
+                                onClick={handleExpand}
+                                title="Expand card"
+                            />
                         </div>
-                    </ChartContext.Provider>
+                    </div>
+                    <div className={styles.clickableContent} onClick={onClick}>
+                        <ChartContext.Provider value={contextValue}>
+                            {children}
+                        </ChartContext.Provider>
+                    </div>
                 </DashboardCard>
             </div>
 

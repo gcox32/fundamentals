@@ -11,16 +11,25 @@ import PersistentSidebar from "@/src/components/layout/PersistentSidebar";
 import { useSidebar } from "@/src/contexts/SidebarContext";
 import SearchBar from "@/src/components/layout/SearchBar";
 import { useAuthenticator } from "@/hooks/useAuthenticator";
+import { useUser } from '@/src/contexts/UserContext';
 
-export default function Navigation() {
-    const { user, isAuthenticated } = useAuthenticator(context => ({
+interface NavigationProps {
+    hiddenCards: Set<string>;
+    onShowAllCards: () => void;
+}
+
+export default function Navigation({ hiddenCards, onShowAllCards }: NavigationProps) {
+    const { user: authUser, isAuthenticated } = useAuthenticator(context => ({
         user: context.user,
         isAuthenticated: context.isAuthenticated
     }));
+    const { user } = useUser();
 
     const [pageSettingsSidebarOpen, setPageSettingsSidebarOpen] = useState(false);
     const [userSidebarOpen, setUserSidebarOpen] = useState(false);
     const { isExpanded, isMobileView, setMobileOpen } = useSidebar();
+
+    const avatarUrl = user?.profile?.avatar || 'https://ui-avatars.com/api/?name=Demo+Account&background=random&color=fff&size=100.png';
 
     if (!isAuthenticated) {
         return (
@@ -64,7 +73,7 @@ export default function Navigation() {
                         aria-label="User menu"
                         onClick={() => setUserSidebarOpen(true)}
                         style={{
-                            backgroundImage: `url(${user?.avatar || 'https://ui-avatars.com/api/?name=Demo+Account&background=random&color=fff&size=100.png'})`
+                            backgroundImage: `url(${avatarUrl})`
                         }}
                     />
                 </div>
@@ -75,7 +84,8 @@ export default function Navigation() {
                 onClose={() => setPageSettingsSidebarOpen(false)}
                 position="right"
             >
-                <PageSettingsSidebar />
+                <PageSettingsSidebar 
+                />
             </Sidebar>
 
             <Sidebar
@@ -83,7 +93,7 @@ export default function Navigation() {
                 onClose={() => setUserSidebarOpen(false)}
                 position="right"
             >
-                <UserSidebar user={user} />
+                <UserSidebar user={user as any} />
             </Sidebar>
         </>
     );
