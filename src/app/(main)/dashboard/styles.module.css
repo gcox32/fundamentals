@@ -48,31 +48,29 @@
 .tabsContainer {
   display: flex;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
   border-bottom: 1px solid var(--border-color);
+  position: relative;
 }
 
 .tabButton {
-  padding: 0.75rem 1.5rem;
-  border: none;
+  padding: 1rem 2rem;
   background: none;
-  color: var(--text-secondary);
+  border: none;
   font-size: 1rem;
+  color: var(--text-secondary);
   cursor: pointer;
-  position: relative;
   transition: color 0.2s ease;
+  position: relative;
   width: 50%;
+  text-transform: uppercase;
 }
 
 .tabButton:hover {
   color: var(--text);
 }
 
-.tabButton.active {
-  color: var(--text);
-}
-
-.tabButton.active::after {
+.tabButton::after {
   content: '';
   position: absolute;
   bottom: -1px;
@@ -80,4 +78,26 @@
   right: 0;
   height: 2px;
   background-color: var(--active-accent);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.tabButton.active {
+  color: var(--text);
+}
+
+.tabButton.active::after {
+  transform: scaleX(1);
+}
+
+/* Add transition for tab content */
+.tabContent {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.tabContent.visible {
+  opacity: 1;
+  transform: translateY(0);
 } 

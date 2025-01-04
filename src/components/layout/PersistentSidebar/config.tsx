@@ -1,9 +1,7 @@
 import { NavGroup } from './types';
 import { 
-    FaChartLine,
     FaSearch,
     FaBriefcase,
-    FaNewspaper,
     FaChartBar,
     FaBell,
     FaCalculator 
@@ -14,9 +12,7 @@ export const navGroups: NavGroup[] = [
     {
         title: 'Market Research',
         items: [
-            { icon: <FaChartLine />, label: 'Overview', href: '/dashboard' },
-            { icon: <EventideIcon />, label: 'Values Review', href: '/dashboard/values' },
-            { icon: <FaNewspaper />, label: 'News & Analysis', href: '/dashboard/news' },
+            { icon: <FaSearch />, label: 'Overview', href: '/dashboard' },
         ]
     },
     {

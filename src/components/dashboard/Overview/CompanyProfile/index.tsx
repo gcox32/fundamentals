@@ -38,7 +38,7 @@ export default function CompanyProfile({ isLoading, profile }: CompanyProfilePro
             </span>
             <span className={styles.value}>{isLoading ? 'Loading...' : formatAddress(profile as CompanyProfile)}</span>
           </div>
-          <div className={styles.profileItem}>
+          <div className={styles.profileItem} style={{ overflowX: 'scroll' }}>
             <span className={styles.label}>
               <FaGlobe className={styles.icon} /> Website
             </span>
