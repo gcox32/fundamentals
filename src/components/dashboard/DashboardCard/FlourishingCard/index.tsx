@@ -24,7 +24,23 @@ export default function FlourishingCard({
 }: FlourishingCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleExpand = () => {
+  const handleExpand = (event: React.MouseEvent) => {
+    const clickY = event.clientY;
+    const scrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    
+    // Calculate optimal modal position
+    const topPosition = Math.min(
+      Math.max(clickY + scrollY - 100, 0), // Don't go above viewport
+      document.body.scrollHeight - windowHeight // Don't go below viewport
+    );
+    
+    // Scroll to the clicked position
+    window.scrollTo({
+      top: topPosition,
+      behavior: 'smooth'
+    });
+
     setIsModalOpen(true);
   };
 

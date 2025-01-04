@@ -74,7 +74,7 @@
 .expandedContent {
   padding: 1.5rem;
   max-height: 80vh;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .expandedContent h3 {

@@ -4,6 +4,8 @@ import { CSS } from '@dnd-kit/utilities';
 import FlourishingCard from '../../DashboardCard/FlourishingCard';
 import styles from '../styles.module.css';
 import { FaStar, FaHandshake, FaLeaf } from 'react-icons/fa';
+import ExpandedContent from './ExpandedContent';
+
 interface EventideOverviewProps {
     isLoading?: boolean;
     onHide?: () => void;
@@ -77,25 +79,6 @@ export default function EventideOverview({ isLoading, onHide }: EventideOverview
         </div>
     );
 
-    const expandedContent = (
-        <div className={styles.expandedEventideContainer}>
-            {standardContent}
-            <div className={styles.additionalContent}>
-                <h3>Detailed Analysis</h3>
-                <div className={styles.detailedMetrics}>
-                    <div className={styles.metricSection}>
-                        <h4>Business Alignment Details</h4>
-                        <ul>
-                            <li>Product Impact Score: 9.0/10</li>
-                            <li>Customer Value: 8.8/10</li>
-                            <li>Market Leadership: 7.9/10</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-
     return (
         <div ref={setNodeRef} style={style}>
             <FlourishingCard
@@ -104,7 +87,7 @@ export default function EventideOverview({ isLoading, onHide }: EventideOverview
                 onHide={onHide}
                 isDragging={isDragging}
                 dragHandleListeners={{ ...attributes, ...listeners }}
-                expandedContent={expandedContent}
+                expandedContent={<ExpandedContent standardContent={standardContent} />}
             >
                 {standardContent}
             </FlourishingCard>

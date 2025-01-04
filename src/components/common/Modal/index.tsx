@@ -1,11 +1,12 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { FaTimes } from 'react-icons/fa';
 import styles from './styles.module.css';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
+  title?: string;
   children: React.ReactNode;
   maxWidth?: string;
 }
@@ -14,56 +15,51 @@ export default function Modal({
   isOpen, 
   onClose, 
   title, 
-  children,
-  maxWidth = '500px'
+  children, 
+  maxWidth = '600px',
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
-      }
-    };
-
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.addEventListener('mousedown', handleClickOutside);
       document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.removeEventListener('mousedown', handleClickOutside);
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
-  return (
-    <div className={styles.overlay}>
+  const modalStyle = {
+    maxWidth,
+    top: 'auto'
+  };
+
+  return createPortal(
+    <div className={styles.modalOverlay} onClick={onClose}>
       <div 
-        className={styles.modal} 
         ref={modalRef}
-        style={{ maxWidth }}
+        className={styles.modalContent}
+        style={modalStyle}
+        onClick={e => e.stopPropagation()}
       >
         <div className={styles.modalHeader}>
-          <h2 className={styles.title}>{title}</h2>
-          <button onClick={onClose} className={styles.closeButton}>
+          {title && <h2>{title}</h2>}
+          <button 
+            className={styles.closeButton}
+            onClick={onClose}
+            aria-label="Close modal"
+          >
             <FaTimes />
           </button>
         </div>
-        <div className={styles.modalContent}>
-          {children}
-        </div>
+        {children}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 } 

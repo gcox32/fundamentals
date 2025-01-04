@@ -50,3 +50,32 @@
     font-size: 0.875rem;
     color: var(--text-secondary);
 }
+
+.expandedEventideContainer {
+    position: relative;
+    padding-bottom: 3rem;
+}
+
+.additionalContent {
+    position: relative;
+    margin-top: 2rem;
+    padding: 2rem;
+    background: var(--card-background-hover);
+    border-radius: 0.75rem;
+}
+
+.logoContainer {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.logoContainer:hover {
+    opacity: 1;
+}
+
+.logo {
+    filter: var(--svg-filter);
+}

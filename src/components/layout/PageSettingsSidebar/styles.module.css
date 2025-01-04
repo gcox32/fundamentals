@@ -1,5 +1,6 @@
 .settingsSidebar {
     padding: 1.5rem;
+    padding-top: 0;
   }
   
   .settingsSidebar h2 {
@@ -12,15 +13,14 @@
   .settingsGroup {
     background: var(--sidebar-bg);
     border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
+    padding: 0.5rem 1rem;
   }
   
   .settingsTitle {
     color: var(--sidebar-text);
     font-size: 1rem;
     font-weight: 600;
-    margin: 1rem 0;
+    margin-bottom: 1rem;
   }
   
   .themeToggle {

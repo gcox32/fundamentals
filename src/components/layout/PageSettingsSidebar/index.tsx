@@ -18,7 +18,6 @@ export default function PageSettingsSidebar() {
 
   return (
     <div className={styles.settingsSidebar}>
-      <h2>Settings</h2>
 
       <div className={styles.settingsGroup}>
         <h3 className={styles.settingsTitle}>Theme</h3>
