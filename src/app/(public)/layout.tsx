@@ -5,7 +5,6 @@ import Navigation from "@/src/components/layout/Navigation";
 import Footer from "@/src/components/layout/Footer";
 import { SidebarProvider, useSidebar } from "@/src/contexts/SidebarContext";
 import { SearchProvider } from "@/src/contexts/SearchContext";
-import AuthProtected from "@/src/components/auth/AuthProtected";
 import { Amplify } from 'aws-amplify';
 import outputs from '@/amplify_outputs.json';
 

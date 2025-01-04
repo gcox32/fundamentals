@@ -35,13 +35,13 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         const allUsersResult = await client.models.User.list({
           authMode: 'userPool'
         });
-        
+        console.log('allUsersResult', allUsersResult);
         // Find the user in our database using their Cognito sub
         const userResult = await client.models.User.list({
           filter: { sub: { eq: currentUser.username } },
           authMode: 'userPool'
         });
-
+        console.log('userResult', userResult);
         const user = userResult.data?.[0];
         if (!user) {
           throw new Error('User not found in database');
