@@ -1,12 +1,14 @@
 import React from 'react';
 import { useTheme } from '@/src/contexts/ThemeContext';
-import { FaMoon, FaSun, FaUndo } from 'react-icons/fa';
+import { FaMoon, FaSun, FaUndo, FaEye } from 'react-icons/fa';
 import styles from './styles.module.css';
+import { useHiddenCards } from '@/src/contexts/HiddenCardsContext';
 
 export default function PageSettingsSidebar() {
-  const { 
-    isDarkMode, 
-    toggleDarkMode, 
+  const { hiddenCards, showAllCards } = useHiddenCards();
+  const {
+    isDarkMode,
+    toggleDarkMode,
     dashboardComponents,
     toggleComponent,
     resetDashboardLayout
@@ -17,7 +19,7 @@ export default function PageSettingsSidebar() {
   return (
     <div className={styles.settingsSidebar}>
       <h2>Settings</h2>
-      
+
       <div className={styles.settingsGroup}>
         <h3 className={styles.settingsTitle}>Theme</h3>
         <div className={styles.themeToggle}>
@@ -56,13 +58,23 @@ export default function PageSettingsSidebar() {
               </label>
             </div>
           ))}
+         <h3 className={styles.settingsTitle}>Hidden Cards</h3>
+         <button
+            className={styles.showAllButton}
+            onClick={showAllCards}
+            disabled={!hiddenCards?.size}
+         >
+            <FaEye /> {hiddenCards?.size ? `Show All (${hiddenCards.size})` : 'No Hidden Cards'}
+          </button>
         </div>
-        <button 
-          className={styles.resetButton}
-          onClick={resetDashboardLayout}
+        <div className={styles.resetButtonContainer}>
+          <button
+            className={styles.resetButton}
+            onClick={resetDashboardLayout}
         >
-          <FaUndo /> Reset Layout
-        </button>
+            <FaUndo /> Reset Layout
+          </button>
+        </div>
       </div>
     </div>
   );

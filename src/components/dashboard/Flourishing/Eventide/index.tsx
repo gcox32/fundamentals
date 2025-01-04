@@ -1,13 +1,29 @@
 import React from 'react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import FlourishingCard from '../../DashboardCard/FlourishingCard';
 import styles from './styles.module.css';
-import OverviewCard from '@/components/dashboard/DashboardCard/OverviewCard';
 import { FaStar, FaHandshake, FaLeaf } from 'react-icons/fa';
-
 interface EventideOverviewProps {
     isLoading?: boolean;
+    onHide?: () => void;
 }
 
-export default function EventideOverview({ isLoading }: EventideOverviewProps) {
+export default function EventideOverview({ isLoading, onHide }: EventideOverviewProps) {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging
+    } = useSortable({ id: 'eventide-overview' });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
+
     // Mock data
     const mockData = {
         businessAlignment: {
@@ -25,41 +41,49 @@ export default function EventideOverview({ isLoading }: EventideOverviewProps) {
     };
 
     return (
-        <OverviewCard title="Eventide Analysis" isLoading={isLoading}>
-            <div className={styles.eventideContainer}>
-                <div className={styles.metricCard}>
-                    <div className={styles.metricIcon}>
-                        <FaHandshake />
+        <div ref={setNodeRef} style={style}>
+            <FlourishingCard
+                id="eventide-overview"
+                title="Eventide Analysis"
+                onHide={onHide}
+                isDragging={isDragging}
+                dragHandleListeners={{ ...attributes, ...listeners }}
+            >
+                <div className={styles.eventideContainer}>
+                    <div className={styles.metricCard}>
+                        <div className={styles.metricIcon}>
+                            <FaHandshake />
+                        </div>
+                        <div className={styles.metricInfo}>
+                            <h4>Business Alignment</h4>
+                            <div className={styles.score}>{mockData.businessAlignment.score}/10</div>
+                            <p>{mockData.businessAlignment.description}</p>
+                        </div>
                     </div>
-                    <div className={styles.metricInfo}>
-                        <h4>Business Alignment</h4>
-                        <div className={styles.score}>{mockData.businessAlignment.score}/10</div>
-                        <p>{mockData.businessAlignment.description}</p>
-                    </div>
-                </div>
 
-                <div className={styles.metricCard}>
-                    <div className={styles.metricIcon}>
-                        <FaStar />
+                    <div className={styles.metricCard}>
+                        <div className={styles.metricIcon}>
+                            <FaStar />
+                        </div>
+                        <div className={styles.metricInfo}>
+                            <h4>Ethical Leadership</h4>
+                            <div className={styles.score}>{mockData.ethicalLeadership.score}/10</div>
+                            <p>{mockData.ethicalLeadership.description}</p>
+                        </div>
                     </div>
-                    <div className={styles.metricInfo}>
-                        <h4>Ethical Leadership</h4>
-                        <div className={styles.score}>{mockData.ethicalLeadership.score}/10</div>
-                        <p>{mockData.ethicalLeadership.description}</p>
-                    </div>
-                </div>
 
-                <div className={styles.metricCard}>
-                    <div className={styles.metricIcon}>
-                        <FaLeaf />
-                    </div>
-                    <div className={styles.metricInfo}>
-                        <h4>Sustainability Focus</h4>
-                        <div className={styles.score}>{mockData.sustainabilityFocus.score}/10</div>
-                        <p>{mockData.sustainabilityFocus.description}</p>
+                    <div className={styles.metricCard}>
+                        <div className={styles.metricIcon}>
+                            <FaLeaf />
+                        </div>
+                        <div className={styles.metricInfo}>
+                            <h4>Sustainability Focus</h4>
+                            <div className={styles.score}>{mockData.sustainabilityFocus.score}/10</div>
+                            <p>{mockData.sustainabilityFocus.description}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </OverviewCard>
+            </FlourishingCard>
+        </div>
     );
 }

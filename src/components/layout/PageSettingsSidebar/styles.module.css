@@ -20,7 +20,7 @@
     color: var(--sidebar-text);
     font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
   }
   
   .themeToggle {
@@ -110,6 +110,12 @@
     font-size: 0.95rem;
   }
   
+  .resetButtonContainer {
+    margin-top: 1rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--border-color);
+  }
+
   .resetButton {
     display: flex;
     align-items: center;
@@ -125,6 +131,7 @@
     font-size: 0.95rem;
     cursor: pointer;
     transition: background-color 0.2s;
+    
   }
   
   .resetButton:hover {
@@ -135,4 +142,36 @@
   .resetButton:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+  
+  .showAllButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: var(--hover-bg);
+    border: none;
+    border-radius: 8px;
+    color: var(--sidebar-text);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .showAllButton:hover {
+    background-color: var(--active-accent);
+    color: white;
+  }
+  
+  .showAllButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: var(--hover-bg);
+    color: var(--text-secondary);
+  }
+  
+  .showAllButton:disabled:hover {
+    background-color: var(--hover-bg);
+    color: var(--text-secondary);
   }

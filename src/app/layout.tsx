@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { UserProvider } from '@/contexts/UserContext';
+import { HiddenCardsProvider } from '@/contexts/HiddenCardsContext';
 
 export const viewport: Viewport = {
     width: "device-width",
@@ -43,9 +44,11 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="antialiased">
-                <UserProvider>
-                    {children}
-                </UserProvider>
+                <HiddenCardsProvider>
+                    <UserProvider>
+                        {children}
+                    </UserProvider>
+                </HiddenCardsProvider>
             </body>
         </html>
     )
