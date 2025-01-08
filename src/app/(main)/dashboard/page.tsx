@@ -22,6 +22,7 @@ import GlassdoorOverview from "@/src/components/dashboard/Flourishing/Glassdoor"
 import ComparablyOverview from "@/src/components/dashboard/Flourishing/Comparably";
 import SocialsOverview from "@/src/components/dashboard/Flourishing/Socials";
 import { useHiddenCards } from '@/contexts/HiddenCardsContext';
+import IntrinsicValueOverview from "@/src/components/dashboard/Overview/IntrinsicValueOverview";
 
 const DEFAULT_CARD_ORDER = graphCards.map((card, index) => `graph-${index}`);
 
@@ -314,6 +315,18 @@ export default function Dashboard() {
                       </DraggableCardGrid>
                     </VisibilityWrapper>
 
+                    <VisibilityWrapper componentId="intrinsic-value-overview">
+                      <IntrinsicValueOverview
+                        isLoading={isLoading}
+                        incomeStatement={selectedCompany?.incomeStatement}
+                        cashFlowStatement={selectedCompany?.cashFlowStatement}
+                        balanceSheetStatement={selectedCompany?.balanceSheetStatement}
+                        quote={selectedCompany?.quote}
+                        currentPrice={selectedCompany?.quote?.price}
+                        marketCap={selectedCompany?.quote?.marketCap}
+                        sharesOutstanding={selectedCompany?.quote?.sharesOutstanding}
+                      />
+                    </VisibilityWrapper>
                   </>
                 </div>
               )}

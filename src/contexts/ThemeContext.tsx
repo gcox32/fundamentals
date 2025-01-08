@@ -24,6 +24,7 @@ const defaultDashboardComponents: DashboardComponent[] = [
   { id: 'company-profile', title: 'Profile', isVisible: true },
   { id: 'company-news', title: 'News', isVisible: true },
   { id: 'flourishing-grid', title: 'Flourishing', isVisible: true },
+  { id: 'intrinsic-value-overview', title: 'Intrinsic Value', isVisible: true },
 ];
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
