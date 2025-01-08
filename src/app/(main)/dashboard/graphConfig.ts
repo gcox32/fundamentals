@@ -32,7 +32,7 @@ export const graphCards = [
   {
     title: "Expenses",
     Component: Expenses,
-    dataKey: "incomeStatement"
+    dataKey: ["incomeStatement", "cashFlowStatement"]
   },
   {
     title: "Dividend History",
