@@ -9,7 +9,7 @@ import {
   CartesianGrid,
   Legend
 } from 'recharts';
-import type { HistoricalIncomeStatement } from '@/types/financials';
+import type { HistoricalIncomeStatement, HistoricalCashFlowStatement } from '@/types/financials';
 import graphStyles from '@/components/dashboard/DashboardCard/GraphicalCard/styles.module.css';
 import styles from '@/components/common/Toggle/styles.module.css';
 import { formatLargeNumber } from '@/utils/format';
@@ -18,24 +18,22 @@ import { filterDataByTimeframe } from '@/utils/timeframeFilter';
 import clsx from 'clsx';
 
 interface ExpensesProps {
-  data?: HistoricalIncomeStatement;
+  incomeStatement?: HistoricalIncomeStatement;
+  cashFlowStatement?: HistoricalCashFlowStatement;
   isLoading: boolean;
 }
 
 // Define expense categories with their display names and colors
 const expenseCategories = [
-  { key: 'costOfRevenue', name: 'Cost of Revenue', color: '#FF9800' },
-  { key: 'researchAndDevelopment', name: 'R&D', color: '#4CAF50' },
-  { key: 'sellingGeneralAndAdmin', name: 'Selling, General & Admin', color: '#2196F3' },
-  { key: 'depreciationAndAmortization', name: 'Depreciation & Amortization', color: '#E91E63' },
-  { key: 'interestExpense', name: 'Interest', color: '#9C27B0' },
-  { key: 'otherExpenses', name: 'Other', color: '#607D8B' },
-  { key: 'incomeTaxExpense', name: 'Income Tax', color: '#673AB7' }
+  { key: 'costOfRevenue', name: 'Cost of Revenue', color: '#FF9800', tooltip: 'Direct costs of producing goods/services' },
+  { key: 'researchAndDevelopment', name: 'R&D', color: '#4CAF50', tooltip: 'Investment in future innovation' },
+  { key: 'salesAndMarketing', name: 'Sales & Marketing', color: '#2196F3', tooltip: 'Cost of acquiring customers' },
+  { key: 'capitalExpenditures', name: 'Capital Expenditure', color: '#E91E63', tooltip: 'Investment in physical assets' }
 ] as const;
 
 type ExpenseCategory = typeof expenseCategories[number]['key'];
 
-export default function Expenses({ data, isLoading }: ExpensesProps) {
+export default function Expenses({ incomeStatement: data, cashFlowStatement: cashFlow, isLoading }: ExpensesProps) {
   const { isExpanded, timeframe, isTTM } = useChartContext();
   const [showBreakdown, setShowBreakdown] = useState(false);
   const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
@@ -53,58 +51,61 @@ export default function Expenses({ data, isLoading }: ExpensesProps) {
   };
 
   const chartData = useMemo(() => {
-    if (!data?.data) return [];
+    
+    if (!data?.data || !cashFlow?.data) {
+        console.log("No data available, returning empty array");
+        return [];
+    }
 
     const allData = data.data.map(statement => {
-      // Calculate base expense values
-      const expenseValues = {
-        costOfRevenue: statement.costOfRevenue || 0,
-        researchAndDevelopment: statement.researchAndDevelopmentExpenses || 0,
-        sellingGeneralAndAdmin: statement.sellingGeneralAndAdministrativeExpenses || 0,
-        depreciationAndAmortization: statement.depreciationAndAmortization || 0,
-        interestExpense: statement.interestExpense || 0,
-        incomeTaxExpense: statement.incomeTaxExpense || 0,
-        otherExpenses: (statement.otherExpenses || 0) + (statement.operatingExpenses || 0)
-      };
+        const matchingCashFlow = cashFlow.data.find(cf => {
+            return cf.date === statement.date;
+        });
+        
+        const expenseValues = {
+            costOfRevenue: statement.costOfRevenue || 0,
+            researchAndDevelopment: statement.researchAndDevelopmentExpenses || 0,
+            salesAndMarketing: statement.sellingGeneralAndAdministrativeExpenses || 0,
+            capitalExpenditures: Math.abs(matchingCashFlow?.capitalExpenditure || 0)
+        };
 
-      // Calculate total expenses
-      const totalExpenses = Object.values(expenseValues).reduce((sum, value) => sum + value, 0);
+        const totalExpenses = Object.values(expenseValues).reduce((sum, value) => sum + value, 0);
 
-      return {
-        date: statement.date,
-        label: `${statement.period} ${statement.calendarYear}`,
-        ...expenseValues,
-        totalExpenses
-      };
-    }).reverse(); // Most recent first
+        return {
+            date: statement.date,
+            label: `${statement.period} ${statement.calendarYear}`,
+            ...expenseValues,
+            totalExpenses
+        };
+    }).reverse();
 
     const processedData = isTTM
-      ? allData.map((item, index, array) => {
-          if (index < 3) return item;
+        ? allData.map((item, index, array) => {
+            if (index < 3) return item;
 
-          // Calculate TTM by summing the last 4 quarters for each expense category
-          const ttmData = array.slice(index - 3, index + 1).reduce((acc, curr) => {
-            expenseCategories.forEach(({ key }) => {
-              acc[key] = (acc[key] || 0) + (curr[key] || 0);
-            });
-            return acc;
-          }, {} as Record<ExpenseCategory, number>);
+            // Calculate TTM by summing the last 4 quarters for each expense category
+            const ttmData = array.slice(index - 3, index + 1).reduce((acc, curr) => {
+                expenseCategories.forEach(({ key }) => {
+                    acc[key] = (acc[key] || 0) + (curr[key] || 0);
+                });
+                return acc;
+            }, {} as Record<ExpenseCategory, number>);
 
-          // Calculate total TTM expenses
-          const totalTTMExpenses = Object.values(ttmData).reduce((sum, value) => sum + value, 0);
+            // Calculate total TTM expenses
+            const totalTTMExpenses = Object.values(ttmData).reduce((sum, value) => sum + value, 0);
 
-          return {
-            ...item,
-            ...ttmData,
-            totalExpenses: totalTTMExpenses
-          };
+            return {
+                ...item,
+                ...ttmData,
+                totalExpenses: totalTTMExpenses
+            };
         })
-      : allData;
+        : allData;
 
     return filterDataByTimeframe(processedData, timeframe);
-  }, [data, timeframe, isTTM]);
+  }, [data, cashFlow, timeframe, isTTM]);
 
-  if (isLoading || !data) {
+  if (isLoading || !data || !cashFlow) {
     return <div className={graphStyles.loading}>Loading expenses data...</div>;
   }
 
@@ -146,9 +147,16 @@ export default function Expenses({ data, isLoading }: ExpensesProps) {
           />
           <Tooltip
             formatter={(value: number, name: string) => {
+              const category = expenseCategories.find(cat => cat.key === name);
               const formattedValue = `$${formatLargeNumber(value)}`;
-              const displayName = expenseCategories.find(cat => cat.key === name)?.name || name;
-              return [formattedValue, displayName];
+              const displayName = category?.name || name;
+              return [
+                formattedValue, 
+                <>
+                  <div>{displayName}</div>
+                  {category?.tooltip && <div style={{ fontSize: '0.8em', opacity: 0.8 }}>{category.tooltip}</div>}
+                </>
+              ];
             }}
             labelFormatter={(label) => label}
           />

@@ -1,0 +1,68 @@
+.metricsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.metricSection {
+  width: 100%;
+  padding: 1rem;
+  background: var(--card-background);
+  border-radius: 8px;
+}
+
+.sectionTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.labelContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: var(--text);
+}
+
+.infoIcon {
+  color: var(--text-secondary);
+  cursor: help;
+}
+
+.valueContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.value {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.margin {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background: var(--hover-background);
+}
+
+.margin.positive {
+  color: #4caf50;
+}
+
+.margin.negative {
+  color: #f44336;
+} 
