@@ -1,16 +1,17 @@
 import React from 'react';
 import styles from './styles.module.css';
-import { 
-  HistoricalIncomeStatement, 
-  HistoricalCashFlowStatement, 
-  HistoricalBalanceSheetStatement 
+import {
+  HistoricalIncomeStatement,
+  HistoricalCashFlowStatement,
+  HistoricalBalanceSheetStatement
 } from '@/types/financials';
 import OverviewCard from '@/components/dashboard/DashboardCard/OverviewCard';
 import { formatPrice, formatPercent, formatLargeNumber } from '@/utils/format';
 import { FiInfo } from 'react-icons/fi';
 import Tooltip from '@/components/common/Tooltip';
 import { valuationTooltips } from './tooltips';
-import { calculateGrowthRate, calculateDCF, calculateGraham, calculateEarningsBased, calculateAssetBased } from './calculations';
+import { calculateGrowthRate, calculateDCF, calculateEarningsBased, calculateAssetBased, calculateAnnualFreeCashFlow, calculateAnnualEPS } from './calculations';
+import { CompanyProfile, CompanyRatios } from '@/types/company';
 
 interface IntrinsicValueOverviewProps {
   isLoading: boolean;
@@ -20,19 +21,16 @@ interface IntrinsicValueOverviewProps {
   currentPrice?: number;
   marketCap?: number;
   sharesOutstanding?: number;
-  quote?: {
-    price: number;
-    marketCap: number;
-    sharesOutstanding: number;
-  };
+  profile?: CompanyProfile;
+  ratios?: CompanyRatios[];
 }
 
-const MetricRow = ({ 
-  label, 
-  value, 
-  margin, 
-  tooltipKey 
-}: { 
+const MetricRow = ({
+  label,
+  value,
+  margin,
+  tooltipKey
+}: {
   label: string;
   value: string;
   margin?: string;
@@ -57,9 +55,11 @@ export default function IntrinsicValueOverview({
   incomeStatement,
   cashFlowStatement,
   balanceSheetStatement,
+  profile,
   currentPrice = 0,
   marketCap = 0,
-  sharesOutstanding = 0
+  sharesOutstanding = 0,
+  ratios
 }: IntrinsicValueOverviewProps) {
   const latestEPS = incomeStatement?.data?.[0]?.eps || 0;
 
@@ -74,40 +74,62 @@ export default function IntrinsicValueOverview({
       balance: balanceSheetStatement.data[0]
     };
 
-    // Calculate growth rates from historical data
-    const fcfGrowthRate = calculateGrowthRate(
-      cashFlowStatement.data.map(d => d.freeCashFlow || 0)
-    );
+    // Convert quarterly FCF values to annualized values before calculating growth
+    const quarterlyFcfValues = cashFlowStatement.data.map(d => d.freeCashFlow || 0);
+    const fcfGrowthRate = calculateGrowthRate(quarterlyFcfValues);
+
+    console.log('fcfGrowthRate', fcfGrowthRate);
     const earningsGrowthRate = calculateGrowthRate(
       incomeStatement.data.map(d => d.netIncome || 0)
     );
+    const freeCashFlow = calculateAnnualFreeCashFlow(
+      cashFlowStatement.data.map(d => d.freeCashFlow || 0),
+      Math.min(4, cashFlowStatement.data.length)
+    );
+    if (freeCashFlow <= 0) {
+      return null; // Skip DCF calculation if FCF is invalid
+    }
+    const taxRate = latest.income.incomeTaxExpense && latest.income.incomeBeforeTax
+      ? latest.income.incomeTaxExpense / latest.income.incomeBeforeTax
+      : 0.21;
+    const beta = profile?.beta
+      ? 0.035 + (profile.beta * 0.055)
+      : 0.035 + 0.055; // Default to market average (beta = 1)
+
 
     // Calculate different valuations
     const dcfValue = calculateDCF(
-      latest.cashFlow.freeCashFlow, 
+      freeCashFlow,
       fcfGrowthRate,
-      sharesOutstanding
-    );
-    const grahamValue = calculateGraham(latest.income.eps || 0, earningsGrowthRate);
-    const earningsValue = calculateEarningsBased(latest.income.eps || 0);
-    const assetValue = calculateAssetBased(
-      latest.balance.totalAssets,
-      latest.balance.totalLiabilities,
-      latest.balance.totalStockholdersEquity,
-      sharesOutstanding
+      sharesOutstanding,
+      marketCap || 0,
+      latest.balance.totalDebt || 0,
+      beta,
+      latest.income.interestExpense && latest.balance.totalDebt
+        ? (latest.income.interestExpense / latest.balance.totalDebt)
+        : 0.05,
+      taxRate,
+      0.02,
+      5
     );
 
+    const earningsValue = calculateEarningsBased(
+      calculateAnnualEPS(
+        incomeStatement.data.map(d => d.epsdiluted || 0),
+        Math.min(4, incomeStatement.data.length)
+      ),
+      earningsGrowthRate,
+      ratios?.[0]?.peRatioTTM || 22
+    );
     // Calculate margins of safety
     const getMargin = (value: number) => {
       if (!currentPrice || !value) return 0;
-      return ((value - currentPrice) / currentPrice) * 100;
+      return ((value - currentPrice) / value) * 100;
     };
 
     return {
       dcf: { value: dcfValue, margin: getMargin(dcfValue) },
-      graham: { value: grahamValue, margin: getMargin(grahamValue) },
-      earnings: { value: earningsValue, margin: getMargin(earningsValue) },
-      asset: { value: assetValue, margin: getMargin(assetValue) }
+      earnings: { value: earningsValue, margin: getMargin(earningsValue) }
     };
   };
 
@@ -148,16 +170,6 @@ export default function IntrinsicValueOverview({
         </div>
 
         <div className={styles.metricSection}>
-          <h4 className={styles.sectionTitle}>Graham Formula</h4>
-          <MetricRow
-            label="Graham Value"
-            value={formatPrice(valuations?.graham.value)}
-            margin={formatPercent(valuations?.graham.margin)}
-            tooltipKey="grahamValue"
-          />
-        </div>
-
-        <div className={styles.metricSection}>
           <h4 className={styles.sectionTitle}>Earnings-Based</h4>
           <MetricRow
             label="Fair Value"
@@ -166,16 +178,7 @@ export default function IntrinsicValueOverview({
             tooltipKey="earningsValue"
           />
         </div>
-
-        <div className={styles.metricSection}>
-          <h4 className={styles.sectionTitle}>Asset-Based</h4>
-          <MetricRow
-            label="Net Asset Value"
-            value={formatPrice(valuations?.asset.value)}
-            margin={formatPercent(valuations?.asset.margin)}
-            tooltipKey="assetValue"
-          />
-        </div>
+        
       </div>
     </OverviewCard>
   );

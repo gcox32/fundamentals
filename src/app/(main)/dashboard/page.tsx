@@ -321,10 +321,11 @@ export default function Dashboard() {
                         incomeStatement={selectedCompany?.incomeStatement}
                         cashFlowStatement={selectedCompany?.cashFlowStatement}
                         balanceSheetStatement={selectedCompany?.balanceSheetStatement}
-                        quote={selectedCompany?.quote}
+                        profile={selectedCompany?.outlook?.profile}
                         currentPrice={selectedCompany?.quote?.price}
                         marketCap={selectedCompany?.quote?.marketCap}
                         sharesOutstanding={selectedCompany?.quote?.sharesOutstanding}
+                        ratios={selectedCompany?.outlook?.ratios}
                       />
                     </VisibilityWrapper>
                   </>
