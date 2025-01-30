@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './styles.module.css';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import FundCard from './FundCard';
 
 interface Fund {
   symbol: string;
@@ -17,7 +18,7 @@ interface FundCarouselProps {
 }
 
 export default function FundCarousel({ funds, onFundSelect, selectedFund }: FundCarouselProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(2);
   const [isAnimating, setIsAnimating] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +34,7 @@ export default function FundCarousel({ funds, onFundSelect, selectedFund }: Fund
       opacity,
       zIndex: funds.length - Math.abs(offset),
       transition: isAnimating ? 
-        'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)' : 
+        'transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)' : 
         'none'
     };
   };
@@ -79,16 +80,13 @@ export default function FundCarousel({ funds, onFundSelect, selectedFund }: Fund
       <div className={styles.carouselStage} ref={carouselRef}>
         <div className={styles.carouselTrack}>
           {funds.map((fund, index) => (
-            <button
+            <FundCard
               key={fund.symbol}
-              className={`${styles.fundCard} ${selectedFund?.symbol === fund.symbol ? styles.selected : ''}`}
-              onClick={() => handleCardClick(fund, index)}
+              fund={fund}
+              isSelected={selectedFund?.symbol === fund.symbol}
               style={calculateCardStyles(index)}
-            >
-              <h3 className={styles.fundSymbol}>{fund.symbol}</h3>
-              <p className={styles.fundName}>{fund.name}</p>
-              <p className={styles.fundDescription}>{fund.description}</p>
-            </button>
+              onClick={() => handleCardClick(fund, index)}
+            />
           ))}
         </div>
       </div>

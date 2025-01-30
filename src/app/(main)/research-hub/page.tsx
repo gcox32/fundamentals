@@ -130,6 +130,13 @@ export default function ResearchHub() {
     return `Top Holdings in the ${selectedFund.name}`;
   };
 
+  const getSectionDescription = () => {
+    if (!selectedFund) {
+      return `Percentages represent the stake each company has in the total of all Eventide funds.`;
+    }
+    return `Percentages represent the stake each company has in the ${selectedFund.name}.`;
+  };
+
   return (
     <main className={styles.container}>
       <section className={styles.hero}>
@@ -154,6 +161,7 @@ export default function ResearchHub() {
 
       <section className={styles.companiesSection}>
         <h2 className={styles.sectionTitle}>{getSectionTitle()}</h2>
+        <p className={styles.sectionDescription}>*{getSectionDescription()}</p>
         <CompanyGrid 
           companies={displayedCompanies}
           onCompanySelect={handleCompanySelect}

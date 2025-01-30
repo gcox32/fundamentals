@@ -33,13 +33,13 @@
   );
   border: 1px solid var(--border-color);
   border-radius: 0.75rem;
-  padding: 1.5rem;
+  padding: 0;
   text-align: left;
   cursor: pointer;
   backface-visibility: hidden;
   transform-origin: center center -150px;
-  transition: 10s ease-in-out;
-  /* will-change: transform, opacity; */
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
 .fundCard.selected {
@@ -54,27 +54,53 @@
   opacity: 1 !important;
 }
 
+.cardContent {
+  position: relative;
+  height: 100%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.logoContainer {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.logo {
+  filter: var(--svg-filter);
+}
+
 .fundSymbol {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 3rem 0 0.5rem 0;
   color: var(--text);
 }
 
 .fundName {
-  font-size: 0.875rem;
+  font-size: 1rem;
+  font-weight: 500;
   color: var(--text-secondary);
-  margin: 0 0 1rem 0;
+  margin: 0 0 1.5rem 0;
 }
 
 .fundDescription {
   font-size: 0.875rem;
+  line-height: 1.6;
   color: var(--text-secondary);
   margin: 0;
   display: -webkit-box;
-  /* -webkit-line-clamp: 3; */
+  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
-  line-height: 1.5;
+  overflow: hidden;
+}
+
+.fundCard.selected .logoContainer {
+  opacity: 1;
 }
 
 .scrollButton {
