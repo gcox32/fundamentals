@@ -31,6 +31,7 @@ db/
 tmp/
 yhfinance.json
 fmp.json
+scripts/
 
 # vercel
 .vercel
