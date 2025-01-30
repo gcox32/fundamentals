@@ -1,0 +1,107 @@
+.carouselContainer {
+  position: relative;
+  width: 100%;
+  padding: 1rem 0;
+}
+
+.carouselTrack {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0.5rem;
+}
+
+.carouselTrack::-webkit-scrollbar {
+  display: none;
+}
+
+.fundCard {
+  flex: 0 0 300px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  text-align: left;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.fundCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.fundCard.selected {
+  border-color: var(--active-accent);
+  box-shadow: 0 0 0 2px rgba(var(--active-accent-rgb), 0.2);
+}
+
+.fundSymbol {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: var(--text);
+}
+
+.fundName {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0 0 1rem 0;
+}
+
+.fundDescription {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+.scrollButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1;
+  transition: all 0.2s ease;
+}
+
+.scrollButton:hover {
+  background: var(--hover-bg);
+}
+
+.leftButton {
+  left: -20px;
+}
+
+.rightButton {
+  right: -20px;
+}
+
+@media (max-width: 768px) {
+  .scrollButton {
+    display: none;
+  }
+  
+  .carouselTrack {
+    padding: 0;
+  }
+  
+  .fundCard {
+    flex: 0 0 280px;
+  }
+}
