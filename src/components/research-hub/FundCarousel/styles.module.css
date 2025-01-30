@@ -1,42 +1,57 @@
 .carouselContainer {
   position: relative;
   width: 100%;
-  padding: 1rem 0;
+  height: 400px;
+  padding: 2rem 0;
+  perspective: 1500px;
+}
+
+.carouselStage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
 }
 
 .carouselTrack {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
   display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  padding: 0.5rem;
-}
-
-.carouselTrack::-webkit-scrollbar {
-  display: none;
+  justify-content: center;
+  align-items: center;
 }
 
 .fundCard {
-  flex: 0 0 300px;
-  background: var(--card-bg);
+  position: absolute;
+  width: 300px;
+  height: 400px;
+  background: linear-gradient(135deg, 
+    var(--card-bg) 0%,
+    color-mix(in srgb, var(--card-bg) 98%, var(--active-accent)) 100%
+  );
   border: 1px solid var(--border-color);
   border-radius: 0.75rem;
   padding: 1.5rem;
   text-align: left;
-  transition: all 0.2s ease;
   cursor: pointer;
-}
-
-.fundCard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  backface-visibility: hidden;
+  transform-origin: center center -150px;
+  transition: 10s ease-in-out;
+  /* will-change: transform, opacity; */
 }
 
 .fundCard.selected {
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--card-bg) 98%, var(--active-accent)) 0%,
+    color-mix(in srgb, var(--card-bg) 95%, var(--active-accent)) 100%
+  );
   border-color: var(--active-accent);
-  box-shadow: 0 0 0 2px rgba(var(--active-accent-rgb), 0.2);
+  box-shadow: 
+    0 0 0 2px rgba(var(--active-accent-rgb), 0.2),
+    0 10px 20px rgba(0, 0, 0, 0.2);
+  opacity: 1 !important;
 }
 
 .fundSymbol {
@@ -57,9 +72,8 @@
   color: var(--text-secondary);
   margin: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  /* -webkit-line-clamp: 3; */
   -webkit-box-orient: vertical;
-  overflow: hidden;
   line-height: 1.5;
 }
 
