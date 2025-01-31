@@ -7,6 +7,7 @@ import FundCarousel from '@/components/research-hub/FundCarousel';
 import investmentUniverse from './investment-universe.json';
 import styles from './styles.module.css';
 import ResearchModal from '@/components/research-hub/ResearchModal';
+import ThemeFilter from '@/components/research-hub/ThemeFilter';
 
 interface Company {
     symbol: string;
@@ -24,10 +25,11 @@ interface Fund {
 
 export default function ResearchHub() {
     const [companies, setCompanies] = useState<Company[]>([]);
-    const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
     const [selectedFund, setSelectedFund] = useState<Fund | null>(null);
     const [displayedCompanies, setDisplayedCompanies] = useState<Company[]>([]);
     const [selectedCompanyForResearch, setSelectedCompanyForResearch] = useState<Company | null>(null);
+    const [availableThemes, setAvailableThemes] = useState<string[]>([]);
+    const [selectedThemes, setSelectedThemes] = useState<string[]>([]);
 
     const [funds] = useState<Fund[]>(() => {
         // Combine mutual funds and ETFs, excluding bond funds
@@ -78,6 +80,13 @@ export default function ResearchHub() {
     }
 
     useEffect(() => {
+        // Get unique themes from all companies
+        const themes = new Set<string>();
+        investmentUniverse.companies.forEach(company => {
+            company.themes.forEach(theme => themes.add(theme));
+        });
+        setAvailableThemes(Array.from(themes).sort());
+
         // Initialize with top companies by percentage
         const allCompanies = (investmentUniverse.companies || [])
             .map(company => ({
@@ -112,14 +121,26 @@ export default function ResearchHub() {
         // If clicking the already selected fund, deselect it
         if (selectedFund?.symbol === fund.symbol) {
             setSelectedFund(null);
-            setDisplayedCompanies(companies.slice(0, 12));
+            // Apply only theme filtering if themes are selected
+            if (selectedThemes.length > 0) {
+                const themeFilteredCompanies = companies
+                    .filter(company => {
+                        const originalCompany = investmentUniverse.companies
+                            .find(c => c.ticker === company.symbol);
+                        return originalCompany?.themes.some(t => selectedThemes.includes(t));
+                    })
+                    .slice(0, 12);
+                setDisplayedCompanies(themeFilteredCompanies);
+            } else {
+                setDisplayedCompanies(companies.slice(0, 12));
+            }
             return;
         }
 
         setSelectedFund(fund);
 
-        // Filter and sort companies by their percentage in the selected fund
-        const fundCompanies = companies
+        // Filter companies that match both the selected fund and themes
+        const filteredCompanies = companies
             .map(company => {
                 const originalCompany = investmentUniverse.companies
                     .find(c => c.ticker === company.symbol);
@@ -131,11 +152,72 @@ export default function ResearchHub() {
                     totalPercentage: fundPercentage
                 };
             })
-            .filter(company => company.totalPercentage > 0)
+            .filter(company => {
+                const originalCompany = investmentUniverse.companies
+                    .find(c => c.ticker === company.symbol);
+                const matchesThemes = selectedThemes.length === 0 || 
+                    originalCompany?.themes.some(t => selectedThemes.includes(t));
+                return company.totalPercentage > 0 && matchesThemes;
+            })
             .sort((a, b) => b.totalPercentage - a.totalPercentage)
             .slice(0, 12);
 
-        setDisplayedCompanies(fundCompanies);
+        setDisplayedCompanies(filteredCompanies);
+    };
+
+    const handleThemeSelect = (theme: string) => {
+        setSelectedThemes(prev => {
+            const newThemes = prev.includes(theme)
+                ? prev.filter(t => t !== theme)
+                : [...prev, theme];
+            
+            // If no themes selected, show only fund-filtered companies or default
+            if (newThemes.length === 0) {
+                if (selectedFund) {
+                    const fundCompanies = companies
+                        .map(company => {
+                            const originalCompany = investmentUniverse.companies
+                                .find(c => c.ticker === company.symbol);
+                            const fundPercentage = originalCompany ?
+                                (originalCompany.percentage_of_each_fund as Record<string, number | null>)[selectedFund.symbol] || 0 : 0;
+                            return {
+                                ...company,
+                                totalPercentage: fundPercentage
+                            };
+                        })
+                        .filter(company => company.totalPercentage > 0)
+                        .sort((a, b) => b.totalPercentage - a.totalPercentage)
+                        .slice(0, 12);
+                    setDisplayedCompanies(fundCompanies);
+                } else {
+                    setDisplayedCompanies(companies.slice(0, 12));
+                }
+            } else {
+                // Filter by both themes and fund if a fund is selected
+                const filteredCompanies = companies
+                    .map(company => {
+                        const originalCompany = investmentUniverse.companies
+                            .find(c => c.ticker === company.symbol);
+                        const fundPercentage = selectedFund ? 
+                            (originalCompany?.percentage_of_each_fund as Record<string, number | null>)[selectedFund.symbol] || 0 : 1;
+                        return {
+                            ...company,
+                            totalPercentage: fundPercentage
+                        };
+                    })
+                    .filter(company => {
+                        const originalCompany = investmentUniverse.companies
+                            .find(c => c.ticker === company.symbol);
+                        const matchesThemes = originalCompany?.themes.some(t => newThemes.includes(t));
+                        return matchesThemes && (!selectedFund || company.totalPercentage > 0);
+                    })
+                    .sort((a, b) => b.totalPercentage - a.totalPercentage)
+                    .slice(0, 12);
+                setDisplayedCompanies(filteredCompanies);
+            }
+            
+            return newThemes;
+        });
     };
 
     const getSectionTitle = () => {
@@ -159,6 +241,9 @@ export default function ResearchHub() {
                 <p className={styles.subtitle}>
                     Explore the nearly 3000 companies in Eventide's investment universe that are; investments that are making the world rejoice.
                 </p>
+                <p className={styles.subtitle}>
+                    Search explicitly for companies, scan our funds, or explore compelling investment themes.
+                </p>
                 <div className={styles.searchContainer}>
                     <SearchBar onSubmit={handleSearchSubmit} />
                 </div>
@@ -170,6 +255,15 @@ export default function ResearchHub() {
                     funds={funds}
                     onFundSelect={handleFundSelect}
                     selectedFund={selectedFund}
+                />
+            </section>
+
+            <section className={styles.themesSection}>
+                <h2 className={styles.sectionTitle}>Filter by Theme</h2>
+                <ThemeFilter
+                    themes={availableThemes}
+                    selectedThemes={selectedThemes}
+                    onThemeSelect={handleThemeSelect}
                 />
             </section>
 
