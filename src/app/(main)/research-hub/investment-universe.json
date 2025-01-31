@@ -1,0 +1,1409 @@
+{
+    "total_assets": 6547420000,
+    "mutual_funds": [
+        {
+            "url": "https://mutualfunds.eventideinvestments.com/our-products/eventide-dividend-growth-fund/class-i/",
+            "name": "Eventide Dividend Growth Fund",
+            "ticker": "ETIDX",
+            "category": "Core",
+            "total_assets": 1090000000
+        },
+        {
+            "url": "https://mutualfunds.eventideinvestments.com/our-products/eventide-large-cap-focus-fund/class-i/",
+            "name": "Eventide Large Cap Focused Fund",
+            "ticker": "ETLIX",
+            "category": "Core",
+            "total_assets": 165880000
+        },
+        {
+            "url": "https://mutualfunds.eventideinvestments.com/our-products/eventide-gilead-fund/class-i/",
+            "name": "Eventide Gilead Fund",
+            "ticker": "ETILX",
+            "category": "Growth",
+            "total_assets": 3020000000
+        },
+        {
+            "url": "https://mutualfunds.eventideinvestments.com/our-products/eventide-healthcare-%26-life-sciences-fund/class-i/",
+            "name": "Eventide Healthcare & Life Sciences Fund",
+            "ticker": "ETIHX",
+            "category": "Growth",
+            "total_assets": 1350000000
+        },
+        {
+            "url": "https://mutualfunds.eventideinvestments.com/our-products/eventide-exponential-technologies-fund/class-i/",
+            "name": "Eventide Exponential Technologies Fund",
+            "ticker": "ETIEX",
+            "category": "Growth",
+            "total_assets": 113890000
+        },
+        {
+            "url": "https://mutualfunds.eventideinvestments.com/our-products/eventide-balanced-fund/class-i/",
+            "name": "Eventide Balanced Fund",
+            "ticker": "ETIMX",
+            "category": "Balanced",
+            "total_assets": 389640000
+        },
+        {
+            "url": "https://mutualfunds.eventideinvestments.com/our-products/eventide-limited-term-bond-fund/class-i/",
+            "name": "Eventide Limited-Term Bond Fund",
+            "ticker": "ETIBX",
+            "category": "Bonds",
+            "total_assets": 153350000
+        },
+        {
+            "url": "https://mutualfunds.eventideinvestments.com/our-products/eventide-core-bond-fund/class-i/",
+            "name": "Eventide Core Bond Fund",
+            "ticker": "ETIRX",
+            "category": "Bonds",
+            "total_assets": 148690000
+        }
+    ],
+    "etfs": [
+        {
+            "url": "https://etfs.eventideinvestments.com/eusm",
+            "name": "Eventide US Market ETF",
+            "ticker": "EUSM",
+            "category": "Large Blend",
+            "total_assets": 34270000
+        },
+        {
+            "url": "https://etfs.eventideinvestments.com/elcv",
+            "name": "Eventide High Dividend ETF",
+            "ticker": "ELCV",
+            "category": "Large Value",
+            "total_assets": 81700000
+        }
+    ],
+    "companies": [
+        {
+            "name": "Trane Technologies PLC",
+            "ticker": "TT",
+            "description": "HVAC systems for energy efficiency and reduced carbon emissions",
+            "themes": ["Energy Efficiency", "Clean Energy"],
+            "percentage_of_each_fund": {
+                "ETIDX": 0.0549,
+                "ETLIX": 0.0382,
+                "ETILX": 0.0497,
+                "ETIMX": 0.031,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.034876402613548546
+        },
+        {
+            "name": "Arthur J Gallagher & Co",
+            "ticker": "AJG",
+            "description": "Commercial insurance and reinsurance broker",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETIDX": 0.0422,
+                "ETIMX": 0.0218,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.008322690769799402
+        },
+        {
+            "name": "Roper Technologies Inc",
+            "ticker": "ROP",
+            "description": "Software, water metering technologies, and medical products",
+            "themes": ["Clean Water Technology", "Business Intelligence", "IOT"],
+            "percentage_of_each_fund": {
+                "ETIDX": 0.0409,
+                "ETLIX": 0.0399,
+                "ETILX": 0.0273,
+                "ETIMX": 0.022,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.021721180556616194
+        },
+        {
+            "name": "nVent Electric PLC",
+            "ticker": "NVT",
+            "description": "Electronic packaging and networking solutions",
+            "themes": ["5G & Data Infrastructure", "Energy Efficiency"],
+            "percentage_of_each_fund": {
+                "ETIDX": 0.0398,
+                "ETIMX": 0.0261,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.008179039071878695
+        },
+        {
+            "name": "CDW Corp",
+            "ticker": "CDW",
+            "description": "Value-added reseller of technology solutions",
+            "themes": ["Business Intelligence", "5G & Data Infrastructure"],
+            "percentage_of_each_fund": {
+                "ETIDX": 0.039,
+                "ETIMX": 0.0227,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.007843521264864635
+        },
+        {
+            "name": "Iron Mountain Inc",
+            "ticker": "IRM",
+            "description": "Storage and information management company",
+            "themes": ["Business Intelligence", "Cybersecurity"],
+            "percentage_of_each_fund": {
+                "ETIDX": 0.0333,
+                "ETIMX": 0.0184,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.006638702878385685
+        },
+        {
+            "name": "KLA Corp",
+            "ticker": "KLAC",
+            "description": "Semiconductors and semiconductor assembly solutions",
+            "themes": ["Semiconductors", "Beyond Moore's Law"],
+            "percentage_of_each_fund": {
+                "ETIDX": 0.0332,
+                "ETIMX": 0.0187,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.006639908238665001
+        },
+        {
+            "name": "Ferguson Enterprises Inc.",
+            "ticker": "FERG",
+            "description": "Distributor of plumbing, waterworks, HVAC, and other products",
+            "themes": ["Clean Water Technology", "Energy Efficiency"],
+            "percentage_of_each_fund": {
+                "ETIDX": 0.0306,
+                "ETIMX": 0.0193,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.006242772267549661
+        },
+        {
+            "name": "The Williams Companies Inc",
+            "ticker": "WMB",
+            "description": "Gathers and transports natural gas for global markets",
+            "themes": ["Energy Efficiency", "Clean Energy"],
+            "percentage_of_each_fund": {
+                "ETIDX": 0.0304,
+                "ETIMX": 0.0169,
+                "ELCV": 0.06480000000000001,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null
+            },
+            "percentage_of_total_assets": 0.006875238796350318
+        },
+        {
+            "name": "DR Horton Inc",
+            "ticker": "DHI",
+            "description": "Nationwide builder of affordable new homes",
+            "themes": ["Home Ownership and Home Improvement"],
+            "percentage_of_each_fund": {
+                "ETIDX": 0.0302,
+                "ETLIX": 0.0348,
+                "ETILX": 0.0365,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.022744932202302587
+        },
+        {
+            "name": "Linde PLC",
+            "ticker": "LIN",
+            "description": "World's largest industrial gas company",
+            "themes": ["Clean Energy", "Industry 4.0"],
+            "percentage_of_each_fund": {
+                "ETLIX": 0.061,
+                "EUSM": 0.013600000000000001,
+                "ETIDX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0016166294509898556
+        },
+        {
+            "name": "S&P Global Inc",
+            "ticker": "SPGI",
+            "description": "Financial information and data analytics services",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETLIX": 0.06,
+                "ETIDX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.001520110211350425
+        },
+        {
+            "name": "The Sherwin-Williams Co",
+            "ticker": "SHW",
+            "description": "Manufactures, distributes, and sells paints and coatings",
+            "themes": ["Home Ownership and Home Improvement"],
+            "percentage_of_each_fund": {
+                "ETLIX": 0.0372,
+                "ETIDX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0009424683310372634
+        },
+        {
+            "name": "Nvidia Corp",
+            "ticker": "NVDA",
+            "description": "Computer graphics processors, chipsets, and multimedia software",
+            "themes": ["Semiconductors", "Beyond Moore's Law", "IOT"],
+            "percentage_of_each_fund": {
+                "ETLIX": 0.0365,
+                "EUSM": 0.0504,
+                "ETIDX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0011885334986910874
+        },
+        {
+            "name": "O'Reilly Automotive Inc",
+            "ticker": "ORLY",
+            "description": "Automotive parts retailer providing strong customer service",
+            "themes": ["Supply Chain Resiliency"],
+            "percentage_of_each_fund": {
+                "ETLIX": 0.0351,
+                "ETIDX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0008892644736399986
+        },
+        {
+            "name": "ServiceNow Inc",
+            "ticker": "NOW",
+            "description": "Software for enterprises to manage and automate operational workflows",
+            "themes": ["Business Intelligence", "Industry 4.0"],
+            "percentage_of_each_fund": {
+                "ETLIX": 0.0338,
+                "ETIDX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0008563287523940727
+        },
+        {
+            "name": "Mettler-Toledo International Inc",
+            "ticker": "MTT",
+            "description": "Weighing and analytical instruments and services",
+            "themes": ["Industry 4.0", "Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETLIX": 0.0333,
+                "ETILX": 0.0293,
+                "ETIDX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.014358297466788445
+        },
+        {
+            "name": "Waste Connections Inc",
+            "ticker": "WCN",
+            "description": "Differentiated waste services firm with servant leadership culture",
+            "themes": ["Clean Water Technology"],
+            "percentage_of_each_fund": {
+                "ETILX": 0.0443,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.02043339208421027
+        },
+        {
+            "name": "Old Dominion Freight Line Inc",
+            "ticker": "ODFL",
+            "description": "Inter-regional and multi-regional motor carrier",
+            "themes": ["Supply Chain Resiliency"],
+            "percentage_of_each_fund": {
+                "ETILX": 0.0379,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.017481389616062513
+        },
+        {
+            "name": "The Trade Desk Inc",
+            "ticker": "TTD",
+            "description": "Digital advertising platform for display, social, and video campaigns",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETILX": 0.0339,
+                "ETIEX": 0.0297,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETIHX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.016153008818740818
+        },
+        {
+            "name": "IDEXX Laboratories Inc",
+            "ticker": "IDXX",
+            "description": "Diagnostics for veterinary and water testing applications",
+            "themes": ["Clean Water Technology"],
+            "percentage_of_each_fund": {
+                "ETILX": 0.0292,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.013468511260924151
+        },
+        {
+            "name": "Monolithic Power Systems Inc",
+            "ticker": "MPWR",
+            "description": "Power management solutions",
+            "themes": ["Energy Efficiency", "Semiconductors"],
+            "percentage_of_each_fund": {
+                "ETILX": 0.0259,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.011946384988285461
+        },
+        {
+            "name": "Monday.com Ltd",
+            "ticker": "MNDY",
+            "description": "Cloud-based software for business workflow applications",
+            "themes": ["Business Intelligence", "Industry 4.0"],
+            "percentage_of_each_fund": {
+                "ETILX": 0.0249,
+                "ETIEX": 0.0317,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETIHX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.012036544623683833
+        },
+        {
+            "name": "Mirum Pharmaceuticals Inc",
+            "ticker": "MIRM",
+            "description": "Treating rare pediatric cholestasis diseases with IBAT inhibitors",
+            "themes": ["Rare Diseases"],
+            "percentage_of_each_fund": {
+                "ETIHX": 0.0435,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.008969181754034413
+        },
+        {
+            "name": "Aura Biosciences Inc",
+            "ticker": "AURA",
+            "description": "Ocular oncology focused therapy that is safer than radiation",
+            "themes": ["Oncology"],
+            "percentage_of_each_fund": {
+                "ETIHX": 0.0346,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.007134107785967602
+        },
+        {
+            "name": "Collegium Pharmaceutical Inc",
+            "ticker": "CLM",
+            "description": "Prescription and over-the-counter pharmaceuticals",
+            "themes": ["Rare Diseases"],
+            "percentage_of_each_fund": {
+                "ETIHX": 0.0333,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.006866063273778069
+        },
+        {
+            "name": "Insmed Inc",
+            "ticker": "INSM",
+            "description": "Therapies for pulmonary infections and other lung diseases",
+            "themes": ["Rare Diseases"],
+            "percentage_of_each_fund": {
+                "ETIHX": 0.033,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.006804206847888176
+        },
+        {
+            "name": "Celldex Therapeutics Inc",
+            "ticker": "CLDX",
+            "description": "Applications of immunology to prevent and treat diseases",
+            "themes": ["Rare Diseases"],
+            "percentage_of_each_fund": {
+                "ETIHX": 0.0309,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0063712118666589285
+        },
+        {
+            "name": "Vaxcyte Inc",
+            "ticker": "VXCY",
+            "description": "Novel vaccines for infectious diseases, including a pneumococcal vaccine",
+            "themes": ["Rare Diseases"],
+            "percentage_of_each_fund": {
+                "ETIHX": 0.0294,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.006061929737209466
+        },
+        {
+            "name": "Evolent Health Inc",
+            "ticker": "EVH",
+            "description": "Value-based care initiatives in specialty and primary care",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETIHX": 0.0274,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.005649553564610182
+        },
+        {
+            "name": "Exact Sciences Corp",
+            "ticker": "EXAS",
+            "description": "Non-invasive molecular screening for colorectal cancer",
+            "themes": ["Oncology"],
+            "percentage_of_each_fund": {
+                "ETIHX": 0.0258,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0053196526265307555
+        },
+        {
+            "name": "Crinetics Pharmaceuticals Inc",
+            "ticker": "CRNX",
+            "description": "Therapies for treatment of endocrine diseases and cancers",
+            "themes": ["Rare Diseases", "Oncology"],
+            "percentage_of_each_fund": {
+                "ETIHX": 0.0252,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.005195939774750971
+        },
+        {
+            "name": "Axsome Therapeutics Inc",
+            "ticker": "AXSM",
+            "description": "Develops novel therapies for neurological and psychiatric diseases",
+            "themes": ["Neurology"],
+            "percentage_of_each_fund": {
+                "ETIHX": 0.0233,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0048041824107816515
+        },
+        {
+            "name": "Xometry Inc",
+            "ticker": "XMTR",
+            "description": "AI-enabled marketplace for on-demand manufacturing",
+            "themes": ["Industry 4.0", "Supply Chain Resiliency"],
+            "percentage_of_each_fund": {
+                "ETIEX": 0.0669,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.001163701274700569
+        },
+        {
+            "name": "Constellation Software Inc",
+            "ticker": "CSWI",
+            "description": "Mission-critical software for small- and medium-sized businesses",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETIEX": 0.0553,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0009619234752009188
+        },
+        {
+            "name": "Adyen NV",
+            "ticker": "ADYEN",
+            "description": "Enabling businesses to accept multiple forms of digital payments",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETIEX": 0.0384,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.000667954094895394
+        },
+        {
+            "name": "Lattice Semiconductor Corp",
+            "ticker": "LSCC",
+            "description": "Semiconductor devices",
+            "themes": ["Semiconductors", "Beyond Moore's Law"],
+            "percentage_of_each_fund": {
+                "ETIEX": 0.0342,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0005948966157662102
+        },
+        {
+            "name": "Toast Inc",
+            "ticker": "TOST",
+            "description": "Develops cloud software to equip restaurants to thrive",
+            "themes": ["eCommerce", "Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETIEX": 0.0332,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0005775019778783094
+        },
+        {
+            "name": "Global-e Online Ltd",
+            "ticker": "GLBE",
+            "description": "Develops end-to-end cross-border platforms for eBusiness",
+            "themes": ["eCommerce", "Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETIEX": 0.0288,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0005009655711715454
+        },
+        {
+            "name": "HubSpot Inc",
+            "ticker": "HUBS",
+            "description": "Inbound sales and marketing platform",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETIEX": 0.0272,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.00047313415055090405
+        },
+        {
+            "name": "Datadog Inc",
+            "ticker": "DDOG",
+            "description": "Cloud-based monitoring and analytics platform",
+            "themes": ["Business Intelligence", "Cybersecurity"],
+            "percentage_of_each_fund": {
+                "ETIEX": 0.0272,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.00047313415055090405
+        },
+        {
+            "name": "Targa Resources Corp",
+            "ticker": "TRGP",
+            "description": "Midstream natural gas and NGL provider in the Permian Basin",
+            "themes": ["Energy Efficiency", "Clean Energy"],
+            "percentage_of_each_fund": {
+                "ETIMX": 0.0167,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0009938247431812836
+        },
+        {
+            "name": "Fannie Mae",
+            "ticker": "FNMA",
+            "description": "Financing for U.S. mortgage providers",
+            "themes": ["Home Ownership and Home Improvement"],
+            "percentage_of_each_fund": {
+                "ETIBX": 0.1251,
+                "ETIRX": 0.2197,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.007919345024452379
+        },
+        {
+            "name": "Federal Farm Credit Bank",
+            "ticker": "FFEB",
+            "description": "Loans and services to rural communities and U.S. agriculture",
+            "themes": ["Healthy Foods and Sustainable Agriculture"],
+            "percentage_of_each_fund": {
+                "ETIBX": 0.0793,
+                "ETIRX": 0.0769,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.003603696723289479
+        },
+        {
+            "name": "Freddie Mac",
+            "ticker": "FMCC",
+            "description": "Secondary mortgage market liquidity for lenders to offer credit for home buyers",
+            "themes": ["Home Ownership and Home Improvement"],
+            "percentage_of_each_fund": {
+                "ETIBX": 0.037,
+                "ETIRX": 0.1395,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.004034597597221501
+        },
+        {
+            "name": "CarMax Auto",
+            "ticker": "KMX",
+            "description": "Retailer of used automobiles",
+            "themes": [],
+            "percentage_of_each_fund": {
+                "ETIBX": 0.0326,
+                "ETIRX": 0.0157,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.001120081345018343
+        },
+        {
+            "name": "JPMorgan Chase & Co",
+            "ticker": "JPM",
+            "description": "Provides global financial services and retail banking",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETIBX": 0.0206,
+                "ETIRX": 0.0178,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0008867144615741774
+        },
+        {
+            "name": "Bank of America Corp",
+            "ticker": "BAC",
+            "description": "Provides investment and banking services",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETIBX": 0.0197,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.00046140235390428595
+        },
+        {
+            "name": "Morgan Stanley",
+            "ticker": "MS",
+            "description": "Social bond focused on affordable housing",
+            "themes": ["Home Ownership and Home Improvement"],
+            "percentage_of_each_fund": {
+                "ETIBX": 0.0195,
+                "ETIRX": 0.0149,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0007950927235460685
+        },
+        {
+            "name": "Virginia State Housing Development Authority",
+            "ticker": "VSHDA",
+            "description": "Mortgages for first-time homebuyers, rental housing developers",
+            "themes": ["Home Ownership and Home Improvement"],
+            "percentage_of_each_fund": {
+                "ETIBX": 0.018,
+                "ETIRX": 0.0141,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0007417927977737796
+        },
+        {
+            "name": "NextEra Energy Capital LP",
+            "ticker": "NE",
+            "description": "Large U.S. electric utility and producer of solar and wind energy",
+            "themes": ["Clean Energy", "Energy Efficiency"],
+            "percentage_of_each_fund": {
+                "ETIBX": 0.0176,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.00041221733140687475
+        },
+        {
+            "name": "Aflac Inc",
+            "ticker": "AFL",
+            "description": "Insurance and reinsurance products and services",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETIBX": 0.0171,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIRX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.00040050661176463403
+        },
+        {
+            "name": "Waste Management Inc",
+            "ticker": "WM",
+            "description": "Comprehensive waste management and environmental services",
+            "themes": ["Clean Water Technology", "Industry 4.0"],
+            "percentage_of_each_fund": {
+                "ETIRX": 0.0166,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.000376981162045508
+        },
+        {
+            "name": "Verisk Analytics Inc",
+            "ticker": "VRSK",
+            "description": "Risk assessment services and decision analytics",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ETIRX": 0.0145,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.00032929077407589555
+        },
+        {
+            "name": "Quanta Services Inc",
+            "ticker": "PWR",
+            "description": "Designs and produces infrastructure services for electric power",
+            "themes": ["Energy Efficiency", "Clean Energy"],
+            "percentage_of_each_fund": {
+                "ETIRX": 0.0143,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "EUSM": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.0003247488323645039
+        },
+        {
+            "name": "BROADCOM INC.",
+            "ticker": "AVGO",
+            "description": "",
+            "themes": ["Semiconductors", "5G & Data Infrastructure"],
+            "percentage_of_each_fund": {
+                "EUSM": 0.0204,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 0.00010677610417538511
+        },
+        {
+            "name": "HOME DEPOT INC",
+            "ticker": "HD",
+            "description": "",
+            "themes": ["Home Ownership and Home Improvement"],
+            "percentage_of_each_fund": {
+                "EUSM": 0.0169,
+                "ELCV": 0.0493,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null
+            },
+            "percentage_of_total_assets": 0.0007036318122252735
+        },
+        {
+            "name": "ELI LILLY & CO",
+            "ticker": "LLY",
+            "description": "",
+            "themes": ["Rare Diseases", "Oncology"],
+            "percentage_of_each_fund": {
+                "EUSM": 0.016,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 8.374596405912559e-05
+        },
+        {
+            "name": "PROGRESSIVE CORP",
+            "ticker": "PGR",
+            "description": "",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "EUSM": 0.0127,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 6.647335897193093e-05
+        },
+        {
+            "name": "BOSTON SCIENTIFIC CORP",
+            "ticker": "BSX",
+            "description": "",
+            "themes": ["Rare Diseases"],
+            "percentage_of_each_fund": {
+                "EUSM": 0.0126,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 6.59499466965614e-05
+        },
+        {
+            "name": "UNION PACIFIC CORP",
+            "ticker": "UNP",
+            "description": "",
+            "themes": ["Supply Chain Resiliency"],
+            "percentage_of_each_fund": {
+                "EUSM": 0.012199999999999999,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 6.385629759508324e-05
+        },
+        {
+            "name": "AMERICAN EXPRESS CO",
+            "ticker": "AXP",
+            "description": "",
+            "themes": ["Business Intelligence", "eCommerce"],
+            "percentage_of_each_fund": {
+                "EUSM": 0.012199999999999999,
+                "ELCV": 0.0339,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null
+            },
+            "percentage_of_total_assets": 0.00048686719348995484
+        },
+        {
+            "name": "ARISTA NETWORKS INC",
+            "ticker": "2512042D",
+            "description": "",
+            "themes": ["5G & Data Infrastructure", "Business Intelligence"],
+            "percentage_of_each_fund": {
+                "EUSM": 0.0121,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "ELCV": null
+            },
+            "percentage_of_total_assets": 6.333288531971372e-05
+        },
+        {
+            "name": "ENBRIDGE INC",
+            "ticker": "ENB",
+            "description": "",
+            "themes": ["Energy Efficiency"],
+            "percentage_of_each_fund": {
+                "ELCV": 0.0576,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null
+            },
+            "percentage_of_total_assets": 0.000718744177095711
+        },
+        {
+            "name": "ONEOK INC",
+            "ticker": "OKE",
+            "description": "",
+            "themes": ["Energy Efficiency"],
+            "percentage_of_each_fund": {
+                "ELCV": 0.0471,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null
+            },
+            "percentage_of_total_assets": 0.0005877231031459721
+        },
+        {
+            "name": "THE SOUTHERN COMPANY",
+            "ticker": "SO",
+            "description": "",
+            "themes": ["Clean Energy", "Energy Efficiency"],
+            "percentage_of_each_fund": {
+                "ELCV": 0.0446,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null
+            },
+            "percentage_of_total_assets": 0.0005565276093484151
+        },
+        {
+            "name": "HUNTINGTON BANCSHARES INC",
+            "ticker": "HBAN",
+            "description": "",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ELCV": 0.042699999999999995,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null
+            },
+            "percentage_of_total_assets": 0.0005328190340622718
+        },
+        {
+            "name": "FIRST HORIZON NATIONAL CORP",
+            "ticker": "FHN",
+            "description": "",
+            "themes": ["Business Intelligence"],
+            "percentage_of_each_fund": {
+                "ELCV": 0.041100000000000005,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null
+            },
+            "percentage_of_total_assets": 0.0005128539180318355
+        },
+        {
+            "name": "ENTERGY CORP",
+            "ticker": "ETR",
+            "description": "",
+            "themes": ["Clean Energy", "Energy Efficiency"],
+            "percentage_of_each_fund": {
+                "ELCV": 0.0408,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null
+            },
+            "percentage_of_total_assets": 0.0005091104587761286
+        },
+        {
+            "name": "PUBLIC SERVICE ENTERPRISE GP",
+            "ticker": "PEG",
+            "description": "",
+            "themes": ["Clean Energy", "Energy Efficiency"],
+            "percentage_of_each_fund": {
+                "ELCV": 0.0365,
+                "ETIDX": null,
+                "ETLIX": null,
+                "ETILX": null,
+                "ETIHX": null,
+                "ETIEX": null,
+                "ETIMX": null,
+                "ETIBX": null,
+                "ETIRX": null,
+                "EUSM": null
+            },
+            "percentage_of_total_assets": 0.00045545420944433074
+        }
+    ]
+}

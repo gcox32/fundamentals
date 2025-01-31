@@ -43,6 +43,14 @@
   --card-background: #f5f5f5;
   --hover-background: #e0e0e0;
   --primary-color: #2196F3;
+
+  /* Card variables */
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --hover-bg: rgba(255, 255, 255, 0.98);
+  --border-color: rgba(0, 0, 0, 0.1);
+  --text-secondary: #666;
+  --active-accent: #0070f3;
+  --active-accent-rgb: 0, 112, 243;
 }
 
 :root[class~="dark-mode"] {
@@ -83,6 +91,15 @@
   --text-secondary: #a0a0a0;
   --hover-background: #2d2d2d;
   --primary-color: #2196F3;
+
+  /* Card variables */
+  --card-bg: rgba(30, 30, 30, 0.95);
+  --hover-bg: rgba(40, 40, 40, 0.98);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text: #ffffff;
+  --text-secondary: #a0a0a0;
+  --active-accent: #3291ff;
+  --active-accent-rgb: 50, 145, 255;
 }
 
 body {
@@ -98,6 +115,7 @@ body {
 
 .main-content {
   transition: margin-left 0.3s ease;
+  background-image: linear-gradient(to bottom, var(--background-secondary), var(--background));
 }
 
 .main-content.sidebar-expanded {

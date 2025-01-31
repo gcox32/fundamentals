@@ -1,0 +1,121 @@
+.searchContainer {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: var(--searchbar-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.searchBar.focused {
+  border-color: var(--active-accent);
+  box-shadow: 0 0 0 3px rgba(var(--active-accent-rgb), 0.2);
+}
+
+.searchIcon {
+  color: var(--text-secondary);
+  margin-right: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.inputWrapper {
+  position: relative;
+  flex: 1;
+  width: 100%;
+}
+
+.searchInput {
+  width: 100%;
+  border: none;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background: transparent;
+  color: var(--text);
+  outline: none;
+}
+
+.resultsDropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  width: 100%;
+  background: var(--searchbar-bg);
+  border: 1px solid var(--border-color);
+  border-top: 1px dashed var(--active-accent);
+  border-radius: 0 0 12px 12px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.resultItem {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.resultItem:hover, .resultItem:focus, .resultItem.selected {
+  background-color: var(--hover-bg);
+}
+
+.resultContent {
+  flex: 1;
+}
+
+.resultHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.symbol {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.name {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.description {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .searchIcon {
+    display: none;
+  }
+  
+  .searchInput {
+    padding: 0.5rem;
+  }
+  
+  .resultHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+} 

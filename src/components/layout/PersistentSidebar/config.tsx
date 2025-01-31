@@ -4,7 +4,8 @@ import {
     FaBriefcase,
     FaChartBar,
     FaBell,
-    FaCalculator 
+    FaCalculator,
+    FaBook
 } from 'react-icons/fa';
 import EventideIcon from '@/components/common/icons/EventideIcon';
 
@@ -13,6 +14,8 @@ export const navGroups: NavGroup[] = [
         title: 'Market Research',
         items: [
             { icon: <FaSearch />, label: 'Overview', href: '/dashboard' },
+            { icon: <FaBook />, label: 'Research Hub', href: '/research-hub' },
+            { icon: <FaChartBar />, label: 'Impact', href: '/impact' },
         ]
     },
     {
