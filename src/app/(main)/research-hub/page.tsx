@@ -239,7 +239,7 @@ export default function ResearchHub() {
             <section className={styles.hero}>
                 <h1 className={styles.title}>Research Hub</h1>
                 <p className={styles.subtitle}>
-                    Explore the nearly 3000 companies in Eventide's investment universe that are; investments that are making the world rejoice.
+                    Explore the nearly 3000 companies in Eventide's investment universe; investments that are making the world rejoice.
                 </p>
                 <p className={styles.subtitle}>
                     Search explicitly for companies, scan our funds, or explore compelling investment themes.
