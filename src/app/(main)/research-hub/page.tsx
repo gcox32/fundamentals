@@ -157,8 +157,7 @@ export default function ResearchHub() {
             <section className={styles.hero}>
                 <h1 className={styles.title}>Research Hub</h1>
                 <p className={styles.subtitle}>
-                    Explore companies in Eventide's investment universe that are creating value for society
-                    while pursuing attractive investment returns.
+                    Explore the nearly 3000 companies in Eventide's investment universe that are; investments that are making the world rejoice.
                 </p>
                 <div className={styles.searchContainer}>
                     <SearchBar onSubmit={handleSearchSubmit} />

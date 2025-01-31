@@ -116,6 +116,7 @@ body {
 
 .main-content {
   transition: margin-left 0.3s ease;
+  background-image: linear-gradient(to bottom, var(--background-secondary), var(--background));
 }
 
 .main-content.sidebar-expanded {
