@@ -154,7 +154,7 @@ export default function ResearchModal({ company, onClose }: ResearchModalProps) 
 
                         <aside className={styles.sideSection}>
                             <div className={styles.stakeholderMetrics}>
-                                <h3>Business 360</h3>
+                                <h3>Business 360 &reg;</h3>
                                 <div className={styles.overallScore}>
                                     {researchMetrics.stakeholderValue.score}
                                     <span>/10</span>
