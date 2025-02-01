@@ -39,4 +39,14 @@
   background: var(--active-accent);
   border-color: var(--active-accent);
   color: white;
+}
+
+.count {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  margin-left: 0.25rem;
+}
+
+.themeButton.selected .count {
+  opacity: 0.9;
 } 

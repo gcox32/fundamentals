@@ -12,10 +12,12 @@
   border: 1px solid var(--border-color);
   border-radius: 0.75rem;
   padding: 1.5rem;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   width: 100%;
   text-align: left;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .card:hover {
@@ -25,6 +27,16 @@
 .card:active {
   transform: scale(0.99);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card.entering {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.card.exiting {
+  opacity: 0;
+  transform: translateY(-20px);
 }
 
 .header {
@@ -114,4 +126,35 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.emptyState {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  border: 1px dashed var(--border-color);
+}
+
+.emptyIcon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.emptyState h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.emptyState p {
+  font-size: 0.875rem;
 } 
