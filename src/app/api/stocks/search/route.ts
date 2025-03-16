@@ -24,7 +24,7 @@ if (!process.env.ACCESS_KEY_ID || !process.env.SECRET_ACCESS_KEY || !process.env
   });
 }
 
-const DB_PATH = path.join(process.cwd(), 'tmp', 'nyse.db');
+const DB_PATH = path.join(process.cwd(), 'database', 'nyse.db');
 
 async function ensureDatabase() {
   try {
@@ -40,7 +40,7 @@ async function ensureDatabase() {
     // File doesn't exist, continue to download
   }
 
-  // Ensure tmp directory exists
+  // Ensure database directory exists
   await fs.mkdir(path.dirname(DB_PATH), { recursive: true });
 
   // Download fresh copy from S3
