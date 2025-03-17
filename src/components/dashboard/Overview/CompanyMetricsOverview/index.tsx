@@ -117,17 +117,17 @@ export default function CompanyMetricsOverview({
           <h4 className={styles.sectionTitle}>Returns</h4>
           <MetricRow 
             label="Return on Equity" 
-            value={formatPercent(latestRatios?.returnOnEquityTTM)} 
+            value={formatPercent(latestRatios?.returnOnEquityTTM, true)} 
             tooltipKey="returnOnEquity" 
           />
           <MetricRow 
             label="Return on Assets" 
-            value={formatPercent(latestRatios?.returnOnAssetsTTM)} 
+            value={formatPercent(latestRatios?.returnOnAssetsTTM, true)} 
             tooltipKey="returnOnAssets" 
           />
           <MetricRow 
             label="ROCE" 
-            value={formatPercent(latestRatios?.returnOnCapitalEmployedTTM)} 
+            value={formatPercent(latestRatios?.returnOnCapitalEmployedTTM, true)} 
             tooltipKey="returnOnCapital" 
           />
         </div>
@@ -137,17 +137,17 @@ export default function CompanyMetricsOverview({
           <h4 className={styles.sectionTitle}>Profit Margins</h4>
           <MetricRow 
             label="Gross Margin" 
-            value={formatPercent(latestRatios?.grossProfitMarginTTM)} 
+            value={formatPercent(latestRatios?.grossProfitMarginTTM, true)} 
             tooltipKey="grossMargin" 
           />
           <MetricRow 
             label="Operating Margin" 
-            value={formatPercent(latestRatios?.operatingProfitMarginTTM)} 
+            value={formatPercent(latestRatios?.operatingProfitMarginTTM, true)} 
             tooltipKey="operatingMargin" 
           />
           <MetricRow 
             label="Net Margin" 
-            value={formatPercent(latestRatios?.netProfitMarginTTM)} 
+            value={formatPercent(latestRatios?.netProfitMarginTTM, true)} 
             tooltipKey="netMargin" 
           />
         </div>

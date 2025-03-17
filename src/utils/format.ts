@@ -22,9 +22,9 @@ export const formatLargeNumber = (value?: number) => {
     return value.toLocaleString();
 };
 
-export const formatPercent = (value?: number) => {
+export const formatPercent = (value?: number, decimal = false) => {
     if (!value) return '--';
-    return `${value.toFixed(2)}%`;
+    return decimal ? `${(value * 100).toFixed(2)}%` : `${value.toFixed(2)}%`;
 };
 
 export const formatNumber = (value?: number) => {

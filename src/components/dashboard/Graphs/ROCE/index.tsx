@@ -88,10 +88,10 @@ export default function ROCE({ incomeStatement, balanceSheetStatement, isLoading
           />
           <YAxis 
             hide={!isExpanded}
-            tickFormatter={(value) => formatPercent(value / 100)} // Convert back to decimal for formatting
+            tickFormatter={(value) => formatPercent(value)}
           />
           <Tooltip
-            formatter={(value: number) => [formatPercent(value / 100), 'ROCE']}
+            formatter={(value: number) => [formatPercent(value), 'ROCE']}
             labelFormatter={(label) => label}
           />
           <Bar
