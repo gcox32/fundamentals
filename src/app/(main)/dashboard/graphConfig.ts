@@ -16,7 +16,7 @@ export const graphCards = [
   {
     title: "Price History",
     Component: HistoricalPrice,
-    dataKey: "historicalPrice"
+    dataKey: ["historicalPrice", "incomeStatement"]
   },
   {
     title: "Revenue",

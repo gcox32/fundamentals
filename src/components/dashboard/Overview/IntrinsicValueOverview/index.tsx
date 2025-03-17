@@ -78,7 +78,7 @@ export default function IntrinsicValueOverview({
     const quarterlyFcfValues = cashFlowStatement.data.map(d => d.freeCashFlow || 0);
     const fcfGrowthRate = calculateGrowthRate(quarterlyFcfValues);
 
-    console.log('fcfGrowthRate', fcfGrowthRate);
+    // console.log('fcfGrowthRate', fcfGrowthRate);
     const earningsGrowthRate = calculateGrowthRate(
       incomeStatement.data.map(d => d.netIncome || 0)
     );
