@@ -110,10 +110,10 @@ export default function ROIC({ incomeStatement, balanceSheetStatement, isLoading
           />
           <YAxis 
             hide={!isExpanded}
-            tickFormatter={(value) => formatPercent(value / 100)} // Convert back to decimal for formatting
+            tickFormatter={(value) => formatPercent(value)}
           />
           <Tooltip
-            formatter={(value: number) => [formatPercent(value / 100), 'ROIC']}
+            formatter={(value: number) => [formatPercent(value), 'ROIC']}
             labelFormatter={(label) => label}
           />
           <Bar

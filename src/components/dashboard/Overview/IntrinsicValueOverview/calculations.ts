@@ -96,28 +96,28 @@ export const calculateDCF = (
 ): number => {
   // Calculate WACC
   const discountRate = calculateWacc(marketValueEquity, marketValueDebt, costOfEquity, costOfDebt, taxRate);
-  console.log('discountRate', discountRate);
+  // console.log('discountRate', discountRate);
 
   let totalPresentValue = 0;
   let projectedCashFlow = freeCashFlow;
-  console.log('projectedCashFlow', projectedCashFlow / sharesOutstanding);
+  // console.log('projectedCashFlow', projectedCashFlow / sharesOutstanding);
 
   // Calculate the present value of projected cash flows
   for (let year = 1; year <= projectionYears; year++) {
     projectedCashFlow *= (1 + growthRate); // Project next year's cash flow
     totalPresentValue += projectedCashFlow / Math.pow(1 + discountRate, year); // Discount to present
   }
-  console.log('totalPresentValue', totalPresentValue / sharesOutstanding);
+  // console.log('totalPresentValue', totalPresentValue / sharesOutstanding);
 
   // Calculate terminal value
   const terminalValue = (projectedCashFlow * (1 + terminalGrowthRate)) /
     (discountRate - terminalGrowthRate);
   const presentTerminalValue = terminalValue / Math.pow(1 + discountRate, projectionYears);
-  console.log('terminal value:', presentTerminalValue / sharesOutstanding);
+  // console.log('terminal value:', presentTerminalValue / sharesOutstanding);
 
   // Calculate intrinsic value per share
   const intrinsicValuePerShare = (totalPresentValue + presentTerminalValue) / sharesOutstanding;
-  console.log('intrinsicValuePerShare', intrinsicValuePerShare);
+  // console.log('intrinsicValuePerShare', intrinsicValuePerShare);
 
   // Return rounded value
   return Math.round(intrinsicValuePerShare * 100) / 100; // Round to 2 decimal places
@@ -138,9 +138,9 @@ export const calculateEarningsBased = (
   peRatio: number = 15
 ): number => {
   if (eps <= 0) return 0;
-  console.log('eps', eps);
-  console.log('growthRate', growthRate);
-  console.log('peRatio', peRatio);
+  // console.log('eps', eps);
+  // console.log('growthRate', growthRate);
+  // console.log('peRatio', peRatio);
   
   // Calculate future earnings considering growth
   const futureEps = eps * (1 + growthRate);

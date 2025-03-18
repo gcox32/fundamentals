@@ -6,17 +6,17 @@ import {
     ROCE,
     FreeCashFlow,
     NetIncome,
-    CashAndDebt,
     Expenses,
     Margins,
-    ROIC
+    ROIC,
+    CapitalStructure
   } from "@/components/dashboard/Graphs";
 
 export const graphCards = [
   {
     title: "Price History",
     Component: HistoricalPrice,
-    dataKey: "historicalPrice"
+    dataKey: ["historicalPrice", "incomeStatement"]
   },
   {
     title: "Revenue",
@@ -61,8 +61,8 @@ export const graphCards = [
     dataKey: "incomeStatement"
   },
   {
-    title: "Cash and Debt",
-    Component: CashAndDebt,
+    title: "Capital Structure",
+    Component: CapitalStructure,
     dataKey: "balanceSheetStatement"
   },
   {

@@ -78,7 +78,7 @@ export default function IntrinsicValueOverview({
     const quarterlyFcfValues = cashFlowStatement.data.map(d => d.freeCashFlow || 0);
     const fcfGrowthRate = calculateGrowthRate(quarterlyFcfValues);
 
-    console.log('fcfGrowthRate', fcfGrowthRate);
+    // console.log('fcfGrowthRate', fcfGrowthRate);
     const earningsGrowthRate = calculateGrowthRate(
       incomeStatement.data.map(d => d.netIncome || 0)
     );
@@ -89,9 +89,10 @@ export default function IntrinsicValueOverview({
     if (freeCashFlow <= 0) {
       return null; // Skip DCF calculation if FCF is invalid
     }
-    const taxRate = latest.income.incomeTaxExpense && latest.income.incomeBeforeTax
+    const taxRate = latest.income.incomeTaxExpense && latest.income.incomeBeforeTax && latest.income.incomeTaxExpense > 0
       ? latest.income.incomeTaxExpense / latest.income.incomeBeforeTax
       : 0.21;
+
     const beta = profile?.beta
       ? 0.035 + (profile.beta * 0.055)
       : 0.035 + 0.055; // Default to market average (beta = 1)
