@@ -7,10 +7,10 @@ import {
 } from '@/types/financials';
 import OverviewCard from '@/components/dashboard/DashboardCard/OverviewCard';
 import { formatPrice, formatPercent, formatLargeNumber } from '@/utils/format';
-import { FiInfo } from 'react-icons/fi';
+import { FiInfo, FiExternalLink } from 'react-icons/fi';
 import Tooltip from '@/components/common/Tooltip';
 import { valuationTooltips } from './tooltips';
-import { calculateGrowthRate, calculateDCF, calculateEarningsBased, calculateAssetBased, calculateAnnualFreeCashFlow, calculateAnnualEPS } from './calculations';
+import { calculateGrowthRate, calculateDCF, calculateEarningsBased, calculateAnnualFreeCashFlow, calculateAnnualEPS } from './calculations';
 import { CompanyProfile, CompanyRatios } from '@/types/company';
 
 interface IntrinsicValueOverviewProps {
@@ -82,6 +82,7 @@ export default function IntrinsicValueOverview({
     const earningsGrowthRate = calculateGrowthRate(
       incomeStatement.data.map(d => d.netIncome || 0)
     );
+
     const freeCashFlow = calculateAnnualFreeCashFlow(
       cashFlowStatement.data.map(d => d.freeCashFlow || 0),
       Math.min(4, cashFlowStatement.data.length)
@@ -96,7 +97,6 @@ export default function IntrinsicValueOverview({
     const beta = profile?.beta
       ? 0.035 + (profile.beta * 0.055)
       : 0.035 + 0.055; // Default to market average (beta = 1)
-
 
     // Calculate different valuations
     const dcfValue = calculateDCF(
@@ -138,48 +138,64 @@ export default function IntrinsicValueOverview({
 
   return (
     <OverviewCard title="Intrinsic Value Analysis" isLoading={isLoading}>
-      <div className={styles.metricsGrid}>
-        {/* Market Metrics Section */}
-        <div className={styles.metricSection}>
-          <h4 className={styles.sectionTitle}>Market Overview</h4>
-          <MetricRow
-            label="Current Price"
-            value={formatPrice(currentPrice)}
-            tooltipKey="currentPrice"
-          />
-          <MetricRow
-            label="Market Cap"
-            value={`$${formatLargeNumber(marketCap)}`}
-            tooltipKey="marketCap"
-          />
-          <MetricRow
-            label="EPS (TTM)"
-            value={formatPrice(latestEPS)}
-            tooltipKey="eps"
-          />
+      <div className={styles.container}>
+        <div className={styles.mainContent}>
+          <div className={styles.metricsGrid}>
+            {/* Market Metrics Section */}
+            <div className={styles.metricSection}>
+              <h4 className={styles.sectionTitle}>Market Overview</h4>
+              <MetricRow
+                label="Current Price"
+                value={formatPrice(currentPrice)}
+                tooltipKey="currentPrice"
+              />
+              <MetricRow
+                label="Market Cap"
+                value={`$${formatLargeNumber(marketCap)}`}
+                tooltipKey="marketCap"
+              />
+              <MetricRow
+                label="EPS (TTM)"
+                value={formatPrice(latestEPS)}
+                tooltipKey="eps"
+              />
+            </div>
+
+            {/* Valuation Metrics - Each in its own section */}
+            <div className={styles.metricSection}>
+              <h4 className={styles.sectionTitle}>DCF Valuation</h4>
+              <MetricRow
+                label="DCF Value"
+                value={formatPrice(valuations?.dcf.value)}
+                margin={formatPercent(valuations?.dcf.margin)}
+                tooltipKey="dcfValue"
+              />
+            </div>
+
+            <div className={styles.metricSection}>
+              <h4 className={styles.sectionTitle}>Earnings-Based</h4>
+              <MetricRow
+                label="Fair Value"
+                value={formatPrice(valuations?.earnings.value)}
+                margin={formatPercent(valuations?.earnings.margin)}
+                tooltipKey="earningsValue"
+              />
+            </div>
+          </div>
         </div>
 
-        {/* Valuation Metrics - Each in its own section */}
-        <div className={styles.metricSection}>
-          <h4 className={styles.sectionTitle}>DCF Valuation</h4>
-          <MetricRow
-            label="DCF Value"
-            value={formatPrice(valuations?.dcf.value)}
-            margin={formatPercent(valuations?.dcf.margin)}
-            tooltipKey="dcfValue"
-          />
+        <div className={styles.sidebar}>
+          <div className={styles.toolPromo}>
+            <h4 className={styles.promoTitle}>Want to run your own DCF?</h4>
+            <p className={styles.promoText}>
+              Try our Discounted Cash Flow calculator to create your own valuation model with custom assumptions.
+            </p>
+            <a href={`/tools/dcf?symbol=${profile?.symbol}`} target="_blank" className={styles.promoButton}>
+              Open DCF Calculator
+              <FiExternalLink className={styles.promoIcon} />
+            </a>
+          </div>
         </div>
-
-        <div className={styles.metricSection}>
-          <h4 className={styles.sectionTitle}>Earnings-Based</h4>
-          <MetricRow
-            label="Fair Value"
-            value={formatPrice(valuations?.earnings.value)}
-            margin={formatPercent(valuations?.earnings.margin)}
-            tooltipKey="earningsValue"
-          />
-        </div>
-        
       </div>
     </OverviewCard>
   );

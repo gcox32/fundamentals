@@ -64,10 +64,6 @@ export default function Dashboard() {
     hideCard(id);
   };
 
-  const handleShowAllCards = () => {
-    showAllCards();
-  };
-
   const handleFlourishingOrderChange = (newOrder: string[]) => {
     setFlourishingOrder(newOrder);
     localStorage.setItem('flourishingOrder', JSON.stringify(newOrder));
@@ -207,7 +203,7 @@ export default function Dashboard() {
   return (
 
       <div className={styles.dashboardContainer}>
-        <div className="container mx-auto px-4 py-8">
+        <div className="mx-auto px-4 py-8 container">
           <div className={styles.controlsContainer}>
             <StockSearchBar
               onSubmit={handleCompanySelect}
