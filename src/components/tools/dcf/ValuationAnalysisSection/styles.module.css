@@ -1,0 +1,135 @@
+.container {
+  margin: 2rem 0;
+}
+
+.heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+}
+
+.analysisCard {
+  background: var(--searchbar-bg);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-color);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.header p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0.25rem 0 0;
+}
+
+.googleLogo {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: var(--accent-background);
+  color: var(--accent-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.description {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.factorTabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.factorTab {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.factorTab:hover {
+  color: var(--text);
+}
+
+.factorTab.active {
+  color: var(--active-accent);
+  font-weight: 500;
+}
+
+.factorTab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--active-accent);
+  border-radius: 1px;
+}
+
+.chartContainer {
+  height: 400px;
+  margin: 0 -1rem;
+}
+
+.chartContainer :global(.recharts-cartesian-grid-horizontal) line,
+.chartContainer :global(.recharts-cartesian-grid-vertical) line {
+  stroke: var(--border-color);
+  stroke-opacity: 0.2;
+}
+
+.chartContainer :global(.recharts-cartesian-axis-line) {
+  stroke: var(--border-color);
+}
+
+.chartContainer :global(.recharts-cartesian-axis-tick-value) {
+  fill: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
+.chartContainer :global(.recharts-tooltip-wrapper) {
+  outline: none;
+}
+
+.chartContainer :global(.recharts-default-tooltip) {
+  background-color: var(--card-background) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 4px;
+  padding: 0.5rem 1rem !important;
+}
+
+.chartContainer :global(.recharts-tooltip-label) {
+  color: var(--text) !important;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+} 

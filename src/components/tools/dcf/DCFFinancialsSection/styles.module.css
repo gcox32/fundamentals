@@ -1,0 +1,131 @@
+.container {
+  background: var(--searchbar-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-color);
+  margin-top: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.header h3 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--text);
+}
+
+.header p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0.25rem 0 0;
+}
+
+.googleLogo {
+  width: 1.5rem;
+  height: 1.5rem;
+  background: var(--active-accent);
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.metricCard {
+  background: var(--accent-background);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.metricIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  background: var(--active-accent-background);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--active-accent);
+  font-size: 0.875rem;
+}
+
+.metricLabel {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.metricValues {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.arrow {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.chartContainer {
+  margin-top: 2rem;
+  background: var(--accent-background);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0 1.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* Override Recharts default styles */
+.chartContainer :global(.recharts-cartesian-grid-horizontal) {
+  stroke: var(--border-color);
+}
+
+.chartContainer :global(.recharts-cartesian-axis-line) {
+  stroke: var(--border-color);
+}
+
+.chartContainer :global(.recharts-tooltip-wrapper) {
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chartContainer :global(.recharts-default-tooltip) {
+  background: var(--card-background) !important;
+  border: none !important;
+  border-radius: 0.5rem;
+  padding: 0.75rem !important;
+}
+
+.chartContainer :global(.recharts-tooltip-label) {
+  color: var(--text-secondary) !important;
+  margin-bottom: 0.25rem !important;
+} 

@@ -1,0 +1,151 @@
+.container {
+  margin: 2rem 0;
+}
+
+.heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.description {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  background: var(--accent-background);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.calculationCard {
+  background: var(--searchbar-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-color);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.headerIcon {
+  font-size: 1.5rem;
+  margin-right: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.headerText {
+  flex: 1;
+}
+
+.headerText h3 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--text);
+}
+
+.headerText p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0.25rem 0 0;
+}
+
+.googleLogo {
+  width: 1.5rem;
+  height: 1.5rem;
+  background: var(--active-accent);
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.calculationGrid {
+  margin-bottom: 1.5rem;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.value {
+  font-size: 0.875rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.result {
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--border-color);
+}
+
+.result .label,
+.result .value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.valuationStatus {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 1rem 0;
+}
+
+.undervalued {
+  background: var(--success-background);
+  color: var(--success-color);
+}
+
+.overvalued {
+  background: var(--error-background);
+  color: var(--error-color);
+}
+
+.explanation {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.explanation p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+}
+
+.formula {
+  background: var(--accent-background);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text);
+  font-family: monospace;
+} 
