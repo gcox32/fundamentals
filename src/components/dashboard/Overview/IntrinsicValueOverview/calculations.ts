@@ -95,15 +95,14 @@ export const calculateDCF = (
   costOfDebt: number,
   taxRate: number,
   terminalGrowthRate: number = 0.02,
-  projectionYears: number = 5
+  projectionYears: number = 5,
+  assumedDiscountRate?: number
 ): number => {
-  // Calculate WACC
-  const discountRate = calculateWacc(marketValueEquity, marketValueDebt, costOfEquity, costOfDebt, taxRate);
-  // console.log('discountRate', discountRate);
+  // Calculate WACC if no discount rate provided
+  const discountRate = assumedDiscountRate ?? calculateWacc(marketValueEquity, marketValueDebt, costOfEquity, costOfDebt, taxRate);
 
   let totalPresentValue = 0;
   let projectedCashFlow = freeCashFlow;
-  // console.log('projectedCashFlow', projectedCashFlow / sharesOutstanding);
 
   // Calculate the present value of projected cash flows
   for (let year = 1; year <= projectionYears; year++) {
@@ -125,7 +124,6 @@ export const calculateDCF = (
   // Return rounded value
   return Math.round(intrinsicValuePerShare * 100) / 100; // Round to 2 decimal places
 };
-
 
 // Graham's Formula: V = EPS × (8.5 + 2g) × 4.4 / Y
 // where g is growth rate and Y is current AAA corporate bond yield (using 4.5% as default)
@@ -185,7 +183,11 @@ export const calculateValuations = (
   currentPrice: number,
   marketCap: number,
   profile: CompanyProfile | undefined,
-  ratios: any
+  ratios: any,
+  terminalGrowthRate: number = 0.02,
+  projectionYears: number = 5,
+  discountRate?: number,
+  exitMultiple?: number
 ) => {
   if (!incomeStatement?.data?.[0] || !cashFlowStatement?.data?.[0] || !balanceSheetStatement?.data?.[0] || !sharesOutstanding) {
     return null;
@@ -201,7 +203,6 @@ export const calculateValuations = (
   const quarterlyFcfValues = cashFlowStatement.data.map(d => d.freeCashFlow || 0);
   const fcfGrowthRate = calculateGrowthRate(quarterlyFcfValues);
 
-  // console.log('fcfGrowthRate', fcfGrowthRate);
   const earningsGrowthRate = calculateGrowthRate(
     incomeStatement.data.map(d => d.netIncome || 0)
   );
@@ -221,6 +222,17 @@ export const calculateValuations = (
     ? 0.035 + (profile.beta * 0.055)
     : 0.035 + 0.055; // Default to market average (beta = 1)
 
+  // Calculate WACC if no discount rate provided
+  const calculatedDiscountRate = discountRate ? discountRate / 100 : calculateWacc(
+    marketCap || 0,
+    latest.balance.totalDebt || 0,
+    beta,
+    latest.income.interestExpense && latest.balance.totalDebt
+      ? (latest.income.interestExpense / latest.balance.totalDebt)
+      : 0.05,
+    taxRate
+  );
+
   // Calculate different valuations
   const dcfValue = calculateDCF(
     freeCashFlow,
@@ -233,8 +245,9 @@ export const calculateValuations = (
       ? (latest.income.interestExpense / latest.balance.totalDebt)
       : 0.05,
     taxRate,
-    0.02,
-    5
+    terminalGrowthRate,
+    projectionYears,
+    calculatedDiscountRate
   );
 
   const earningsValue = calculateEarningsBased(
@@ -245,6 +258,7 @@ export const calculateValuations = (
     earningsGrowthRate,
     ratios?.[0]?.peRatioTTM || 22
   );
+
   // Calculate margins of safety
   const getMargin = (value: number) => {
     if (!currentPrice || !value) return 0;

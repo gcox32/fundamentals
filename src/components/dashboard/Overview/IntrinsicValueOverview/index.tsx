@@ -72,7 +72,10 @@ export default function IntrinsicValueOverview({
     currentPrice, 
     marketCap, 
     profile, 
-    ratios
+    ratios,
+    0.02,
+    5,
+    7.79
   );
 
   return (

@@ -1,5 +1,6 @@
 import Modal from '@/components/common/Modal';
 import styles from './styles.module.css';
+import { useState } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -11,6 +12,8 @@ interface DCFAssumption {
   value: string;
   baseValue?: number;
   adjustment?: number;
+  isEditable?: boolean;
+  onValueChange?: (newValue: number) => void;
 }
 
 interface DCFAssumptionsModalProps extends ModalProps {
@@ -84,6 +87,38 @@ export function DCFScenariosModal({ isOpen, onClose }: ModalProps) {
 }
 
 export function DCFAssumptionsModal({ isOpen, onClose, assumptions }: DCFAssumptionsModalProps) {
+  const [editingAssumption, setEditingAssumption] = useState<string | null>(null);
+  const [editValue, setEditValue] = useState<string>('');
+
+  const handleEditClick = (assumption: DCFAssumption) => {
+    if (assumption.isEditable) {
+      setEditingAssumption(assumption.key);
+      setEditValue(assumption.value.replace('%', '').replace(' years', '').replace(' P/E', ''));
+    }
+  };
+
+  const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditValue(e.target.value);
+  };
+
+  const handleSave = (assumption: DCFAssumption) => {
+    if (assumption.onValueChange) {
+      const numericValue = parseFloat(editValue);
+      if (!isNaN(numericValue)) {
+        assumption.onValueChange(numericValue);
+      }
+    }
+    setEditingAssumption(null);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent, assumption: DCFAssumption) => {
+    if (e.key === 'Enter') {
+      handleSave(assumption);
+    } else if (e.key === 'Escape') {
+      setEditingAssumption(null);
+    }
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="DCF Valuation Assumptions">
       <div className={styles.modalContent}>
@@ -102,7 +137,31 @@ export function DCFAssumptionsModal({ isOpen, onClose, assumptions }: DCFAssumpt
                   </span>
                 )}
               </div>
-              <span className={styles.assumptionValue}>{assumption.value}</span>
+              {editingAssumption === assumption.key ? (
+                <div className={styles.editContainer}>
+                  <input
+                    type="number"
+                    value={editValue}
+                    onChange={handleValueChange}
+                    onKeyDown={(e) => handleKeyPress(e, assumption)}
+                    className={styles.editInput}
+                    autoFocus
+                  />
+                  <button 
+                    onClick={() => handleSave(assumption)}
+                    className={styles.saveButton}
+                  >
+                    Update
+                  </button>
+                </div>
+              ) : (
+                <span 
+                  className={`${styles.assumptionValue} ${assumption.isEditable ? styles.editable : ''}`}
+                  onClick={() => handleEditClick(assumption)}
+                >
+                  {assumption.value}
+                </span>
+              )}
             </div>
           ))}
         </div>

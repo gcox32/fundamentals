@@ -8,7 +8,7 @@ import type {
   HistoricalBalanceSheetStatement 
 } from '@/types/financials';
 import type { CompanyProfile } from '@/types/company';
-import { WhatIsDCFModal, HowIsDCFValueCalculatedModal, DCFScenariosModal, DCFAssumptionsModal } from './modals';
+import { DCFAssumptionsModal } from './modals';
 type CaseScenario = 'worst' | 'base' | 'best';
 
 interface DCFValueSectionProps {
@@ -30,6 +30,11 @@ interface DCFValueSectionProps {
     key: string;
     value: string;
   }[];
+  // DCF parameters
+  forecastPeriod?: number;
+  discountRate?: number;
+  terminalGrowth?: number;
+  exitMultiple?: number;
 }
 
 function formatCurrency(value: number) {
@@ -65,11 +70,12 @@ export default function DCFValueSection({
   marketCap = 0,
   sharesOutstanding = 0,
   ratios,
-  assumptions
+  assumptions,
+  forecastPeriod,
+  discountRate,
+  terminalGrowth,
+  exitMultiple
 }: DCFValueSectionProps) {
-  const [isWhatIsDCFModalOpen, setIsWhatIsDCFModalOpen] = useState(false);
-  const [isHowIsDCFValueCalculatedModalOpen, setIsHowIsDCFValueCalculatedModalOpen] = useState(false);
-  const [isDCFScenariosModalOpen, setIsDCFScenariosModalOpen] = useState(false);
   const [isDCFAssumptionsModalOpen, setIsDCFAssumptionsModalOpen] = useState(false);
   const handleScenarioChange = useCallback((scenario: CaseScenario) => {
     onCaseScenarioChange(scenario);
@@ -88,7 +94,10 @@ export default function DCFValueSection({
       marketPrice,
       marketCap,
       profile,
-      ratios
+      ratios,
+      terminalGrowth || 0.02,
+      forecastPeriod || 5,
+      discountRate
     );
 
     if (!baseValuations) return null;
@@ -110,7 +119,11 @@ export default function DCFValueSection({
     marketCap,
     profile,
     ratios,
-    caseScenario
+    caseScenario,
+    terminalGrowth,
+    forecastPeriod,
+    discountRate,
+    exitMultiple
   ]);
 
   const isLoadingState = isLoading || !valuations;
@@ -177,9 +190,6 @@ export default function DCFValueSection({
 
   return (
     <div className={styles.container}>
-      {isWhatIsDCFModalOpen && <WhatIsDCFModal isOpen={isWhatIsDCFModalOpen} onClose={() => setIsWhatIsDCFModalOpen(false)} />}
-      {isHowIsDCFValueCalculatedModalOpen && <HowIsDCFValueCalculatedModal isOpen={isHowIsDCFValueCalculatedModalOpen} onClose={() => setIsHowIsDCFValueCalculatedModalOpen(false)} />}
-      {isDCFScenariosModalOpen && <DCFScenariosModal isOpen={isDCFScenariosModalOpen} onClose={() => setIsDCFScenariosModalOpen(false)} />}
       {isDCFAssumptionsModalOpen && <DCFAssumptionsModal isOpen={isDCFAssumptionsModalOpen} onClose={() => setIsDCFAssumptionsModalOpen(false)} assumptions={assumptions} />}
       <div className={styles.topSection}>
         <div className={styles.leftSection}>
@@ -215,9 +225,6 @@ export default function DCFValueSection({
           </div>
           <div className={styles.faq}>
             <ul>
-              <li><a href="#" onClick={() => setIsWhatIsDCFModalOpen(true)}>What is DCF Valuation?</a></li>
-              <li><a href="#" onClick={() => setIsHowIsDCFValueCalculatedModalOpen(true)}>How is DCF value calculated?</a></li>
-              <li><a href="#" onClick={() => setIsDCFScenariosModalOpen(true)}>What are valuation scenarios?</a></li>
               <li><a href="#" onClick={() => setIsDCFAssumptionsModalOpen(true)}>What are the assumptions?</a></li>
             </ul>
           </div>

@@ -64,5 +64,42 @@
 
 .assumptionValue {
   font-weight: 500;
-  color: var(--text-primary);
+}
+
+.assumptionValue.editable {
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--primary-color);
+}
+
+.assumptionValue.editable:hover {
+  opacity: 0.8;
+}
+
+.editContainer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.editInput {
+  width: 80px;
+  padding: 4px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.saveButton {
+  padding: 4px 8px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.saveButton:hover {
+  opacity: 0.9;
 }
