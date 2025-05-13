@@ -1,3 +1,7 @@
+'use client';
+
+import VisibilityWrapper from "@/src/components/dashboard/VisibilityWrapper";
+
 export default function LeadingIndicators() {
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -39,31 +43,36 @@ export default function LeadingIndicators() {
       {/* Thematic Indicator Blocks */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* Consumer Health */}
-        <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">
-          <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Consumer Health</h2>
-          <div className="space-y-4">
-            {/* Placeholder for charts and metrics */}
-            <div className="h-48 bg-[var(--background-secondary)] rounded flex items-center justify-center text-[var(--text-secondary)]">
-              Chart: Personal Consumption Expenditures
+        <VisibilityWrapper componentId="consumer-health">
+          <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">
+            <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Consumer Health</h2>
+            <div className="space-y-4">
+              {/* Placeholder for charts and metrics */}
+              <div className="h-48 bg-[var(--background-secondary)] rounded flex items-center justify-center text-[var(--text-secondary)]">
+                Chart: Personal Consumption Expenditures
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </VisibilityWrapper>
 
         {/* Business Health */}
-        <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">
-          <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Business Health</h2>
-          <div className="space-y-4">
-            {/* Placeholder for charts and metrics */}
-            <div className="h-48 bg-[var(--background-secondary)] rounded flex items-center justify-center text-[var(--text-secondary)]">
-              Chart: ISM Manufacturing & Services PMI
+        <VisibilityWrapper componentId="business-health">
+          <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">
+            <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Business Health</h2>
+            <div className="space-y-4">
+              {/* Placeholder for charts and metrics */}
+              <div className="h-48 bg-[var(--background-secondary)] rounded flex items-center justify-center text-[var(--text-secondary)]">
+                Chart: ISM Manufacturing & Services PMI
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </VisibilityWrapper>
 
         {/* Inflation & Rates */}
-        <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">
-          <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Inflation & Rates</h2>
-          <div className="space-y-4">
+        <VisibilityWrapper componentId="inflation-rates">
+          <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">
+            <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Inflation & Rates</h2>
+            <div className="space-y-4">
             <div className="h-48 bg-[var(--background-secondary)] rounded flex items-center justify-center text-[var(--text-secondary)]">
               Chart: CPI & PPI Trends
             </div>
@@ -75,10 +84,11 @@ export default function LeadingIndicators() {
               <div>
                 <h3 className="text-sm font-semibold text-[var(--text-secondary)]">Fed Funds Rate</h3>
                 <p className="text-lg font-bold text-[var(--text)]">5.25-5.50%</p>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </VisibilityWrapper>
 
         {/* Credit Markets */}
         <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">

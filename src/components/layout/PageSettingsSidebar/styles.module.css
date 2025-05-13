@@ -13,7 +13,7 @@
   .settingsGroup {
     background: var(--sidebar-bg);
     border-radius: 12px;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0;
   }
   
   .settingsTitle {
@@ -21,6 +21,9 @@
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   
   .themeToggle {
@@ -174,4 +177,24 @@
   .showAllButton:disabled:hover {
     background-color: var(--hover-bg);
     color: var(--text-secondary);
+  }
+
+  .expandable {
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .expandable:hover {
+    opacity: 0.8;
+  }
+  
+  .layoutContent {
+    overflow: hidden;
+    height: 0;
+    transition: height 100ms ease-out;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .layoutContent.expanded {
+    height: auto;
   }

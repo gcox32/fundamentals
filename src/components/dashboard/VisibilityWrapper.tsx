@@ -7,10 +7,11 @@ interface VisibilityWrapperProps {
 }
 
 export default function VisibilityWrapper({ componentId, children }: VisibilityWrapperProps) {
-  const { dashboardComponents } = useTheme();
+  const { dashboardComponents, leadingIndicators } = useTheme();
   const component = dashboardComponents.find(c => c.id === componentId);
+  const leadingIndicator = leadingIndicators.find(c => c.id === componentId);
   
-  if (!component?.isVisible) {
+  if (!component?.isVisible && !leadingIndicator?.isVisible) {
     return null;
   }
 

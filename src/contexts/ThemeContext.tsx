@@ -14,6 +14,9 @@ interface ThemeContextType {
   dashboardComponents: DashboardComponent[];
   toggleComponent: (id: string) => void;
   resetDashboardLayout: () => void;
+  leadingIndicators: DashboardComponent[];
+  toggleLeadingIndicator: (id: string) => void;
+  resetLeadingIndicators: () => void;
 }
 
 const defaultDashboardComponents: DashboardComponent[] = [
@@ -27,6 +30,16 @@ const defaultDashboardComponents: DashboardComponent[] = [
   { id: 'intrinsic-value-overview', title: 'Intrinsic Value', isVisible: true },
 ];
 
+const defaultLeadingIndicators: DashboardComponent[] = [
+  { id: 'consumer-health', title: 'Consumer Health', isVisible: true },
+  { id: 'business-health', title: 'Business Health', isVisible: true },
+  { id: 'inflation-rates', title: 'Inflation Rates', isVisible: true },
+  { id: 'credit-markets', title: 'Credit Markets', isVisible: true },
+  { id: 'yield-curve', title: 'Yield Curve', isVisible: true },
+  { id: 'sector-snapshot', title: 'Sector Snapshot', isVisible: true },
+  { id: 'valuation-implications', title: 'Implications', isVisible: true },
+];
+
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
@@ -34,6 +47,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [dashboardComponents, setDashboardComponents] = useState<DashboardComponent[]>(defaultDashboardComponents);
+  const [leadingIndicators, setLeadingIndicators] = useState<DashboardComponent[]>(defaultLeadingIndicators);
 
   useEffect(() => {
     setIsClient(true);
@@ -56,9 +70,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     if (isClient) {
       localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
       localStorage.setItem('dashboardLayout', JSON.stringify(dashboardComponents));
+      localStorage.setItem('leadingIndicators', JSON.stringify(leadingIndicators));
       document.documentElement.classList.toggle('dark-mode', isDarkMode);
     }
-  }, [isDarkMode, isClient, dashboardComponents]);
+  }, [isDarkMode, isClient, dashboardComponents, leadingIndicators]);
 
   const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
 
@@ -78,13 +93,31 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     showAllCards();
   };
 
+  const toggleLeadingIndicator = (id: string) => {
+    setLeadingIndicators(prev => 
+      prev.map(indicator => 
+        indicator.id === id && !indicator.isRequired
+          ? { ...indicator, isVisible: !indicator.isVisible }
+          : indicator
+      )
+    );
+  };
+
+  const resetLeadingIndicators = () => {
+    setLeadingIndicators(defaultLeadingIndicators);
+    localStorage.removeItem('leadingIndicators');
+  };
+
   return (
     <ThemeContext.Provider value={{ 
       isDarkMode, 
       toggleDarkMode, 
       dashboardComponents,
       toggleComponent,
-      resetDashboardLayout
+      resetDashboardLayout,
+      leadingIndicators,
+      toggleLeadingIndicator,
+      resetLeadingIndicators
     }}>
       {children}
     </ThemeContext.Provider>
