@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import investmentUniverse from '@/app/(main)/research-hub/investment-universe.json';
+import investmentUniverse from '@/src/app/(main)/demo/research-hub/investment-universe.json';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;

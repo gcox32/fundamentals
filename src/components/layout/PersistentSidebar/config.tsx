@@ -5,31 +5,31 @@ import {
     FaChartBar,
     FaBell,
     FaCalculator,
-    FaBook
+    FaChartLine,
+    FaThumbsUp
 } from 'react-icons/fa';
-import EventideIcon from '@/components/common/icons/EventideIcon';
 
 export const navGroups: NavGroup[] = [
     {
-        title: 'Market Research',
+        title: 'Research',
         items: [
-            { icon: <FaSearch />, label: 'Overview', href: '/dashboard' },
-            { icon: <FaBook />, label: 'Research Hub', href: '/research-hub' },
-            { icon: <FaChartBar />, label: 'Impact', href: '/impact' },
+            { icon: <FaSearch />, label: 'Valuation', href: '/research/valuation' },
+            { icon: <FaChartBar />, label: 'Leading Indicators', href: '/research/leading-indicators' },
+            { icon: <FaThumbsUp />, label: 'Sentiment', href: '/research/sentiment' },
         ]
     },
     {
         title: 'Portfolio',
         items: [
             { icon: <FaBriefcase />, label: 'Holdings', href: '/portfolio' },
-            { icon: <FaChartBar />, label: 'Performance', href: '/portfolio/performance' },
+            { icon: <FaChartLine />, label: 'Performance', href: '/portfolio/performance' },
             { icon: <FaBell />, label: 'Alerts', href: '/portfolio/alerts' },
         ]
     },
     {
         title: 'Tools',
         items: [
-            { icon: <FaCalculator />, label: 'Calculator', href: '/tools/calculator' },
+            { icon: <FaCalculator />, label: 'DCF Calculator', href: '/tools/calculator' },
         ]
     }
 ];

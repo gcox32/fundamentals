@@ -27,10 +27,10 @@ import IntrinsicValueOverview from "@/src/components/dashboard/Overview/Intrinsi
 const DEFAULT_CARD_ORDER = graphCards.map((card, index) => `graph-${index}`);
 
 const FLOURISHING_CARD_ORDER = [
-    'eventide-overview',
-    'glassdoor-overview',
-    'comparably-overview',
-    'socials-overview'
+  'eventide-overview',
+  'glassdoor-overview',
+  'comparably-overview',
+  'socials-overview'
 ];
 
 export default function Dashboard() {
@@ -206,19 +206,19 @@ export default function Dashboard() {
 
   return (
 
-      <div className={styles.dashboardContainer}>
-        <div className="container mx-auto px-4 py-8">
-          <div className={styles.controlsContainer}>
-            <StockSearchBar
-              onSubmit={handleCompanySelect}
-              selectedAssetType={selectedAssetType}
-            />
-            <AssetTypeSelector
-              selectedAssetType={selectedAssetType}
-              onAssetTypeChange={setSelectedAssetType}
-            />
-          </div>
-
+    <div className={styles.dashboardContainer}>
+      <div className="container mx-auto px-4 py-8">
+        <div className={styles.controlsContainer}>
+          <StockSearchBar
+            onSubmit={handleCompanySelect}
+            selectedAssetType={selectedAssetType}
+          />
+          <AssetTypeSelector
+            selectedAssetType={selectedAssetType}
+            onAssetTypeChange={setSelectedAssetType}
+          />
+        </div>
+        {selectedCompany && (
           <div className={styles.tabsContainer}>
             <button
               className={`${styles.tabButton} ${activeTab === 'fundamental' ? styles.active : ''}`}
@@ -233,151 +233,152 @@ export default function Dashboard() {
               Flourishing
             </button>
           </div>
+        )}
 
-          {(selectedCompany || isLoading) && (
-            <>
-              <CompanyHeader
-                symbol={selectedCompany?.symbol || ''}
-                name={selectedCompany?.name || ''}
-                exchange={selectedCompany?.exchange || ''}
-                isLoading={isLoading}
-                quote={selectedCompany?.quote}
-              />
+        {(selectedCompany || isLoading) && (
+          <>
+            <CompanyHeader
+              symbol={selectedCompany?.symbol || ''}
+              name={selectedCompany?.name || ''}
+              exchange={selectedCompany?.exchange || ''}
+              isLoading={isLoading}
+              quote={selectedCompany?.quote}
+            />
 
-              {activeTab === 'fundamental' && (
-                <div className={`${styles.tabContent} ${styles.visible}`}>
-                  <>
-                    <VisibilityWrapper componentId="stock-overview">
-                      <StockOverview
-                        isLoading={isLoading}
-                        quote={selectedCompany?.quote}
-                        profile={selectedCompany?.outlook?.profile}
+            {activeTab === 'fundamental' && (
+              <div className={`${styles.tabContent} ${styles.visible}`}>
+                <>
+                  <VisibilityWrapper componentId="stock-overview">
+                    <StockOverview
+                      isLoading={isLoading}
+                      quote={selectedCompany?.quote}
+                      profile={selectedCompany?.outlook?.profile}
+                    />
+                  </VisibilityWrapper>
+
+                  <VisibilityWrapper componentId="metrics-overview">
+                    <CompanyMetricsOverview
+                      isLoading={isLoading}
+                      ratios={selectedCompany?.outlook?.ratios}
+                      cashFlow={selectedCompany?.cashFlowStatement?.data}
+                      marketCap={selectedCompany?.quote?.marketCap}
+                    />
+                  </VisibilityWrapper>
+
+                  <VisibilityWrapper componentId="company-events">
+                    <CompanyEvents
+                      isLoading={isLoading}
+                      events={selectedCompany?.events}
+                    />
+                  </VisibilityWrapper>
+
+                  <VisibilityWrapper componentId="charts">
+                    <div className={styles.chartControls}>
+                      <TimeframeSelector
+                        selectedTimeframe={selectedTimeframe}
+                        setSelectedTimeframe={setSelectedTimeframe}
+                        isTTM={isTTM}
+                        setIsTTM={setIsTTM}
                       />
-                    </VisibilityWrapper>
+                    </div>
+                    <DraggableCardGrid
+                      cardIds={cardOrder.filter(id => !hiddenCards.has(id))}
+                      onOrderChange={handleOrderChange}
+                    >
+                      {cardOrder
+                        .filter(id => !hiddenCards.has(id))
+                        .map(id => {
+                          const index = parseInt(id.split('-')[1]);
+                          const card = graphCards[index];
+                          if (!card) return null;
 
-                    <VisibilityWrapper componentId="metrics-overview">
-                      <CompanyMetricsOverview
-                        isLoading={isLoading}
-                        ratios={selectedCompany?.outlook?.ratios}
-                        cashFlow={selectedCompany?.cashFlowStatement?.data}
-                        marketCap={selectedCompany?.quote?.marketCap}
-                      />
-                    </VisibilityWrapper>
-
-                    <VisibilityWrapper componentId="company-events">
-                      <CompanyEvents
-                        isLoading={isLoading}
-                        events={selectedCompany?.events}
-                      />
-                    </VisibilityWrapper>
-
-                    <VisibilityWrapper componentId="charts">
-                      <div className={styles.chartControls}>
-                        <TimeframeSelector
-                          selectedTimeframe={selectedTimeframe}
-                          setSelectedTimeframe={setSelectedTimeframe}
-                          isTTM={isTTM}
-                          setIsTTM={setIsTTM}
-                        />
-                      </div>
-                      <DraggableCardGrid
-                        cardIds={cardOrder.filter(id => !hiddenCards.has(id))}
-                        onOrderChange={handleOrderChange}
-                      >
-                        {cardOrder
-                          .filter(id => !hiddenCards.has(id))
-                          .map(id => {
-                            const index = parseInt(id.split('-')[1]);
-                            const card = graphCards[index];
-                            if (!card) return null;
-
-                            return (
-                              <GraphicalCard
-                                key={id}
-                                id={id}
-                                title={card.title}
+                          return (
+                            <GraphicalCard
+                              key={id}
+                              id={id}
+                              title={card.title}
+                              isLoading={isLoading}
+                              timeframe={selectedTimeframe}
+                              isTTM={isTTM}
+                              noData={card.noDataCheck ? card.noDataCheck(selectedCompany?.[card.dataKey as keyof SelectedCompany]) : undefined}
+                              onHide={handleHideCard}
+                            >
+                              <card.Component
+                                {...(Array.isArray(card.dataKey)
+                                  ? card.dataKey.reduce((acc, key) => ({ ...acc, [key]: selectedCompany?.[key as keyof SelectedCompany] }), {})
+                                  : { data: selectedCompany?.[card.dataKey as keyof SelectedCompany] }
+                                )}
                                 isLoading={isLoading}
-                                timeframe={selectedTimeframe}
-                                isTTM={isTTM}
-                                noData={card.noDataCheck ? card.noDataCheck(selectedCompany?.[card.dataKey as keyof SelectedCompany]) : undefined}
-                                onHide={handleHideCard}
-                              >
-                                <card.Component
-                                  {...(Array.isArray(card.dataKey)
-                                    ? card.dataKey.reduce((acc, key) => ({ ...acc, [key]: selectedCompany?.[key as keyof SelectedCompany] }), {})
-                                    : { data: selectedCompany?.[card.dataKey as keyof SelectedCompany] }
-                                  )}
-                                  isLoading={isLoading}
-                                />
-                              </GraphicalCard>
-                            );
-                          })}
-                      </DraggableCardGrid>
-                    </VisibilityWrapper>
+                              />
+                            </GraphicalCard>
+                          );
+                        })}
+                    </DraggableCardGrid>
+                  </VisibilityWrapper>
 
-                    <VisibilityWrapper componentId="intrinsic-value-overview">
-                      <IntrinsicValueOverview
-                        isLoading={isLoading}
-                        incomeStatement={selectedCompany?.incomeStatement}
-                        cashFlowStatement={selectedCompany?.cashFlowStatement}
-                        balanceSheetStatement={selectedCompany?.balanceSheetStatement}
-                        profile={selectedCompany?.outlook?.profile}
-                        currentPrice={selectedCompany?.quote?.price}
-                        marketCap={selectedCompany?.quote?.marketCap}
-                        sharesOutstanding={selectedCompany?.quote?.sharesOutstanding}
-                        ratios={selectedCompany?.outlook?.ratios}
-                      />
-                    </VisibilityWrapper>
-                  </>
-                </div>
-              )}
+                  <VisibilityWrapper componentId="intrinsic-value-overview">
+                    <IntrinsicValueOverview
+                      isLoading={isLoading}
+                      incomeStatement={selectedCompany?.incomeStatement}
+                      cashFlowStatement={selectedCompany?.cashFlowStatement}
+                      balanceSheetStatement={selectedCompany?.balanceSheetStatement}
+                      profile={selectedCompany?.outlook?.profile}
+                      currentPrice={selectedCompany?.quote?.price}
+                      marketCap={selectedCompany?.quote?.marketCap}
+                      sharesOutstanding={selectedCompany?.quote?.sharesOutstanding}
+                      ratios={selectedCompany?.outlook?.ratios}
+                    />
+                  </VisibilityWrapper>
+                </>
+              </div>
+            )}
 
-              {activeTab === 'flourishing' && (
-                <div className={`${styles.tabContent} ${styles.visible}`}>
-                  <>
-                    <VisibilityWrapper componentId="company-profile">
-                      <CompanyProfile
-                        isLoading={isLoading}
-                        profile={selectedCompany?.outlook?.profile}
-                      />
-                    </VisibilityWrapper>
+            {activeTab === 'flourishing' && (
+              <div className={`${styles.tabContent} ${styles.visible}`}>
+                <>
+                  <VisibilityWrapper componentId="company-profile">
+                    <CompanyProfile
+                      isLoading={isLoading}
+                      profile={selectedCompany?.outlook?.profile}
+                    />
+                  </VisibilityWrapper>
 
-                    <VisibilityWrapper componentId="flourishing-grid">
-                      <DraggableCardGrid
-                        cardIds={flourishingOrder.filter(id => !hiddenCards.has(id))}
-                        onOrderChange={handleFlourishingOrderChange}
-                      >
-                        {flourishingOrder
-                          .filter(id => !hiddenCards.has(id))
-                          .map(id => {
-                            switch (id) {
-                              case 'eventide-overview':
-                                return <EventideOverview key={id} isLoading={isLoading} onHide={() => handleHideCard(id)} />;
-                              case 'glassdoor-overview':
-                                return <GlassdoorOverview key={id} isLoading={isLoading} onHide={() => handleHideCard(id)} />;
-                              case 'comparably-overview':
-                                return <ComparablyOverview key={id} isLoading={isLoading} onHide={() => handleHideCard(id)} />;
-                              case 'socials-overview':
-                                return <SocialsOverview key={id} isLoading={isLoading} onHide={() => handleHideCard(id)} />;
-                              default:
-                                return null;
-                            }
-                          })}
-                      </DraggableCardGrid>
-                    </VisibilityWrapper>
+                  <VisibilityWrapper componentId="flourishing-grid">
+                    <DraggableCardGrid
+                      cardIds={flourishingOrder.filter(id => !hiddenCards.has(id))}
+                      onOrderChange={handleFlourishingOrderChange}
+                    >
+                      {flourishingOrder
+                        .filter(id => !hiddenCards.has(id))
+                        .map(id => {
+                          switch (id) {
+                            case 'eventide-overview':
+                              return <EventideOverview key={id} isLoading={isLoading} onHide={() => handleHideCard(id)} />;
+                            case 'glassdoor-overview':
+                              return <GlassdoorOverview key={id} isLoading={isLoading} onHide={() => handleHideCard(id)} />;
+                            case 'comparably-overview':
+                              return <ComparablyOverview key={id} isLoading={isLoading} onHide={() => handleHideCard(id)} />;
+                            case 'socials-overview':
+                              return <SocialsOverview key={id} isLoading={isLoading} onHide={() => handleHideCard(id)} />;
+                            default:
+                              return null;
+                          }
+                        })}
+                    </DraggableCardGrid>
+                  </VisibilityWrapper>
 
-                    <VisibilityWrapper componentId="company-news">
-                      <CompanyNews
-                        isLoading={isLoading}
-                        symbol={selectedCompany?.symbol}
-                      />
-                    </VisibilityWrapper>
-                  </>
-                </div>
-              )}
-            </>
-          )}
-        </div>
+                  <VisibilityWrapper componentId="company-news">
+                    <CompanyNews
+                      isLoading={isLoading}
+                      symbol={selectedCompany?.symbol}
+                    />
+                  </VisibilityWrapper>
+                </>
+              </div>
+            )}
+          </>
+        )}
       </div>
+    </div>
   );
 } 
