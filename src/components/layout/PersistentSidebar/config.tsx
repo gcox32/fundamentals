@@ -6,7 +6,8 @@ import {
     FaBell,
     FaCalculator,
     FaChartLine,
-    FaThumbsUp
+    FaThumbsUp,
+    FaChartPie
 } from 'react-icons/fa';
 
 export const navGroups: NavGroup[] = [
@@ -22,7 +23,7 @@ export const navGroups: NavGroup[] = [
         title: 'Portfolio',
         items: [
             { icon: <FaBriefcase />, label: 'Holdings', href: '/portfolio' },
-            { icon: <FaChartLine />, label: 'Performance', href: '/portfolio/performance' },
+            { icon: <FaChartPie />, label: 'Performance', href: '/portfolio/performance' },
             { icon: <FaBell />, label: 'Alerts', href: '/portfolio/alerts' },
         ]
     },
@@ -30,6 +31,7 @@ export const navGroups: NavGroup[] = [
         title: 'Tools',
         items: [
             { icon: <FaCalculator />, label: 'DCF Calculator', href: '/tools/calculator' },
+            { icon: <FaChartLine />, label: 'Simulator', href: '/tools/simulator' },
         ]
     }
 ];
