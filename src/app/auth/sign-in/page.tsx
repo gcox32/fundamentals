@@ -6,7 +6,7 @@ import { useAuthRedirect } from "@/src/hooks/useAuthRedirect"
 
 export default function SignIn() {
   const searchParams = useSearchParams()
-  const nextUrl = searchParams.get('next') || '/dashboard'
+  const nextUrl = searchParams.get('next') || '/research/valuation'
 
   useAuthRedirect(nextUrl)
 

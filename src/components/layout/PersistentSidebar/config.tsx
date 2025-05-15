@@ -30,7 +30,7 @@ export const navGroups: NavGroup[] = [
     {
         title: 'Tools',
         items: [
-            { icon: <FaCalculator />, label: 'DCF Calculator', href: '/tools/calculator' },
+            { icon: <FaCalculator />, label: 'DCF Calculator', href: '/tools/dcf' },
             { icon: <FaChartLine />, label: 'Simulator', href: '/tools/simulator' },
         ]
     }
