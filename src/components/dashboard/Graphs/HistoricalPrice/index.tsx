@@ -40,7 +40,6 @@ export default function HistoricalPrice({ historicalPrice: data, incomeStatement
 
   const chartData = useMemo(() => {
     if (!data?.historical) {
-      console.log('data structure', data);
       return [];
     }
     const allData = [...data.historical].reverse();
@@ -77,7 +76,6 @@ export default function HistoricalPrice({ historicalPrice: data, incomeStatement
 
       const ttmEps = ttmEpsMap.get(item.date) || null;
       const peRatio = ttmEps && ttmEps !== 0 ? item.close / ttmEps : null;
-      console.log('peRatio', peRatio);
       return {
         ...item,
         ma50,

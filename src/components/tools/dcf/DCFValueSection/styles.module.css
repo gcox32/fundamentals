@@ -1,0 +1,330 @@
+.container {
+  background: var(--searchbar-bg);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-color);
+}
+
+.topSection {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.leftSection {
+  flex: 3;
+}
+
+.rightSection {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.companyInfo {
+  margin-bottom: 1.5rem;
+}
+
+.symbolSection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.logoContainer {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--accent-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.stockSymbol {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.symbol {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.exchange {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.valuationSummary {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text);
+  margin: 0;
+}
+
+.valuationValue {
+  font-weight: 600;
+}
+
+.metadata {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-top: 1rem;
+}
+
+.provider {
+  color: var(--active-accent);
+  font-weight: 500;
+}
+
+.valuationStatus {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.undervalued {
+  color: var(--success-color);
+}
+
+.overvalued {
+  color: var(--error-color);
+}
+
+/* Scenario Selector */
+.scenarioSelector {
+  margin-top: 2rem;
+  padding: 0.5rem;
+  background: var(--background);
+  border-radius: 8px;
+}
+
+.scenarioTrack {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 0.25rem;
+}
+
+.scenarioSlider {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  width: calc(33.333% - 0.5rem);
+  height: calc(100% - 0.5rem);
+  background: var(--active-accent);
+  border-radius: 6px;
+  transition: transform 0.1s ease;
+  z-index: 0;
+}
+
+.scenarioSlider[data-position='base'] {
+  transform: translateX(100%);
+  left: 0.75rem;
+}
+
+.scenarioSlider[data-position='best'] {
+  transform: translateX(200%);
+  left: 1.25rem;
+}
+
+.scenarioOption {
+  position: relative;
+  z-index: 1;
+  padding: 0.75rem;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  text-align: center;
+}
+
+.scenarioOption:hover {
+  color: var(--text);
+}
+
+.scenarioOption.active {
+  color: white;
+}
+
+.faq {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 12em;
+}
+
+.faq ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.faq li {
+  margin: 0;
+}
+
+.faq a {
+  color: var(--active-accent);
+  text-decoration: none;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.faq a:hover {
+  text-decoration: none;
+}
+
+.valueHeader {
+  text-align: right;
+  margin-bottom: 1rem;
+}
+
+.valueTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.caseLabel {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.dcfValueLarge {
+  font-size: 3rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0.5rem 0;
+}
+
+.currency {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-left: 0.25rem;
+}
+
+.comparisonBars {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.barContainer {
+  position: relative;
+  height: 2.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barLabel {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-weight: 500;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.barValue {
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.dcfBar {
+  background-color: var(--active-accent);
+  width: 100%;
+  height: 100%;
+  transition: width 0.2s ease;
+}
+
+.priceBar {
+  background-color: var(--text-secondary);
+  height: 100%;
+  transition: width 0.2s ease;
+}
+
+.valuationTag {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: var(--success-background);
+  color: var(--success-color);
+  border-radius: 4px;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+.valuationTag.overvalued {
+  background-color: var(--error-background);
+  color: var(--error-color);
+}
+
+.pulse {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+}
+
+.pulse::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    var(--searchbar-bg) 0%,
+    var(--background) 50%,
+    var(--searchbar-bg) 100%
+  );
+  transform: translateX(-100%);
+  animation: pulse 2s ease-in-out infinite;
+  opacity: 0.7;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0.7;
+  }
+}

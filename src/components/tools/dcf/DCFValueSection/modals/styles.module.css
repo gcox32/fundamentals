@@ -1,0 +1,105 @@
+.modalContent {
+  padding: 1.5rem;
+  color: var(--text);
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin: 1.5rem 0 0.75rem;
+  color: var(--text);
+}
+
+.paragraph {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+}
+
+.paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.step {
+  margin-bottom: 1.5rem;
+}
+
+.step:last-child {
+  margin-bottom: 0;
+}
+
+.assumption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.assumption:last-child {
+  border-bottom: none;
+}
+
+.assumptionKey {
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.assumptionNote {
+  font-size: 0.8em;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.assumptionValue {
+  font-weight: 500;
+}
+
+.assumptionValue.editable {
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--primary-color);
+}
+
+.assumptionValue.editable:hover {
+  opacity: 0.8;
+}
+
+.editContainer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.editInput {
+  width: 80px;
+  padding: 4px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.saveButton {
+  padding: 4px 8px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.saveButton:hover {
+  opacity: 0.9;
+}

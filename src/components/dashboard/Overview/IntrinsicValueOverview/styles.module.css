@@ -65,4 +65,56 @@
 
 .margin.negative {
   color: #f44336;
+}
+
+.container {
+  display: flex;
+  gap: 2rem;
+}
+
+.mainContent {
+  flex: 2;
+}
+
+.sidebar {
+  flex: 1;
+}
+
+.toolPromo {
+  background: var(--card-background);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.promoTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.promoText {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.promoButton {
+  display: inline-block;
+  background: var(--primary-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.promoButton:hover {
+  background: var(--primary-color-dark);
 } 

@@ -35,7 +35,6 @@ export default function Portfolio() {
 
   const fetchPortfolios = async () => {
     console.log('fetching portfolios');
-    console.log(user);
     if (!user) return;
     
     try {
@@ -111,14 +110,14 @@ export default function Portfolio() {
         />
       )}
       <div className={`${styles.portfolioOptions} mt-auto`}>
-        <div className="flex items-center gap-4 justify-end">
+        <div className="flex justify-end items-center gap-4">
           <select
             value={activePortfolio?.id || ''}
             onChange={(e) => {
               const selected = portfolios.find(p => p.id === e.target.value);
               setActivePortfolio(selected || null);
             }}
-            className="p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
+            className="dark:bg-gray-700 p-2 border dark:border-gray-600 rounded"
             style={{ color: 'black' }}
           >
             {portfolios.map(portfolio => (
@@ -144,7 +143,7 @@ export default function Portfolio() {
           <div className="flex justify-end gap-3">
             <button
               onClick={() => setPortfolioToDelete(null)}
-              className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors"
+              className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded text-gray-800 transition-colors"
             >
               Cancel
             </button>
@@ -155,7 +154,7 @@ export default function Portfolio() {
                   setPortfolioToDelete(null);
                 }
               }}
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+              className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white transition-colors"
             >
               Delete Portfolio
             </button>

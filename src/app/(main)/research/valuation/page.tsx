@@ -64,10 +64,6 @@ export default function Dashboard() {
     hideCard(id);
   };
 
-  const handleShowAllCards = () => {
-    showAllCards();
-  };
-
   const handleFlourishingOrderChange = (newOrder: string[]) => {
     setFlourishingOrder(newOrder);
     localStorage.setItem('flourishingOrder', JSON.stringify(newOrder));
