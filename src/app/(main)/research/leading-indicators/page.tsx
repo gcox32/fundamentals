@@ -1,44 +1,15 @@
 'use client';
 
-import VisibilityWrapper from "@/src/components/dashboard/VisibilityWrapper";
+import VisibilityWrapper from "@/src/components/dashboard/research/valuation/VisibilityWrapper";
+import HeaderOverview from "@/src/components/dashboard/research/leading-indicators/HeaderOverview";
+import RegimeSummary from "@/src/components/dashboard/research/leading-indicators/RegimeSummary";
 
 export default function LeadingIndicators() {
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Top-Level Summary Panel */}
-      <section className="mb-8 p-6 bg-[var(--card-bg)] rounded-lg shadow">
-        <h2 className="text-2xl font-bold mb-4 text-[var(--text)]">Macroeconomic Overview</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 border rounded-lg border-[var(--border-color)] bg-[var(--background)]">
-            <h3 className="font-semibold text-[var(--text-secondary)]">Economic Status</h3>
-            <p className="text-2xl font-bold text-[var(--text)]">Expansion</p>
-          </div>
-          <div className="p-4 border rounded-lg border-[var(--border-color)] bg-[var(--background)]">
-            <h3 className="font-semibold text-[var(--text-secondary)]">Fear-Greed Index</h3>
-            <p className="text-2xl font-bold text-[var(--text)]">65 - Greed</p>
-          </div>
-          <div className="p-4 border rounded-lg border-[var(--border-color)] bg-[var(--background)]">
-            <h3 className="font-semibold text-[var(--text-secondary)]">Recession Probability</h3>
-            <p className="text-2xl font-bold text-[var(--text)]">15%</p>
-          </div>
-        </div>
-      </section>
+      <HeaderOverview />
 
-      {/* Additional Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <div className="p-4 border rounded-lg bg-[var(--card-bg)] border-[var(--border-color)] shadow">
-          <h3 className="font-semibold text-[var(--text-secondary)]">Inflation Regime</h3>
-          <p className="text-2xl font-bold text-[var(--text)]">Disinflation</p>
-        </div>
-        <div className="p-4 border rounded-lg bg-[var(--card-bg)] border-[var(--border-color)] shadow">
-          <h3 className="font-semibold text-[var(--text-secondary)]">Rate Regime</h3>
-          <p className="text-2xl font-bold text-[var(--text)]">Restrictive</p>
-        </div>
-        <div className="p-4 border rounded-lg bg-[var(--card-bg)] border-[var(--border-color)] shadow">
-          <h3 className="font-semibold text-[var(--text-secondary)]">Consumer Sentiment</h3>
-          <p className="text-2xl font-bold text-[var(--text)]">Improving</p>
-        </div>
-      </div>
+      <RegimeSummary />
 
       {/* Thematic Indicator Blocks */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">

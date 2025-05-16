@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
     FMP_API_KEY: process.env.FMP_API_KEY || '',
     RAPID_API_KEY: process.env.RAPID_API_KEY || '',
     REGION: process.env.REGION || 'us-east-1',
+    FRED_API_KEY: process.env.FRED_API_KEY || '',
   }
 }
 

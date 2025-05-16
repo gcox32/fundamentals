@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuthenticator } from '@/src/hooks/useAuthenticator';
 import { useRouter } from 'next/navigation';
-import { Spinner } from '@/src/components/utils/Spinner';
+import { Spinner } from '@/src/components/common/Spinner';
 
 interface ChangePasswordFormProps {
   onStateChange: (state: string) => void;

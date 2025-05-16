@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import SearchBar from '@/components/research-hub/SearchBar';
-import CompanyGrid from '@/components/research-hub/CompanyGrid';
-import FundCarousel from '@/components/research-hub/FundCarousel';
+import SearchBar from '@/src/components/demo/research-hub/SearchBar';
+import CompanyGrid from '@/src/components/demo/research-hub/CompanyGrid';
+import FundCarousel from '@/src/components/demo/research-hub/FundCarousel';
 import investmentUniverse from './investment-universe.json';
 import styles from './styles.module.css';
-import ResearchModal from '@/components/research-hub/ResearchModal';
-import ThemeFilter from '@/components/research-hub/ThemeFilter';
+import ResearchModal from '@/src/components/demo/research-hub/ResearchModal';
+import ThemeFilter from '@/src/components/demo/research-hub/ThemeFilter';
 
 interface Company {
     symbol: string;

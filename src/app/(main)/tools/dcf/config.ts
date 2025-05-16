@@ -1,4 +1,4 @@
-import { OperatingModel } from "@/src/components/tools/dcf/PresentValueSection/types";
+import { OperatingModel } from "@/src/components/dashboard/tools/dcf/PresentValueSection/types";
 
 export const dcfConfig = {
   forecastPeriod: 5,

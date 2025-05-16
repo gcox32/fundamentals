@@ -1,4 +1,4 @@
-import type { PriceInfoProps } from '@/components/dashboard/Overview/CompanyHeader/PriceInfo/types';
+import type { PriceInfoProps } from '@/components/dashboard/research/valuation/Overview/CompanyHeader/PriceInfo/types';
 import type { StockQuote } from '@/types/stock';
 import type { CompanyOutlook, HistoricalRevenueByGeography, HistoricalRevenueBySegment } from '@/types/company';
 import type { HistoricalPriceData, HistoricalSharesOutstanding, HistoricalDividendData } from '@/types/stock';

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useAuthenticator } from "@/hooks/useAuthenticator";
 import { useRouter } from "next/navigation";
 import { FaSignOutAlt } from "react-icons/fa";
-import Snackbar from "@/src/components/utils/Snackbar";
+import Snackbar from "@/src/components/common/Snackbar";
 import styles from "@/src/components/layout/UserSidebar/styles.module.css";
 
 export default function SignOutButton() {

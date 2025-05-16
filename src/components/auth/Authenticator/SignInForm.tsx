@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuthenticator } from '@/src/hooks/useAuthenticator';
 import { AuthError } from '@aws-amplify/auth';
-import { Spinner } from '@/src/components/utils/Spinner';
+import { Spinner } from '@/src/components/common/Spinner';
 
 interface SignInFormProps {
   onStateChange: (state: string) => void;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { resetPassword, confirmResetPassword } from 'aws-amplify/auth';
 import { AuthError } from '@aws-amplify/auth';
-import { Spinner } from '@/src/components/utils/Spinner';
+import { Spinner } from '@/src/components/common/Spinner';
 
 interface ForgotPasswordFormProps {
   onStateChange: (state: string) => void;
