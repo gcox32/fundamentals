@@ -43,7 +43,7 @@ export default function RegimeSummary() {
 
   if (!data) {
     return (
-      <div className="text-[var(--text-secondary)]">Loading regime summary...</div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">Loading regime summary...</div>
     );
   }
 

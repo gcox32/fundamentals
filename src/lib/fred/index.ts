@@ -89,4 +89,42 @@ async function fetchSentiment() {
     };
 }
 
-export { fetchCPI, fetchRate, fetchSentiment };
+async function fetchEconomicStatus() {
+    const series = await fetchSeries("GDP"); // Real GDP, quarterly, SAAR
+    const [latest, prev] = series.slice(0, 2).map(obs => parseFloat(obs.value));
+  
+    const growthRate = ((latest - prev) / prev) * 100;
+  
+    let value = 'Expansion';
+    if (growthRate < 0) value = 'Contraction';
+    else if (growthRate < 1) value = 'Stagnation';
+    else if (growthRate < 2.5) value = 'Late-cycle';
+  
+    return {
+      value,
+      basis: `Real GDP grew ${growthRate.toFixed(2)}% QoQ annualized`,
+      raw: growthRate,
+      date: series[0].date,
+      source: 'FRED: GDP',
+    };
+  }
+  
+
+async function fetchRecessionProbability() {
+    const series: FREDObservation[] = await fetchSeries("USREC");
+    const latest = parseFloat(series[0].value);
+    return {
+        value: `${latest}%`,
+        raw: latest,
+        date: series[0].date,
+        source: 'FRED: USREC',
+    };
+}
+
+export { 
+    fetchCPI, 
+    fetchRate, 
+    fetchSentiment, 
+    fetchEconomicStatus,
+    fetchRecessionProbability 
+};
