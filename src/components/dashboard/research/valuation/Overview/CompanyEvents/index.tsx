@@ -20,7 +20,7 @@ export default function CompanyEvents({ isLoading, events }: CompanyEventsProps)
                     </div>
                     <div className={styles.eventInfo}>
                         <h4>Ex-Dividend Date</h4>
-                        <p>{isLoading ? 'Loading...' : formatDate(events?.exDividendDate)}</p>
+                        <p>{isLoading ? 'Loading...' : formatDate(events?.nextExDividendDate)}</p>
                     </div>
                 </div>
                 <div className={styles.eventCard}>
@@ -29,7 +29,7 @@ export default function CompanyEvents({ isLoading, events }: CompanyEventsProps)
                     </div>
                     <div className={styles.eventInfo}>
                         <h4>Next Dividend</h4>
-                        <p>{isLoading ? 'Loading...' : formatDate(events?.dividendDate)}</p>
+                        <p>{isLoading ? 'Loading...' : formatDate(events?.nextDividendDate)}</p>
                     </div>
                 </div>
                 <div className={styles.eventCard}>
@@ -38,7 +38,7 @@ export default function CompanyEvents({ isLoading, events }: CompanyEventsProps)
                     </div>
                     <div className={styles.eventInfo}>
                         <h4>Next Earnings</h4>
-                        <p>{isLoading ? 'Loading...' : formatDate(events?.earnings?.earningsDate)}</p>
+                        <p>{isLoading ? 'Loading...' : formatDate(events?.nextEarningsDate)}</p>
                     </div>
                 </div>
             </div>

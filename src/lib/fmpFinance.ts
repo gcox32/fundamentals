@@ -25,6 +25,7 @@ interface FetchOptions<T extends CacheableData, R = any> {
   ttlSeconds: number;
   cacheKey: string;
   transform?: (rawData: R) => T;
+  stable?: boolean;
 }
 
 export async function fetchFMPData<T extends CacheableData, R = any>({
@@ -33,7 +34,8 @@ export async function fetchFMPData<T extends CacheableData, R = any>({
   tableName,
   ttlSeconds,
   cacheKey,
-  transform
+  transform,
+  stable = false
 }: FetchOptions<T, R>): Promise<T> {
   try {
     // Check cache first
@@ -63,7 +65,12 @@ export async function fetchFMPData<T extends CacheableData, R = any>({
 
     // Build the query string
     const queryString = new URLSearchParams(params).toString();
-    const fullEndpoint = `https://financialmodelingprep.com/api/${endpoint}?${queryString}` as string;
+    let fullEndpoint: string;
+    if (stable) {
+      fullEndpoint = `https://financialmodelingprep.com/${endpoint}?${queryString}`;
+    } else {
+      fullEndpoint = `https://financialmodelingprep.com/api/${endpoint}?${queryString}`;
+    }
     
     const response = await fetch(fullEndpoint);
 

@@ -43,14 +43,14 @@ export const formatPrice = (value?: number) => {
 export const formatDate = (event?: { raw: number; fmt: string } | Array<{ raw: number; fmt: string }>) => {
     if (!event) return '--';
     if (Array.isArray(event)) {
-        return event[0] ? new Date(event[0].raw * 1000).toLocaleDateString('en-US', {
+        return event[0] ? new Date(event[0].raw).toLocaleDateString('en-US', {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
             day: 'numeric'
         }) : '--';
     }
-    return new Date(event.raw * 1000).toLocaleDateString('en-US', {
+    return new Date(event.raw).toLocaleDateString('en-US', {
         weekday: 'long',
         year: 'numeric',
         month: 'long',

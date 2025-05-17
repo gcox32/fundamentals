@@ -20,7 +20,8 @@ export const API_TTL = {
 
 export const API_ENDPOINTS = {
     COMPANY: {
-        EVENTS: 'v1/markets/stock/modules',
+        DIVIDENDS: 'stable/dividends',
+        EARNINGS: 'stable/earnings',
         NEWS: 'v3/stock_news',
         OUTLOOK: 'v4/company-outlook',
         REVENUE_BY_SEGMENT: 'v4/revenue-product-segmentation',
