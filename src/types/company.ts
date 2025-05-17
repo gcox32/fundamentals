@@ -1,53 +1,40 @@
-export interface CompanyCalendarEvents {
-    symbol: string;
-    maxAge: number;
-    earnings: {
-        earningsDate: Array<{
-            raw: number;
-            fmt: string;
-        }>;
-        earningsCallDate: Array<{
-            raw: number;
-            fmt: string;
-        }>;
-        earningsAverage: {
-            raw: number;
-            fmt: string;
-        };
-        earningsHigh: {
-            raw: number;
-            fmt: string;
-        };
-        earningsLow: {
-            raw: number;
-            fmt: string;
-        };
-        revenueAverage: {
-            raw: number;
-            fmt: string;
-            longFmt: string;
-        };
-        revenueHigh: {
-            raw: number;
-            fmt: string;
-            longFmt: string;
-        };
-        revenueLow: {
-            raw: number;
-            fmt: string;
-            longFmt: string;
-        };
-        isEarningsDateEstimate: boolean;
-    };
-    dividendDate?: {
-        raw: number;
-        fmt: string;
-    };
-    exDividendDate?: {
-        raw: number;
-        fmt: string;
-    };
+export interface CompanyEventEarnings {
+  symbol: string;
+  date: string;
+  epsActual: number;
+  epsEstimated: number;
+  revenueActual: number;
+  revenueEstimated: number;
+  lastUpdated: string;
 }
+
+export interface CompanyEventDividends {
+  symbol: string;
+  date: string;
+  dividend: number;
+  recordDate: string;
+  paymentDate: string;
+  declarationDate: string;
+  adjDividend: number;
+  yield: number;
+  frequency: string;
+}
+
+export interface CompanyCalendarEvents {
+  symbol: string;
+  nextEarningsDate: { 
+    raw: number;
+    fmt: string;
+  };
+  nextDividendDate: {
+    raw: number;
+    fmt: string;
+  };
+  nextExDividendDate: {
+    raw: number;
+    fmt: string;
+  };
+};
 
 export interface CompanyProfile {
     symbol: string;

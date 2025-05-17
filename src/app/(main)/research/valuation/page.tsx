@@ -1,28 +1,28 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import StockSearchBar from "@/components/dashboard/StockSearchBar";
-import CompanyHeader from "@/components/dashboard/Overview/CompanyHeader";
-import TimeframeSelector from "@/components/dashboard/TimeframeSelector";
-import GraphicalCard from "@/src/components/dashboard/DashboardCard/GraphicalCard";
-import CompanyProfile from "@/src/components/dashboard/Overview/CompanyProfile";
-import CompanyEvents from "@/src/components/dashboard/Overview/CompanyEvents";
-import CompanyNews from "@/src/components/dashboard/Overview/CompanyNews";
-import CompanyMetricsOverview from "@/src/components/dashboard/Overview/CompanyMetricsOverview";
-import StockOverview from "@/src/components/dashboard/Overview/StockOverview";
+import StockSearchBar from "@/components/dashboard/research/valuation/StockSearchBar";
+import CompanyHeader from "@/components/dashboard/research/valuation/Overview/CompanyHeader";
+import TimeframeSelector from "@/components/dashboard/research/valuation/TimeframeSelector";
+import GraphicalCard from "@/src/components/dashboard/research/valuation/DashboardCard/GraphicalCard";
+import CompanyProfile from "@/src/components/dashboard/research/valuation/Overview/CompanyProfile";
+import CompanyEvents from "@/src/components/dashboard/research/valuation/Overview/CompanyEvents";
+import CompanyNews from "@/src/components/dashboard/research/valuation/Overview/CompanyNews";
+import CompanyMetricsOverview from "@/src/components/dashboard/research/valuation/Overview/CompanyMetricsOverview";
+import StockOverview from "@/src/components/dashboard/research/valuation/Overview/StockOverview";
 import styles from './styles.module.css';
-import { fetchDashboardData } from '@/utils/fetchDashboardData';
+import { fetchValuationData } from '@/src/lib/fetchValuationData';
 import { graphCards } from './graphConfig';
 import { SelectedCompany } from './types';
-import DraggableCardGrid from '@/components/dashboard/DraggableCardGrid';
-import VisibilityWrapper from '@/components/dashboard/VisibilityWrapper';
-import AssetTypeSelector from '@/components/dashboard/AssetTypeSelector';
-import EventideOverview from "@/src/components/dashboard/Flourishing/Eventide";
-import GlassdoorOverview from "@/src/components/dashboard/Flourishing/Glassdoor";
-import ComparablyOverview from "@/src/components/dashboard/Flourishing/Comparably";
-import SocialsOverview from "@/src/components/dashboard/Flourishing/Socials";
+import DraggableCardGrid from '@/components/dashboard/research/valuation/DraggableCardGrid';
+import VisibilityWrapper from '@/components/dashboard/research/valuation/VisibilityWrapper';
+import AssetTypeSelector from '@/components/dashboard/research/valuation/AssetTypeSelector';
+import EventideOverview from "@/src/components/dashboard/research/valuation/Flourishing/Eventide";
+import GlassdoorOverview from "@/src/components/dashboard/research/valuation/Flourishing/Glassdoor";
+import ComparablyOverview from "@/src/components/dashboard/research/valuation/Flourishing/Comparably";
+import SocialsOverview from "@/src/components/dashboard/research/valuation/Flourishing/Socials";
 import { useHiddenCards } from '@/contexts/HiddenCardsContext';
-import IntrinsicValueOverview from "@/src/components/dashboard/Overview/IntrinsicValueOverview";
+import IntrinsicValueOverview from "@/src/components/dashboard/research/valuation/Overview/IntrinsicValueOverview";
 
 const DEFAULT_CARD_ORDER = graphCards.map((card, index) => `graph-${index}`);
 
@@ -34,7 +34,7 @@ const FLOURISHING_CARD_ORDER = [
 ];
 
 export default function Dashboard() {
-  const { hiddenCards, hideCard, showAllCards } = useHiddenCards();
+  const { hiddenCards, hideCard } = useHiddenCards();
   const [selectedCompany, setSelectedCompany] = useState<SelectedCompany | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTimeframe, setSelectedTimeframe] = useState('5Y');
@@ -108,37 +108,37 @@ export default function Dashboard() {
 
     try {
       // Events
-      fetchDashboardData('company/events', company.symbol,
+      fetchValuationData('company/events', company.symbol,
         updateCompanyData('events'),
         handleError('events')
       );
 
       // Quote
-      fetchDashboardData('stock/quote', company.symbol,
+      fetchValuationData('stock/quote', company.symbol,
         updateCompanyData('quote'),
         handleError('quote')
       );
 
       // Outlook
-      fetchDashboardData('company/outlook', company.symbol,
+      fetchValuationData('company/outlook', company.symbol,
         updateCompanyData('outlook'),
         handleError('outlook')
       );
 
       // Historical Price
-      fetchDashboardData('stock/historical/price', company.symbol,
+      fetchValuationData('stock/historical/price', company.symbol,
         updateCompanyData('historicalPrice'),
         handleError('historicalPrice')
       );
 
       // Historical Shares Outstanding
-      fetchDashboardData('stock/historical/shares-outstanding', company.symbol,
+      fetchValuationData('stock/historical/shares-outstanding', company.symbol,
         updateCompanyData('historicalShares'),
         handleError('historicalShares')
       );
 
       // Dividend History
-      fetchDashboardData('stock/historical/dividends', company.symbol,
+      fetchValuationData('stock/historical/dividends', company.symbol,
         updateCompanyData('dividendHistory'),
         handleError('dividendHistory', {
           symbol: company.symbol,
@@ -150,25 +150,25 @@ export default function Dashboard() {
       );
 
       // Income Statement
-      fetchDashboardData('company/income', company.symbol,
+      fetchValuationData('company/income', company.symbol,
         updateCompanyData('incomeStatement'),
         handleError('incomeStatement')
       );
 
       // Cash Flow Statement
-      fetchDashboardData('company/cash-flow', company.symbol,
+      fetchValuationData('company/cash-flow', company.symbol,
         updateCompanyData('cashFlowStatement'),
         handleError('cashFlowStatement')
       );
 
       // Balance Sheet Statement
-      fetchDashboardData('company/balance-sheet', company.symbol,
+      fetchValuationData('company/balance-sheet', company.symbol,
         updateCompanyData('balanceSheetStatement'),
         handleError('balanceSheetStatement')
       );
 
       // Revenue by Segment
-      fetchDashboardData('company/revenue-by-segment', company.symbol,
+      fetchValuationData('company/revenue-by-segment', company.symbol,
         updateCompanyData('revenueBySegment'),
         handleError('revenueBySegment',
           {
@@ -181,7 +181,7 @@ export default function Dashboard() {
       );
 
       // Revenue by Geography
-      fetchDashboardData('company/revenue-by-geography', company.symbol,
+      fetchValuationData('company/revenue-by-geography', company.symbol,
         updateCompanyData('revenueByGeography'),
         handleError('revenueByGeography',
           {

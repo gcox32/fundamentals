@@ -15,6 +15,7 @@ frontend:
         - SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}
         - RAPID_API_KEY=${RAPID_API_KEY}
         - FMP_API_KEY=${FMP_API_KEY}
+        - FRED_API_KEY=${FRED_API_KEY}
         - npm run build
   artifacts:
     baseDirectory: .next

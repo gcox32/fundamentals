@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { signUp } from 'aws-amplify/auth';
 import { AuthError } from '@aws-amplify/auth';
-import { Spinner } from '@/src/components/utils/Spinner';
+import { Spinner } from '@/src/components/common/Spinner';
 
 interface SignUpFormProps {
   onStateChange: (state: string) => void;

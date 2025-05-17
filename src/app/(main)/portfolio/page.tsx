@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { generateClient } from 'aws-amplify/api';
 import { type Schema } from '@/amplify/data/resource';
-import PortfolioCard from '@/components/portfolio/PortfolioCard';
-import CreatePortfolioButton from '@/components/portfolio/CreatePortfolioButton';
+import PortfolioCard from '@/src/components/dashboard/portfolio/PortfolioCard';
+import CreatePortfolioButton from '@/src/components/dashboard/portfolio/CreatePortfolioButton';
 import { useUser } from '@/contexts/UserContext';
 import styles from './styles.module.css';
 import Modal from '@/components/common/Modal';

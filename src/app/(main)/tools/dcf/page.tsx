@@ -3,13 +3,13 @@
 import { useState, useEffect, Suspense, useRef, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import styles from './styles.module.css';
-import StockSearchBar from '@/components/dashboard/StockSearchBar';
-import { fetchDashboardData } from '@/utils/fetchDashboardData';
+import StockSearchBar from '@/components/dashboard/research/valuation/StockSearchBar';
+import { fetchValuationData } from '@/src/lib/fetchValuationData';
 import { SelectedCompany } from '@/app/(main)/research/valuation/types';
-import DCFValueSection from '@/src/components/tools/dcf/DCFValueSection';
-import PresentValueSection from '@/src/components/tools/dcf/PresentValueSection';
-import FloatingDCFValue from '@/src/components/tools/dcf/FloatingDCFValue';
-import { calculateGrowthRate, calculateValuations } from '@/components/dashboard/Overview/IntrinsicValueOverview/calculations';
+import DCFValueSection from '@/src/components/dashboard/tools/dcf/DCFValueSection';
+import PresentValueSection from '@/src/components/dashboard/tools/dcf/PresentValueSection';
+import FloatingDCFValue from '@/src/components/dashboard/tools/dcf/FloatingDCFValue';
+import { calculateGrowthRate, calculateValuations } from '@/components/dashboard/research/valuation/Overview/IntrinsicValueOverview/calculations';
 import { dcfConfig } from './config';
 type CaseScenarioType = 'worst' | 'base' | 'best';
 
@@ -89,27 +89,27 @@ export default function DCFPage() {
 
     try {
       // Fetch all required data in parallel
-      fetchDashboardData('company/income', symbol,
+      fetchValuationData('company/income', symbol,
         updateCompanyData('incomeStatement'),
         handleError('incomeStatement')
       );
 
-      fetchDashboardData('company/cash-flow', symbol,
+      fetchValuationData('company/cash-flow', symbol,
         updateCompanyData('cashFlowStatement'),
         handleError('cashFlowStatement')
       );
 
-      fetchDashboardData('company/balance-sheet', symbol,
+      fetchValuationData('company/balance-sheet', symbol,
         updateCompanyData('balanceSheetStatement'),
         handleError('balanceSheetStatement')
       );
 
-      fetchDashboardData('stock/quote', symbol,
+      fetchValuationData('stock/quote', symbol,
         updateCompanyData('quote'),
         handleError('quote')
       );
 
-      fetchDashboardData('company/outlook', symbol,
+      fetchValuationData('company/outlook', symbol,
         updateCompanyData('outlook'),
         handleError('outlook')
       );
