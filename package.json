@@ -16,7 +16,6 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "aws-amplify": "^6.10.2",
-    "framer-motion": "^12.12.1",
     "next": "^15.3.0",
     "react": "^19.0.0",
     "react-icons": "^5.4.0",
