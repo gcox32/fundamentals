@@ -1,0 +1,62 @@
+.needleBase {
+    width: 20%;
+    height: 20%;
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+.handleBase {
+    width: 20%;
+    height: 20%;
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+.handleBase::before {
+    content: '';
+    display: block;
+    background: #fff;
+    bottom: -62px; /* half of needle view box height */
+    width: 100%;
+    padding-bottom: 100%;
+    position: absolute;
+    border-radius: 50%;
+    box-shadow: 0 -15px 15px rgb(12 12 12 / .05);
+}
+
+.dialHandNumber {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    width: 20%;
+    height: 0;
+    padding-top: 11.25%;
+    transition: .5s color;
+    color: #262626;
+}
+
+.dialHandNumber span {
+    display: inline-block;
+    position: absolute;
+    bottom: -22px;
+    left: -1px;
+    width: 100%;
+    height: auto;
+    font-family: inherit;
+    font-size: 36px;
+    line-height: 36px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.dots {
+    fill: #8c8b8b;
+}
