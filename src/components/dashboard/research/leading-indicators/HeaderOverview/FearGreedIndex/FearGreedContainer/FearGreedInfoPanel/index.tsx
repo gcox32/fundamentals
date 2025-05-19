@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import styles from "./styles.module.css";
 
 type Snapshot = {
   label: string;
@@ -44,19 +45,21 @@ export default function FearGreedInfoPanel({ data }: FearGreedInfoPanelProps) {
 
         return (
           <div key={i} className="flex items-center justify-between">
-            <div className="flex flex-col text-sm">
+            <div className="flex flex-col text-sm w-full flex-nowrap relative">
               <span className="text-gray-500">{label}</span>
-              <span className="font-semibold">{sentiment}</span>
+              <div className={`font-semibold relative flex-shrink-0 ${styles.fearGreedInfoLabel}`}>{sentiment}</div>
             </div>
 
-            <span
-              className={clsx(
-                "rounded-full px-2 py-2 text-sm font-semibold min-w-[36px] text-center",
-                colorClass
-              )}
-            >
-              {data.value}
-            </span>
+            <div className="bg-white relative z-10 top-[10px] px-4">
+              <span
+                className={clsx(
+                  "rounded-full px-2 py-2 text-sm font-semibold min-w-[36px] text-center flex-shrink-0",
+                  colorClass
+                )}
+              >
+                {data.value}
+              </span>
+            </div>
           </div>
         );
       })}

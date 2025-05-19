@@ -5,12 +5,12 @@ import FearGreedInfoPanel from './FearGreedInfoPanel';
 export default function FearGreedContainer({ data }: FearGreedIndexData) {
     return (
         <div className="flex flex-col gap-4 mb-4">
-            <div className="flex justify-center w-full mx-auto gap-6">
+            <div className="flex justify-center w-full mx-auto gap-6 flex-wrap">
                 {/* Gauge Section - 65% */}
                 <FearGreedGauge score={parseInt(data.value)} />
 
                 {/* Info List Section - 35% */}
-                <div className="w-[30%]">
+                <div className="w-[30%] min-w-[250px]">
                     <FearGreedInfoPanel data={data} />
                 </div>
             </div>
