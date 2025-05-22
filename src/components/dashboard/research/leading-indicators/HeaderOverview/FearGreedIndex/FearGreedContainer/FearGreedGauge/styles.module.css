@@ -21,13 +21,13 @@
 .handleBase::before {
     content: '';
     display: block;
-    background: #fff;
+    background: var(--gauge-handle-bg);
     bottom: -62px; /* half of needle view box height */
     width: 100%;
     padding-bottom: 100%;
     position: absolute;
     border-radius: 50%;
-    box-shadow: 0 -15px 15px rgb(12 12 12 / .05);
+    box-shadow: 0 -15px 15px var(--gauge-handle-shadow);
 }
 
 .dialHandNumber {
@@ -40,7 +40,7 @@
     height: 0;
     padding-top: 11.25%;
     transition: .5s color;
-    color: #262626;
+    color: var(--gauge-text);
 }
 
 .dialHandNumber span {
@@ -58,5 +58,5 @@
 }
 
 .dots {
-    fill: #8c8b8b;
+    fill: var(--gauge-dots);
 }

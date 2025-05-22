@@ -14,6 +14,17 @@
   --active-accent: #35AAE0;
   --active-accent-dark: #2563eb;
 
+  /* FearGreedGauge colors */
+  --gauge-handle-bg: #ffffff;
+  --gauge-handle-shadow: rgba(12, 12, 12, 0.05);
+  --gauge-text: rgb(23, 23, 23);
+  --gauge-dots: #8c8b8b;
+
+  /* FearGreedInfoPanel colors */
+  --info-panel-bg: #ffffff;
+  --info-panel-dotted-line: #9CA3AF;
+  --info-panel-label: #6B7280;
+
   /* Navigation & Sidebar */
   --nav-bg: #ffffff;
   --nav-text: #171717;
@@ -61,6 +72,17 @@
   --foreground: #ededed;
   --text: #f3f4f6;
   --text-secondary: #9ca3af;
+
+  /* FearGreedGauge colors */
+  --gauge-handle-bg: #1a1a1a;
+  --gauge-handle-shadow: rgba(0, 0, 0, 0.3);
+  --gauge-text: #8c8b8b;
+  --gauge-dots: #666666;
+
+  /* FearGreedInfoPanel colors */
+  --info-panel-bg: #1a1a1a;
+  --info-panel-dotted-line: #4B5563;
+  --info-panel-label: #9CA3AF;
 
   /* Navigation & Sidebar */
   --nav-bg: #000000;
