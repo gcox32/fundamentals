@@ -8,6 +8,7 @@ type Props = {
 
 export default function ConsumerSentiment({ trend, series }: Props) {
     const [showChart, setShowChart] = useState(false);
+    const lastUpdated = series[series.length - 1].date;
 
     const handleClick = (e: React.MouseEvent) => {
         if (!showChart) {
@@ -22,7 +23,8 @@ export default function ConsumerSentiment({ trend, series }: Props) {
         >
             <h3 className="font-semibold text-[var(--text-secondary)]">Consumer Sentiment</h3>
             <p className="text-2xl font-bold text-[var(--text)]">{trend}</p>
-
+            <p className="text-sm text-[var(--text-secondary)] mt-2 float-right">Last Updated: {lastUpdated}</p>
+            
             {showChart && (
                 <ChartModal
                     title="University of Michigan Sentiment Index"

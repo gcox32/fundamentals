@@ -8,7 +8,7 @@ type Props = {
 
 export default function RateRegime({ trend, series }: Props) {
 	const [showChart, setShowChart] = useState(false);
-
+	const lastUpdated = series[series.length - 1].date;
 	const handleClick = (e: React.MouseEvent) => {
 		if (!showChart) {
 			setShowChart(true);
@@ -22,7 +22,7 @@ export default function RateRegime({ trend, series }: Props) {
 		>
 			<h3 className="font-semibold text-[var(--text-secondary)]">Rate Regime</h3>
 			<p className="text-2xl font-bold text-[var(--text)]">{trend}</p>
-
+			<p className="text-sm text-[var(--text-secondary)] mt-2 float-right">Last Updated: {lastUpdated}</p>
 			{showChart && (
 				<ChartModal
 					title="Fed Funds Rate"
