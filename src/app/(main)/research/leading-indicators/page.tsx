@@ -7,6 +7,8 @@ import {
   BusinessHealth, 
   InflationRates 
 } from "@/src/components/dashboard/research/leading-indicators/IndicatorPanels";
+import CreditMarkets from "@/src/components/dashboard/research/leading-indicators/IndicatorPanels/CreditMarkets";
+import MarketIndicators from "@/src/components/dashboard/research/leading-indicators/IndicatorPanels/MarketIndicators";
 
 export default function LeadingIndicators() {
   return (
@@ -27,44 +29,11 @@ export default function LeadingIndicators() {
         <InflationRates />
 
         {/* Credit Markets */}
-        <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">
-          <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Credit Markets</h2>
-          <div className="space-y-4">
-            <div className="h-48 bg-[var(--background-secondary)] rounded flex items-center justify-center text-[var(--text-secondary)]">
-              Chart: Corporate Bond Spreads
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <h3 className="text-sm font-semibold text-[var(--text-secondary)]">IG Spread</h3>
-                <p className="text-lg font-bold text-[var(--text)]">125 bps</p>
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold text-[var(--text-secondary)]">HY Spread</h3>
-                <p className="text-lg font-bold text-[var(--text)]">425 bps</p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <CreditMarkets />
 
         {/* Market-Based Indicators */}
-        <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">
-          <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Market-Based Indicators</h2>
-          <div className="space-y-4">
-            <div className="h-48 bg-[var(--background-secondary)] rounded flex items-center justify-center text-[var(--text-secondary)]">
-              Chart: Yield Curve
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <h3 className="text-sm font-semibold text-[var(--text-secondary)]">2Y/10Y Spread</h3>
-                <p className="text-lg font-bold text-[var(--text)]">-35 bps</p>
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold text-[var(--text-secondary)]">VIX</h3>
-                <p className="text-lg font-bold text-[var(--text)]">16.5</p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <MarketIndicators />
+
       </div>
 
       {/* Sector Impact & Valuation Implications */}

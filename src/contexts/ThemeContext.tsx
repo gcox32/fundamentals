@@ -35,8 +35,8 @@ const defaultLeadingIndicators: DashboardComponent[] = [
   { id: 'business-health', title: 'Business Health', isVisible: true },
   { id: 'inflation-rates', title: 'Inflation Rates', isVisible: true },
   { id: 'credit-markets', title: 'Credit Markets', isVisible: true },
-  { id: 'yield-curve', title: 'Yield Curve', isVisible: true },
   { id: 'sector-snapshot', title: 'Sector Snapshot', isVisible: true },
+  { id: 'market-based', title: 'Market Based', isVisible: true },
   { id: 'valuation-implications', title: 'Implications', isVisible: true },
 ];
 

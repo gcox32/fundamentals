@@ -1,5 +1,6 @@
 import { COMMON_PARAMS, FRED_BASE } from "./config";
 import { FREDObservation, FREDResponse } from "./types";
+import { generateDailyLeadingIndicators } from "./helpers";
 
 async function fetchSeries(seriesId: string): Promise<FREDObservation[]> {
     const res = await fetch(`${FRED_BASE}?series_id=${seriesId}&${COMMON_PARAMS}`);
@@ -30,7 +31,7 @@ async function fetchCPI() {
     });
 
     // Only calculate YoY if we have enough data points
-    const yoySeries = reversed.length >= 13 
+    const yoySeries = reversed.length >= 13
         ? reversed.slice(12).map((obs, i) => {
             const val12moAgo = reversed[i].value;
             const pct = ((obs.value - val12moAgo) / val12moAgo) * 100;
@@ -159,7 +160,6 @@ async function fetchCFNAI() {
         .reverse();
 
     const latest = clean.at(-1)!;
-    console.log(latest);
     const prev = clean.at(-2)!;
     const change = latest.value - prev.value;
 
@@ -203,7 +203,86 @@ async function fetchPPI() {
     };
 }
 
+async function fetchCreditSpreads() {
+    const [igSeries, hySeries] = await Promise.all([
+        fetchSeries("BAMLC0A2CAAEY"), // IG (A-rated)
+        fetchSeries("BAMLH0A0HYM2"), // HY
+    ]);
+
+    const clean = (series: any[]) =>
+        series
+            .filter(obs => obs.value !== '.')
+            .map(obs => ({
+                date: obs.date,
+                value: parseFloat(obs.value),
+            }))
+            .reverse();
+
+    const ig = clean(igSeries);
+    const hy = clean(hySeries);
+
+    const series = ig.map((igPoint, i) => ({
+        date: igPoint.date,
+        igSpread: igPoint.value,
+        hySpread: hy[i]?.value ?? igPoint.value, // fallback if lengths mismatch
+    }));
+
+    const latest = series.at(-1)!;
+
+    const riskTrend =
+        latest.hySpread < 400 ? "Healthy" :
+            latest.hySpread < 600 ? "Elevated" :
+                "Stress";
+
+    return {
+        latest,
+        trend: riskTrend,
+        series,
+    };
+}
+
+async function fetchYieldCurve() {
+    const [gs2Series, gs10Series] = await Promise.all([
+        fetchSeries("GS2"),
+        fetchSeries("GS10"),
+    ]);
+
+    const clean = (s: any[]) =>
+        s
+            .filter(obs => obs.value !== '.')
+            .map(obs => ({
+                date: obs.date,
+                value: parseFloat(obs.value),
+            }))
+            .reverse();
+
+    const gs2 = clean(gs2Series);
+    const gs10 = clean(gs10Series);
+
+    const curve = gs2.map((point, i) => {
+        const spread = point.value - (gs10[i]?.value ?? point.value);
+        return {
+            date: point.date,
+            spread: parseFloat(spread.toFixed(2)),
+        };
+    });
+
+    const latest = curve.at(-1)!;
+    const trend =
+        latest.spread < -0.5 ? "Deep Inversion" :
+            latest.spread < 0 ? "Inverted" :
+                latest.spread < 0.5 ? "Flat" :
+                    "Normal";
+
+    return {
+        latest,
+        trend,
+        series: curve,
+    };
+}
+
 export {
+    generateDailyLeadingIndicators,
     fetchCPI,
     fetchRate,
     fetchSentiment,
@@ -211,5 +290,7 @@ export {
     fetchRecessionProbability,
     fetchPCE,
     fetchCFNAI,
-    fetchPPI
+    fetchPPI,
+    fetchCreditSpreads,
+    fetchYieldCurve
 };

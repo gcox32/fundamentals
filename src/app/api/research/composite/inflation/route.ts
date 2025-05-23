@@ -7,7 +7,6 @@ export async function GET() {
         fetchPPI(), 
         fetchRate()
     ]);
-    console.log(cpi, ppi, fedFunds);
 
     return NextResponse.json({ cpi, ppi, fedFunds });
 }
