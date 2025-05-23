@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatPrice } from '@/src/lib/format';
+import { formatPrice } from '@/src/lib/utilities/format';
 
 interface PriceRangeIndicatorProps {
   low: number;

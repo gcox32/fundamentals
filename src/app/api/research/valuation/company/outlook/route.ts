@@ -1,5 +1,5 @@
 import { API_ENDPOINTS, DYNAMODB_TABLES, API_TTL } from '../../config';
-import { fetchFMPData } from '@/src/lib/fmpFinance';
+import { fetchFMPData } from '@/src/lib/aggregators/fmpFinance';
 import type { CompanyOutlook } from '@/types/company';
 
 interface CompanyOutlookCache {

@@ -1,5 +1,5 @@
 import { API_TTL, API_ENDPOINTS, DYNAMODB_TABLES } from '../../../config';
-import { fetchFMPData } from '@/src/lib/fmpFinance';
+import { fetchFMPData } from '@/src/lib/aggregators/fmpFinance';
 import type { HistoricalPriceData } from '@/types/stock';
 
 interface HistoricalPriceCache {

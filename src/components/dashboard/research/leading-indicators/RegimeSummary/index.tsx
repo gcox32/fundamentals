@@ -32,7 +32,7 @@ export default function RegimeSummary() {
   const [data, setData] = useState<RegimeSummaryData | null>(null);
 
   useEffect(() => {
-    fetch('/api/research/leading-indicators/regime-summary')
+    fetch('/api/research/composite/regime-summary')
       .then((res) => res.json())
       .then((resData) => setData({
         cpi: resData.cpi,

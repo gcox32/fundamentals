@@ -4,7 +4,7 @@ import { generateClient } from 'aws-amplify/api';
 import { type Schema } from '@/amplify/data/resource';
 import type { Position, PortfolioCardProps } from '@/types/portfolio';
 import type { StockQuote } from '@/types/stock';
-import { formatPrice } from '@/src/lib/format';
+import { formatPrice } from '@/src/lib/utilities/format';
 import PriceRangeIndicator from './PriceRangeIndicator';
 
 const client = generateClient<Schema>();

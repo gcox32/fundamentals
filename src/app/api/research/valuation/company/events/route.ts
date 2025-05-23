@@ -1,6 +1,6 @@
 import { CompanyEventDividends, CompanyEventEarnings, CompanyCalendarEvents } from '@/types/company';
 import { API_TTL, API_ENDPOINTS, DYNAMODB_TABLES } from '../../config';
-import { fetchFMPData } from '@/src/lib/fmpFinance';
+import { fetchFMPData } from '@/src/lib/aggregators/fmpFinance';
 
 interface FMPResponse {
   [key: string]: any;

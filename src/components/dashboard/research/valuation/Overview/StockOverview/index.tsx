@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './styles.module.css';
 import OverviewCard from '@/components/dashboard/research/valuation/DashboardCard/OverviewCard';
-import { formatPrice, formatNumber, formatLargeNumber } from '@/src/lib/format';
+import { formatPrice, formatNumber, formatLargeNumber } from '@/src/lib/utilities/format';
 import { StockQuote } from '@/types/stock';
 import { CompanyProfile } from '@/types/company';
 

@@ -15,7 +15,7 @@ import type {
   HistoricalCashFlowStatement,
   HistoricalBalanceSheetStatement
 } from '@/types/financials';
-import { calculateFCFEValuation, calculateEPSValuation } from '@/src/lib/valuations';
+import { calculateFCFEValuation, calculateEPSValuation } from '@/src/lib/valuation/valuations';
 import ModelSelector from './ModelSelector';
 import type { OperatingModel } from './types';
 

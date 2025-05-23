@@ -1,8 +1,12 @@
 'use client';
 
-import VisibilityWrapper from "@/src/components/dashboard/research/valuation/VisibilityWrapper";
 import HeaderOverview from "@/src/components/dashboard/research/leading-indicators/HeaderOverview";
 import RegimeSummary from "@/src/components/dashboard/research/leading-indicators/RegimeSummary";
+import { 
+  ConsumerHealth, 
+  BusinessHealth, 
+  InflationRates 
+} from "@/src/components/dashboard/research/leading-indicators/IndicatorPanels";
 
 export default function LeadingIndicators() {
   return (
@@ -14,52 +18,13 @@ export default function LeadingIndicators() {
       {/* Thematic Indicator Blocks */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* Consumer Health */}
-        <VisibilityWrapper componentId="consumer-health">
-          <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">
-            <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Consumer Health</h2>
-            <div className="space-y-4">
-              {/* Placeholder for charts and metrics */}
-              <div className="h-48 bg-[var(--background-secondary)] rounded flex items-center justify-center text-[var(--text-secondary)]">
-                Chart: Personal Consumption Expenditures
-              </div>
-            </div>
-          </section>
-        </VisibilityWrapper>
+        <ConsumerHealth />
 
         {/* Business Health */}
-        <VisibilityWrapper componentId="business-health">
-          <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">
-            <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Business Health</h2>
-            <div className="space-y-4">
-              {/* Placeholder for charts and metrics */}
-              <div className="h-48 bg-[var(--background-secondary)] rounded flex items-center justify-center text-[var(--text-secondary)]">
-                Chart: ISM Manufacturing & Services PMI
-              </div>
-            </div>
-          </section>
-        </VisibilityWrapper>
+        <BusinessHealth />
 
         {/* Inflation & Rates */}
-        <VisibilityWrapper componentId="inflation-rates">
-          <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">
-            <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Inflation & Rates</h2>
-            <div className="space-y-4">
-            <div className="h-48 bg-[var(--background-secondary)] rounded flex items-center justify-center text-[var(--text-secondary)]">
-              Chart: CPI & PPI Trends
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <h3 className="text-sm font-semibold text-[var(--text-secondary)]">Core CPI</h3>
-                <p className="text-lg font-bold text-[var(--text)]">3.2%</p>
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold text-[var(--text-secondary)]">Fed Funds Rate</h3>
-                <p className="text-lg font-bold text-[var(--text)]">5.25-5.50%</p>
-                </div>
-              </div>
-            </div>
-          </section>
-        </VisibilityWrapper>
+        <InflationRates />
 
         {/* Credit Markets */}
         <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">

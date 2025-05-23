@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import { CompanyCalendarEvents } from '@/types/company';
 import { FaCalendarAlt, FaDollarSign, FaChartLine } from 'react-icons/fa';
 import OverviewCard from '@/components/dashboard/research/valuation/DashboardCard/OverviewCard';
-import { formatDate } from '@/src/lib/format';
+import { formatDate } from '@/src/lib/utilities/format';
 interface CompanyEventsProps {
     isLoading?: boolean;
     events?: CompanyCalendarEvents;

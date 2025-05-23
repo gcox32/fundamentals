@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import type { CompanyProfile } from '@/types/company';
 import { FaMapMarkerAlt, FaUsers, FaChartPie, FaIndustry, FaGlobe } from 'react-icons/fa';
 import OverviewCard from '@/components/dashboard/research/valuation/DashboardCard/OverviewCard';
-import { formatAddress, formatEmployees } from '@/src/lib/format';
+import { formatAddress, formatEmployees } from '@/src/lib/utilities/format';
 
 interface CompanyProfileProps {
   isLoading: boolean;

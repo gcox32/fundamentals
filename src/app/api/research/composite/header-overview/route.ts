@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getHeaderOverviewByDate, setHeaderOverviewByDate } from '@/lib/dynamo';
 import { fetchRecessionProbability, fetchEconomicStatus } from '@/lib/fred';
-import { fetchFearGreedIndex } from '@/lib/fearGreed';
+import { fetchFearGreedIndex } from '@/src/lib/aggregators/rapid';
 const todayKey = new Date().toISOString().split('T')[0];
 
 export async function GET() {
