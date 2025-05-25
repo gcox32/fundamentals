@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { generateClient } from 'aws-amplify/api';
 import { type Schema } from '@/amplify/data/resource';
 import { useUser } from '@/src/contexts/UserContext';
+import type { Position } from '@/types/portfolio';
 import styles from './styles.module.css';
 import SuperAssessment from '@/src/components/dashboard/portfolio/super-assessment';
 
@@ -12,10 +13,13 @@ const client = generateClient<Schema>();
 export default function AssessPortfolio() {
 	const { user, isLoading: isUserLoading, error: userError } = useUser();
 	const [portfolios, setPortfolios] = useState<any[]>([]);
+	const [positions, setPositions] = useState<any[]>([]);
+	const [quotes, setQuotes] = useState<any[]>([]);
+	const [positionWeights, setPositionWeights] = useState<any>(null);
 	const [activePortfolio, setActivePortfolio] = useState<any>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const [selectedInvestor, setSelectedInvestor] = useState<string | null>(null);
+	const [isWeightsCalculated, setIsWeightsCalculated] = useState(false);
 
 	useEffect(() => {
 		if (user) {
@@ -49,6 +53,85 @@ export default function AssessPortfolio() {
 		}
 	};
 
+	const fetchPositions = async () => {
+		try {
+			const { data } = await client.models.Position.list({
+				filter: { portfolioId: { eq: activePortfolio.id } },
+				authMode: 'userPool'
+			});
+			setPositions((data || []) as Position[]);
+		} catch (err) {
+			console.error('Error fetching positions:', err);
+			setError('Failed to load positions');
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	const fetchQuotes = async () => {
+		try {
+			const symbols = positions.map(p => p.symbol).join(',');
+			const response = await fetch(`/api/research/valuation/stocks/quotes?symbols=${symbols}&portfolioId=${activePortfolio.id}`);
+			if (!response.ok) throw new Error('Failed to fetch quotes');
+			const data = await response.json();
+			setQuotes(data);
+		} catch (err) {
+			console.error('Error fetching quotes:', err);
+			setError('Failed to load quotes');
+		}
+	};
+
+	const calculatePositionWeights = () => {
+		if (!positions.length || !Object.keys(quotes).length) return;
+
+		// Calculate total portfolio value
+		const totalValue = positions.reduce((sum, position) => {
+			const quote = quotes[position.symbol];
+			if (!quote) return sum;
+			return sum + (position.quantity * quote.price);
+		}, 0);
+
+		// Calculate individual position weights
+		const holdings = positions.map(position => {
+			const quote = quotes[position.symbol];
+			if (!quote) return null;
+			const positionValue = position.quantity * quote.price;
+			const weight = Math.round((positionValue / totalValue) * 100);
+			return {
+				ticker: position.symbol,
+				weight
+			};
+		}).filter(Boolean);
+
+		const weightsData = {
+			investor: null,
+			userId: activePortfolio.userId,
+			date: new Date().toISOString().split('T')[0],
+			holdings
+		};
+
+		setPositionWeights(weightsData);
+		setIsWeightsCalculated(true);
+	};
+
+	useEffect(() => {
+		if (activePortfolio?.id) {
+			fetchPositions();
+		}
+	}, [activePortfolio]);
+
+	useEffect(() => {
+		if (positions.length > 0) {
+			fetchQuotes();
+		}
+	}, [positions]);
+
+	useEffect(() => {
+		if (Object.keys(quotes).length > 0) {
+			calculatePositionWeights();
+		}
+	}, [quotes]);
+
 	return (
 		<div className={styles.container}>
 			<div className="mb-8">
@@ -71,6 +154,7 @@ export default function AssessPortfolio() {
 								onChange={(e) => {
 									const selected = portfolios.find(p => p.id === e.target.value);
 									setActivePortfolio(selected);
+									setIsWeightsCalculated(false);
 								}}
 							>
 								{portfolios.map((portfolio) => (
@@ -152,7 +236,11 @@ export default function AssessPortfolio() {
 								</section>
 
 								{/* Super Investor Section */}
-								<SuperAssessment />
+								{isWeightsCalculated ? (
+									<SuperAssessment positionWeights={positionWeights} />
+								) : (
+									<div className={styles.subsectionContent}>Calculating position weights...</div>
+								)}
 							</div>
 						)}
 					</div>
