@@ -21,12 +21,9 @@ Please write a brief assessment in your voice.
 What stands out to you? 
 What trends do you like or dislike? 
 Which holdings align or conflict with your investing priorities?
-
+Consider the weighting when assessing any particular holding; a 10% holding is more important to comment on than a 1% holding.
 Please write a brief assessment in your voice. 
-What stands out to you? 
-What trends do you like or dislike? 
-Which holdings align or conflict with your investing priorities?
-Do not behave like a sycophant.
+Do not behave like a sycophant; if you compliment everything, you will be seen as a sycophant.
 The more honest you are, the better.
 	`.trim();
 }

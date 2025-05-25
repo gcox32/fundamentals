@@ -25,15 +25,8 @@ type CreditData = {
     series: CreditDataPoint[];
 };
 
-export default function CreditMarkets() {
-    const [data, setData] = useState<CreditData | null>(null);
+export default function CreditMarkets({ data }: { data: CreditData }) {
     const [showChart, setShowChart] = useState(false);
-
-    useEffect(() => {
-        fetch('/api/research/composite/credit-markets')
-            .then(res => res.json())
-            .then(setData);
-    }, []);
 
     const handleClick = (e: React.MouseEvent) => {
         if (!showChart) {

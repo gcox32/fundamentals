@@ -10,8 +10,7 @@ type PCEData = {
     series: DataPoint[];
 };
 
-export default function ConsumerHealth() {
-    const [data, setData] = useState<PCEData | null>(null);
+export default function ConsumerHealth({ data }: { data: PCEData }) {
     const [showChart, setShowChart] = useState(false);
 
     const handleClick = (e: React.MouseEvent) => {
@@ -19,12 +18,6 @@ export default function ConsumerHealth() {
             setShowChart(true);
         }
     };
-
-    useEffect(() => {
-        fetch('/api/research/fred/PCE')
-            .then(res => res.json())
-            .then(setData);
-    }, []);
 
     if (!data) {
         return (
