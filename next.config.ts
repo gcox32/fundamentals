@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
     RAPID_API_KEY: process.env.RAPID_API_KEY || '',
     REGION: process.env.REGION || 'us-east-1',
     FRED_API_KEY: process.env.FRED_API_KEY || '',
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
   }
 }
 
