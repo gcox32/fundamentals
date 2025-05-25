@@ -11,15 +11,8 @@ type InflationRatesData = {
     fedFunds: { latest: DataPoint; trend: string; series: DataPoint[] };
 };
 
-export default function InflationRates() {
-    const [data, setData] = useState<InflationRatesData | null>(null);
+export default function InflationRates({ data }: { data: InflationRatesData }) {
     const [showChart, setShowChart] = useState(false);
-
-    useEffect(() => {
-        fetch('/api/research/composite/inflation')
-            .then(res => res.json())
-            .then(setData);
-    }, []);
 
     const handleClick = (e: React.MouseEvent) => {
         if (!showChart) {

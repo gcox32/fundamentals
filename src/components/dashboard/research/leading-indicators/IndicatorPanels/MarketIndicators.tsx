@@ -20,15 +20,8 @@ type YieldCurveData = {
   series: DataPoint[];
 };
 
-export default function MarketBasedIndicators() {
-  const [data, setData] = useState<YieldCurveData | null>(null);
+export default function MarketBasedIndicators({ data }: { data: YieldCurveData }) {
   const [showChart, setShowChart] = useState(false);
-
-  useEffect(() => {
-    fetch('/api/research/composite/yield-curve')
-      .then(res => res.json())
-      .then(setData);
-  }, []);
 
   const handleClick = (e: React.MouseEvent) => {
     if (!showChart) {

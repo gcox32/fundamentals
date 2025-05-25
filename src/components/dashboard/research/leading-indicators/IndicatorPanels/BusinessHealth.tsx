@@ -14,15 +14,8 @@ type ISMData = {
     };
 };
 
-export default function BusinessHealth() {
-    const [data, setData] = useState<ISMData | null>(null);
+export default function BusinessHealth({ data }: { data: ISMData }) {
     const [showChart, setShowChart] = useState(false);
-
-    useEffect(() => {
-        fetch('/api/research/fred/CFNAI')
-            .then(res => res.json())
-            .then(setData);
-    }, []);
 
     const handleClick = (e: React.MouseEvent) => {
         if (!showChart) {
