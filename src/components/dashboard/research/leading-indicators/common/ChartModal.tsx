@@ -57,7 +57,7 @@ export default function ChartModal({ title, data, onClose, mode, onToggleMode }:
             <Line
               type="monotone"
               dataKey="value"
-              stroke="#000"
+              stroke="var(--active-accent)"
               strokeWidth={2}
               dot={false}
             />

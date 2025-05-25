@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense, useRef, useCallback, useMemo } from 'rea
 import { useSearchParams } from 'next/navigation';
 import styles from './styles.module.css';
 import StockSearchBar from '@/components/dashboard/research/valuation/StockSearchBar';
-import { fetchValuationData } from '@/src/lib/fetchValuationData';
+import { fetchValuationData } from '@/src/lib/valuation/fetchValuationData';
 import { SelectedCompany } from '@/app/(main)/research/valuation/types';
 import DCFValueSection from '@/src/components/dashboard/tools/dcf/DCFValueSection';
 import PresentValueSection from '@/src/components/dashboard/tools/dcf/PresentValueSection';

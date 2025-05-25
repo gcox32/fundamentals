@@ -8,7 +8,7 @@
   position: absolute;
   top: 50%;
   width: 80%;
-  border-bottom: 1px dotted #9CA3AF; /* gray-400 color */
+  border-bottom: 1px dotted var(--info-panel-dotted-line);
   margin-left: 8px;
   z-index: 1;
 }

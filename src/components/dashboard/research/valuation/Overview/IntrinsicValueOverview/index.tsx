@@ -6,7 +6,7 @@ import {
   HistoricalBalanceSheetStatement
 } from '@/types/financials';
 import OverviewCard from '@/components/dashboard/research/valuation/DashboardCard/OverviewCard';
-import { formatPrice, formatPercent, formatLargeNumber } from '@/src/lib/format';
+import { formatPrice, formatPercent, formatLargeNumber } from '@/src/lib/utilities/format';
 import { FiInfo, FiExternalLink } from 'react-icons/fi';
 import Tooltip from '@/components/common/Tooltip';
 import { valuationTooltips } from './tooltips';

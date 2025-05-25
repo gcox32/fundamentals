@@ -10,10 +10,10 @@ import {
   Legend
 } from 'recharts';
 import { HistoricalPriceData } from '@/types/stock';
-import { formatPrice } from '@/src/lib/format';
+import { formatPrice } from '@/src/lib/utilities/format';
 import graphStyles from '@/components/dashboard/research/valuation/DashboardCard/GraphicalCard/styles.module.css';
 import { useChartContext } from '@/components/dashboard/research/valuation/DashboardCard/GraphicalCard/ChartContext';
-import { filterDataByTimeframe } from '@/src/lib/timeframeFilter';
+import { filterDataByTimeframe } from '@/src/lib/utilities/timeframeFilter';
 import { HistoricalIncomeStatement } from '@/src/types/financials';
 
 interface HistoricalPriceProps {

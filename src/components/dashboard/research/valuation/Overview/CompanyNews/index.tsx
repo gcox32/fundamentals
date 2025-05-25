@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import { MarketNews } from '@/types/company';
 import OverviewCard from '@/components/dashboard/research/valuation/DashboardCard/OverviewCard';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { formatNewsDate } from '@/src/lib/format';
+import { formatNewsDate } from '@/src/lib/utilities/format';
 
 interface CompanyNewsProps {
     isLoading?: boolean;

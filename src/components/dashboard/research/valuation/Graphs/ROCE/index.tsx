@@ -10,9 +10,9 @@ import {
 } from 'recharts';
 import type { HistoricalIncomeStatement, HistoricalBalanceSheetStatement } from '@/types/financials';
 import graphStyles from '@/components/dashboard/research/valuation/DashboardCard/GraphicalCard/styles.module.css';
-import { formatPercent } from '@/src/lib/format';
+import { formatPercent } from '@/src/lib/utilities/format';
 import { useChartContext } from '@/components/dashboard/research/valuation/DashboardCard/GraphicalCard/ChartContext';
-import { filterDataByTimeframe } from '@/src/lib/timeframeFilter';
+import { filterDataByTimeframe } from '@/src/lib/utilities/timeframeFilter';
 
 interface ROCEProps {
   incomeStatement?: HistoricalIncomeStatement;

@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './styles.module.css';
 import loadingStyles from '@/styles/loading.module.css';
 import { PriceInfoProps } from './types';
-import { formatPrice, formatChange, formatPercent } from '@/src/lib/format';
+import { formatPrice, formatChange, formatPercent } from '@/src/lib/utilities/format';
 export default function PriceInfo({
   currentPrice,
   priceChange,

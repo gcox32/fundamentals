@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import { CompanyRatios } from '@/types/company';
 import { CashFlowStatement } from '@/types/financials';
 import OverviewCard from '@/components/dashboard/research/valuation/DashboardCard/OverviewCard';
-import { formatPercent, formatNumber, formatPrice } from '@/src/lib/format';
+import { formatPercent, formatNumber, formatPrice } from '@/src/lib/utilities/format';
 import { FiInfo } from 'react-icons/fi';
 import Tooltip from '@/components/common/Tooltip';
 import { metricTooltips } from './tooltips';

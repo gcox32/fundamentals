@@ -27,7 +27,7 @@ export default function HeaderOverview() {
   const [data, setData] = useState<HeaderOverviewData | null>(null);
 
   useEffect(() => {
-    fetch('/api/research/leading-indicators/header-overview')
+    fetch('/api/research/composite/header-overview')
       .then(res => res.json())
       .then(setData)
   }, []);

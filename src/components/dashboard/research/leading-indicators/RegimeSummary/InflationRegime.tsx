@@ -12,7 +12,8 @@ type Props = {
 export default function InflationRegime({ trend, series }: Props) {
   const [showChart, setShowChart] = useState(false);
   const [mode, setMode] = useState<'mom' | 'yoy'>('yoy');
-
+  const lastUpdated = series.mom[series.mom.length - 1].date;
+  ;
   const handleClick = (e: React.MouseEvent) => {
     // Only set showChart to true if we're clicking the card itself
     if (!showChart) {
@@ -27,7 +28,7 @@ export default function InflationRegime({ trend, series }: Props) {
     >
       <h3 className="font-semibold text-[var(--text-secondary)]">Inflation Regime</h3>
       <p className="text-2xl font-bold text-[var(--text)]">{trend}</p>
-
+      <p className="text-sm text-[var(--text-secondary)] mt-2 float-right">Last Updated: {lastUpdated}</p>
       {showChart && (
         <ChartModal
           title={`CPI (${mode.toUpperCase()})`}

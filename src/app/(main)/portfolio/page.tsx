@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { generateClient } from 'aws-amplify/api';
 import { type Schema } from '@/amplify/data/resource';
-import PortfolioCard from '@/src/components/dashboard/portfolio/PortfolioCard';
-import CreatePortfolioButton from '@/src/components/dashboard/portfolio/CreatePortfolioButton';
+import PortfolioCard from '@/src/components/dashboard/portfolio/common/PortfolioCard';
+import CreatePortfolioButton from '@/src/components/dashboard/portfolio/common/CreatePortfolioButton';
 import { useUser } from '@/contexts/UserContext';
 import styles from './styles.module.css';
 import Modal from '@/components/common/Modal';
@@ -117,8 +117,7 @@ export default function Portfolio() {
               const selected = portfolios.find(p => p.id === e.target.value);
               setActivePortfolio(selected || null);
             }}
-            className="dark:bg-gray-700 p-2 border dark:border-gray-600 rounded"
-            style={{ color: 'black' }}
+            className="dark:bg-gray-700 p-2 border dark:border-gray-600 rounded text-black"
           >
             {portfolios.map(portfolio => (
               <option key={portfolio.id} value={portfolio.id}>

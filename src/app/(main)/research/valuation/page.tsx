@@ -11,7 +11,7 @@ import CompanyNews from "@/src/components/dashboard/research/valuation/Overview/
 import CompanyMetricsOverview from "@/src/components/dashboard/research/valuation/Overview/CompanyMetricsOverview";
 import StockOverview from "@/src/components/dashboard/research/valuation/Overview/StockOverview";
 import styles from './styles.module.css';
-import { fetchValuationData } from '@/src/lib/fetchValuationData';
+import { fetchValuationData } from '@/src/lib/valuation/fetchValuationData';
 import { graphCards } from './graphConfig';
 import { SelectedCompany } from './types';
 import DraggableCardGrid from '@/components/dashboard/research/valuation/DraggableCardGrid';

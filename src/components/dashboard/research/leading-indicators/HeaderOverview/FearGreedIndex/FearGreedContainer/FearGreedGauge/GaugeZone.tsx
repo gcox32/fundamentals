@@ -20,8 +20,8 @@ export default function GaugeZone({ zoneIndex, active }: GaugeZoneProps) {
         <>
             <path
                 d={d}
-                fill={active ? fill : "#f7f7f7"}
-                stroke={active ? "#000" : "none"}
+                fill={active ? fill : "var(--border-color)"}
+                stroke={active ? "var(--border-color)" : "none"}
                 strokeWidth={active ? 1.5 : 0}
             />
             <text
@@ -30,7 +30,7 @@ export default function GaugeZone({ zoneIndex, active }: GaugeZoneProps) {
                 textAnchor="middle"
                 dominantBaseline="middle"
                 fontSize="10"
-                fill="#000"
+                fill="var(--gauge-text)"
                 fontWeight={active ? "bold" : "normal"}
                 transform={`rotate(${angle * 0.95}, ${x}, ${y + labelOffsetY})`}
                 style={{
