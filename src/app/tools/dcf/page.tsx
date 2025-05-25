@@ -30,7 +30,7 @@ interface ExtendedSelectedCompany extends SelectedCompany {
   };
 }
 
-export default function DCFPage() {
+function DCFContent() {
   const searchParams = useSearchParams();
   const [symbol, setSymbol] = useState<string | null>(searchParams.get('symbol'));
   const [selectedCompany, setSelectedCompany] = useState<ExtendedSelectedCompany | null>(null);
@@ -389,5 +389,13 @@ export default function DCFPage() {
       )}
 
     </div>
+  );
+}
+
+export default function DCFPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DCFContent />
+    </Suspense>
   );
 } 
