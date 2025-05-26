@@ -18,16 +18,13 @@ const MARKET_CAP_THRESHOLDS = {
 // Style thresholds based on common metrics
 const STYLE_THRESHOLDS = {
     VALUE: {
-        peRatio: 15,
-        pbRatio: 1.5
+        score: 0.4,  // Lower score = more value-oriented
     },
     BLEND: {
-        peRatio: 25,
-        pbRatio: 2.5
+        score: 0.7,  // Middle range = blend
     },
     GROWTH: {
-        peRatio: Infinity,
-        pbRatio: Infinity
+        score: 1.0   // Higher score = more growth-oriented
     }
 };
 
@@ -51,16 +48,63 @@ export default function StyleDistribution({ companyOutlooks, weights }: StyleDis
         return 'LARGE';
     };
 
-    // Calculate style category based on P/E and P/B ratios
+    // Calculate style category based on multiple valuation metrics
     const getStyleCategory = (companyOutlook: CompanyOutlook): StyleCategory => {
-        // For simplicity, we'll use a basic classification
-        // In a real application, you might want to use more sophisticated metrics
-        const peRatio = companyOutlook.ratios[0]?.peRatioTTM || 0;
-        const pbRatio = companyOutlook.ratios[0]?.priceToBookRatioTTM || 0;
-        if (peRatio <= STYLE_THRESHOLDS.VALUE.peRatio) {
+        const ratios = companyOutlook.ratios[0];
+        if (!ratios) return 'BLEND'; // Default to blend if no ratios available
+
+        // Normalize each ratio to a 0-1 scale where 0 is most value-oriented and 1 is most growth-oriented
+        const getNormalizedScore = (value: number, min: number, max: number) => {
+            if (value <= min) return 0;
+            if (value >= max) return 1;
+            return (value - min) / (max - min);
+        };
+
+        // Valuation metrics with their min/max thresholds
+        const metrics = [
+            {
+                value: ratios.peRatioTTM || 0,
+                min: 5,    // Very value-oriented
+                max: 50,   // Very growth-oriented
+                weight: 0.3
+            },
+            {
+                value: ratios.priceToBookRatioTTM || 0,
+                min: 0.5,  // Very value-oriented
+                max: 5,    // Very growth-oriented
+                weight: 0.2
+            },
+            {
+                value: ratios.priceToSalesRatioTTM || 0,
+                min: 0.5,  // Very value-oriented
+                max: 10,   // Very growth-oriented
+                weight: 0.15
+            },
+            {
+                value: ratios.priceToFreeCashFlowsRatioTTM || 0,
+                min: 5,    // Very value-oriented
+                max: 30,   // Very growth-oriented
+                weight: 0.15
+            },
+            {
+                value: ratios.priceEarningsToGrowthRatioTTM || 0,
+                min: 0.5,  // Very value-oriented
+                max: 2,    // Very growth-oriented
+                weight: 0.2
+            }
+        ];
+
+        // Calculate weighted average score
+        const totalScore = metrics.reduce((acc, metric) => {
+            const normalizedScore = getNormalizedScore(metric.value, metric.min, metric.max);
+            return acc + (normalizedScore * metric.weight);
+        }, 0);
+
+        // Classify based on total score
+        if (totalScore <= STYLE_THRESHOLDS.VALUE.score) {
             return 'VALUE';
         }
-        if (peRatio <= STYLE_THRESHOLDS.BLEND.peRatio) {
+        if (totalScore <= STYLE_THRESHOLDS.BLEND.score) {
             return 'BLEND';
         }
         return 'GROWTH';
