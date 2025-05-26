@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { generateClient } from 'aws-amplify/api';
-import { type Schema } from '@/amplify/data/resource';
+import { data, type Schema } from '@/amplify/data/resource';
 import { useUser } from '@/src/contexts/UserContext';
 import type { Position } from '@/types/portfolio';
 import styles from './styles.module.css';
 import SuperAssessment from '@/src/components/dashboard/portfolio/super-assessment';
+import { fetchValuationData } from '@/src/lib/valuation/fetchValuationData';
+import Allocation from '@/src/components/dashboard/portfolio/allocation';
 
 const client = generateClient<Schema>();
 
@@ -20,6 +22,8 @@ export default function AssessPortfolio() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [isWeightsCalculated, setIsWeightsCalculated] = useState(false);
+	const [portfolioCompanies, setPortfolioCompanies] = useState<any>(null);
+	const [portfolioCompanyProfiles, setPortfolioCompanyProfiles] = useState<any>(null);
 
 	useEffect(() => {
 		if (user) {
@@ -114,6 +118,58 @@ export default function AssessPortfolio() {
 		setIsWeightsCalculated(true);
 	};
 
+	const fetchCompanyData = async () => {
+		try {
+			const companyOutlookPromises = positions.map(position => 
+				fetchValuationData(
+					'company/outlook', 
+					position.symbol,
+					(data) => {
+						setPortfolioCompanies((prev: any[] | null) => {
+							const newData = [...(prev || [])];
+							const index = newData.findIndex(item => item?.symbol === position.symbol);
+							if (index !== -1) {
+								newData[index] = data;
+							} else {
+								newData.push(data);
+							}
+
+							return newData;
+						})
+						setPortfolioCompanyProfiles((prev: any[] | null) => {
+							const newData = [...(prev || [])];
+							const index = newData.findIndex(item => item?.symbol === position.symbol);
+							if (index !== -1) {
+								newData[index] = data.profile;
+							} else {
+								newData.push(data.profile);
+							}
+							return newData;
+						})
+					},
+					(err) => {console.error('Error fetching company data:', err)}
+				)
+			);
+			await Promise.all(companyOutlookPromises);
+		} catch (err) {
+			console.error('Error fetching company data:', err);
+			setError('Failed to load company data');
+		}
+	};
+
+	const resetStateArrays = () => {
+		setPositions([]);
+		setQuotes([]);
+		setPositionWeights(null);
+		setPortfolioCompanies(null);
+		setPortfolioCompanyProfiles(null);
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				resolve(true);
+			}, 100);
+		});
+	};
+
 	useEffect(() => {
 		if (activePortfolio?.id) {
 			fetchPositions();
@@ -131,6 +187,12 @@ export default function AssessPortfolio() {
 			calculatePositionWeights();
 		}
 	}, [quotes]);
+
+	useEffect(() => {
+		if (positions.length > 0) {
+			fetchCompanyData();
+		}
+	}, [isWeightsCalculated]);
 
 	return (
 		<div className={styles.container}>
@@ -153,8 +215,11 @@ export default function AssessPortfolio() {
 								value={activePortfolio?.id || ''}
 								onChange={(e) => {
 									const selected = portfolios.find(p => p.id === e.target.value);
-									setActivePortfolio(selected);
 									setIsWeightsCalculated(false);
+									resetStateArrays()
+										.then(() => {
+											setActivePortfolio(selected);
+										})
 								}}
 							>
 								{portfolios.map((portfolio) => (
@@ -168,21 +233,9 @@ export default function AssessPortfolio() {
 						{activePortfolio && (
 							<div className="mt-8 space-y-12">
 								{/* Asset Allocation Section */}
-								<section className={styles.section}>
-									<h2 className={styles.sectionTitle}>Asset Allocation</h2>
-									<div className={styles.card}>
-										<div className={styles.grid}>
-											<div className={styles.subsection}>
-												<h3 className={styles.subsectionTitle}>Current Allocation</h3>
-												<p className={styles.subsectionContent}>Allocation breakdown will be displayed here</p>
-											</div>
-											<div className={styles.subsection}>
-												<h3 className={styles.subsectionTitle}>Target Allocation</h3>
-												<p className={styles.subsectionContent}>Target allocation comparison will be shown here</p>
-											</div>
-										</div>
-									</div>
-								</section>
+								{ positionWeights && portfolioCompanyProfiles &&
+									<Allocation companyOutlooks={portfolioCompanies} weights={positionWeights.holdings} /> 
+								}	
 
 								{/* Historical Performance Section */}
 								<section className={styles.section}>

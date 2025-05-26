@@ -23,7 +23,7 @@ export const navGroups: NavGroup[] = [
         title: 'Portfolio',
         items: [
             { icon: <FaBriefcase />, label: 'Construction', href: '/portfolio' },
-            { icon: <FaChartPie />, label: 'Assessment', href: '/portfolio/assessment' },
+            { icon: <FaChartPie />, label: 'Assessment', href: '/portfolio/summary' },
             { icon: <FaBell />, label: 'Screener', href: '/portfolio/screener' },
         ]
     },
