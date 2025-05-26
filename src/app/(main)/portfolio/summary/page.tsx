@@ -133,6 +133,7 @@ export default function AssessPortfolio() {
 							} else {
 								newData.push(data);
 							}
+
 							return newData;
 						})
 						setPortfolioCompanyProfiles((prev: any[] | null) => {
@@ -143,7 +144,6 @@ export default function AssessPortfolio() {
 							} else {
 								newData.push(data.profile);
 							}
-							console.log('newData', newData);
 							return newData;
 						})
 					},
@@ -233,9 +233,9 @@ export default function AssessPortfolio() {
 						{activePortfolio && (
 							<div className="mt-8 space-y-12">
 								{/* Asset Allocation Section */}
-								{ positionWeights && 
-									<Allocation weights={positionWeights.holdings} companyProfiles={portfolioCompanies} /> 
-								}
+								{ positionWeights && portfolioCompanyProfiles &&
+									<Allocation companyOutlooks={portfolioCompanies} weights={positionWeights.holdings} /> 
+								}	
 
 								{/* Historical Performance Section */}
 								<section className={styles.section}>
