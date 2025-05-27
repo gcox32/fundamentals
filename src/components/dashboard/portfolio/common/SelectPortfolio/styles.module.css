@@ -1,0 +1,25 @@
+
+.selectContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .selectLabel {
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  
+  .select {
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
+  
+  .select:focus {
+    outline: none;
+    border-color: transparent;
+    box-shadow: 0 0 0 2px var(--focus-ring);
+  } 
