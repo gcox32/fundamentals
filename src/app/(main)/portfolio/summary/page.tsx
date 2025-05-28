@@ -27,7 +27,7 @@ export default function AssessPortfolio() {
 	const [isWeightsCalculated, setIsWeightsCalculated] = useState(false);
 	const [portfolioCompanies, setPortfolioCompanies] = useState<any>(null);
 	const [portfolioCompanyProfiles, setPortfolioCompanyProfiles] = useState<any>(null);
-	const [portfolioHistoricalPrices, setPortfolioHistoricalPrices] = useState<HistoricalPriceData[]>([]);
+	const [portfolioHistoricalPrices, setPortfolioHistoricalPrices] = useState<{symbol: string, data: HistoricalPriceData}[]>([]);
 
 	useEffect(() => {
 		if (user) {
@@ -189,6 +189,7 @@ export default function AssessPortfolio() {
 		setPositionWeights(null);
 		setPortfolioCompanies(null);
 		setPortfolioCompanyProfiles(null);
+		setPortfolioHistoricalPrices([]);
 		return new Promise<void>((resolve) => {
 			setTimeout(() => {
 				resolve();
@@ -232,9 +233,6 @@ export default function AssessPortfolio() {
 				) : (
 					<div className="space-y-4">
 						<div className={styles.selectContainer}>
-							<label htmlFor="portfolio-select" className={styles.selectLabel}>
-								Select Portfolio:
-							</label>
 							<SelectPortfolio
 								portfolios={portfolios}
 								activePortfolio={activePortfolio}
@@ -253,7 +251,10 @@ export default function AssessPortfolio() {
 
 								{/* Historical Performance Section */}
 								{positionWeights && portfolioHistoricalPrices &&
-									<BackTesting portfolioHistoricalPrices={portfolioHistoricalPrices} />
+									<BackTesting 
+										portfolioHistoricalPrices={portfolioHistoricalPrices.map((price) => price.data)} 
+										weights={positionWeights.holdings.map((weight: any) => weight.weight)} 
+									/>
 								}
 
 								{/* Upcoming Events Section */}
