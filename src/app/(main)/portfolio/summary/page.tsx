@@ -9,6 +9,9 @@ import styles from './styles.module.css';
 import SuperAssessment from '@/src/components/dashboard/portfolio/super-assessment';
 import { fetchValuationData } from '@/src/lib/valuation/fetchValuationData';
 import Allocation from '@/src/components/dashboard/portfolio/allocation';
+import BackTesting from '@/src/components/dashboard/portfolio/performance/BackTesting';
+import { HistoricalPriceData } from '@/types/stock';
+import SelectPortfolio from '@/src/components/dashboard/portfolio/common/SelectPortfolio';
 
 const client = generateClient<Schema>();
 
@@ -24,6 +27,7 @@ export default function AssessPortfolio() {
 	const [isWeightsCalculated, setIsWeightsCalculated] = useState(false);
 	const [portfolioCompanies, setPortfolioCompanies] = useState<any>(null);
 	const [portfolioCompanyProfiles, setPortfolioCompanyProfiles] = useState<any>(null);
+	const [portfolioHistoricalPrices, setPortfolioHistoricalPrices] = useState<{symbol: string, data: HistoricalPriceData}[]>([]);
 
 	useEffect(() => {
 		if (user) {
@@ -120,9 +124,9 @@ export default function AssessPortfolio() {
 
 	const fetchCompanyData = async () => {
 		try {
-			const companyOutlookPromises = positions.map(position => 
+			const companyOutlookPromises = positions.map(position =>
 				fetchValuationData(
-					'company/outlook', 
+					'company/outlook',
 					position.symbol,
 					(data) => {
 						setPortfolioCompanies((prev: any[] | null) => {
@@ -136,6 +140,7 @@ export default function AssessPortfolio() {
 
 							return newData;
 						})
+						// Company Profile for distribution analysis
 						setPortfolioCompanyProfiles((prev: any[] | null) => {
 							const newData = [...(prev || [])];
 							const index = newData.findIndex(item => item?.symbol === position.symbol);
@@ -147,10 +152,31 @@ export default function AssessPortfolio() {
 							return newData;
 						})
 					},
-					(err) => {console.error('Error fetching company data:', err)}
+					(err) => { console.error('Error fetching company data:', err) }
+				)
+			);
+			// Historical Price for back testing
+			const historicalPricePromises = positions.map(position =>
+				fetchValuationData(
+					'stock/historical/price',
+					position.symbol,
+					(data) => {
+						setPortfolioHistoricalPrices((prev: any[] | null) => {
+							const newData = [...(prev || [])];
+							const index = newData.findIndex(item => item?.symbol === position.symbol);
+							if (index !== -1) {
+								newData[index] = { symbol: position.symbol, data: data };
+							} else {
+								newData.push({ symbol: position.symbol, data: data });
+							}
+							return newData;
+						})
+					},
+					(err) => { console.error('Error fetching historical price data:', err) }
 				)
 			);
 			await Promise.all(companyOutlookPromises);
+			await Promise.all(historicalPricePromises);
 		} catch (err) {
 			console.error('Error fetching company data:', err);
 			setError('Failed to load company data');
@@ -163,9 +189,10 @@ export default function AssessPortfolio() {
 		setPositionWeights(null);
 		setPortfolioCompanies(null);
 		setPortfolioCompanyProfiles(null);
-		return new Promise((resolve) => {
+		setPortfolioHistoricalPrices([]);
+		return new Promise<void>((resolve) => {
 			setTimeout(() => {
-				resolve(true);
+				resolve();
 			}, 100);
 		});
 	};
@@ -206,53 +233,29 @@ export default function AssessPortfolio() {
 				) : (
 					<div className="space-y-4">
 						<div className={styles.selectContainer}>
-							<label htmlFor="portfolio-select" className={styles.selectLabel}>
-								Select Portfolio:
-							</label>
-							<select
-								id="portfolio-select"
-								className={styles.select}
-								value={activePortfolio?.id || ''}
-								onChange={(e) => {
-									const selected = portfolios.find(p => p.id === e.target.value);
-									setIsWeightsCalculated(false);
-									resetStateArrays()
-										.then(() => {
-											setActivePortfolio(selected);
-										})
-								}}
-							>
-								{portfolios.map((portfolio) => (
-									<option key={portfolio.id} value={portfolio.id}>
-										{portfolio.name || 'Unnamed Portfolio'}
-									</option>
-								))}
-							</select>
+							<SelectPortfolio
+								portfolios={portfolios}
+								activePortfolio={activePortfolio}
+								setActivePortfolio={setActivePortfolio}
+								setIsWeightsCalculated={setIsWeightsCalculated}
+								resetStateArrays={resetStateArrays}
+							/>
 						</div>
 
 						{activePortfolio && (
 							<div className="mt-8 space-y-12">
 								{/* Asset Allocation Section */}
-								{ positionWeights && portfolioCompanyProfiles &&
-									<Allocation companyOutlooks={portfolioCompanies} weights={positionWeights.holdings} /> 
-								}	
+								{positionWeights && portfolioCompanyProfiles &&
+									<Allocation companyOutlooks={portfolioCompanies} weights={positionWeights.holdings} />
+								}
 
 								{/* Historical Performance Section */}
-								<section className={styles.section}>
-									<h2 className={styles.sectionTitle}>Historical Performance</h2>
-									<div className={styles.card}>
-										<div className={styles.grid}>
-											<div className={styles.subsection}>
-												<h3 className={styles.subsectionTitle}>Performance Metrics</h3>
-												<p className={styles.subsectionContent}>Key performance indicators will be displayed here</p>
-											</div>
-											<div className={styles.subsection}>
-												<h3 className={styles.subsectionTitle}>Performance Chart</h3>
-												<p className={styles.subsectionContent}>Historical performance visualization will be shown here</p>
-											</div>
-										</div>
-									</div>
-								</section>
+								{positionWeights && portfolioHistoricalPrices &&
+									<BackTesting 
+										portfolioHistoricalPrices={portfolioHistoricalPrices.map((price) => price.data)} 
+										weights={positionWeights.holdings.map((weight: any) => weight.weight)} 
+									/>
+								}
 
 								{/* Upcoming Events Section */}
 								<section className={styles.section}>

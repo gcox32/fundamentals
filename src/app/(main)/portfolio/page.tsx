@@ -9,157 +9,149 @@ import { useUser } from '@/contexts/UserContext';
 import styles from './styles.module.css';
 import Modal from '@/components/common/Modal';
 import type { Portfolio } from '@/types/portfolio';
+import SelectPortfolio from '@/src/components/dashboard/portfolio/common/SelectPortfolio';
 
 const client = generateClient<Schema>();
 
 export default function Portfolio() {
-  const { user, isLoading: isUserLoading, error: userError } = useUser();
-  const [portfolios, setPortfolios] = useState<any[]>([]);
-  const [activePortfolio, setActivePortfolio] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [portfolioToDelete, setPortfolioToDelete] = useState<Portfolio | null>(null);
+	const { user, isLoading: isUserLoading, error: userError } = useUser();
+	const [portfolios, setPortfolios] = useState<any[]>([]);
+	const [activePortfolio, setActivePortfolio] = useState<any>(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+	const [portfolioToDelete, setPortfolioToDelete] = useState<Portfolio | null>(null);
 
-  useEffect(() => {
-    if (user) {
-      fetchPortfolios();
-    }
-  }, [user]);
+	useEffect(() => {
+		if (user) {
+			fetchPortfolios();
+		}
+	}, [user]);
 
-  useEffect(() => {
-    // Set the first portfolio as active when portfolios are loaded
-    if (portfolios.length > 0 && !activePortfolio) {
-      setActivePortfolio(portfolios[0]);
-    }
-  }, [portfolios]);
+	useEffect(() => {
+		// Set the first portfolio as active when portfolios are loaded
+		if (portfolios.length > 0 && !activePortfolio) {
+			setActivePortfolio(portfolios[0]);
+		}
+	}, [portfolios]);
 
-  const fetchPortfolios = async () => {
-    console.log('fetching portfolios');
-    if (!user) return;
-    
-    try {
-      const userId = (user as any).id;
-      const { data: portfolios } = await client.models.Portfolio.list({
-        filter: { userId: { eq: userId } }
-      });
-      
-      setPortfolios(portfolios || []);
-    } catch (err) {
-      console.error('Error fetching portfolios:', err);
-      setError('Failed to load portfolios');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+	const fetchPortfolios = async () => {
+		console.log('fetching portfolios');
+		if (!user) return;
 
-  const handleCreatePortfolio = async (name: string) => {
-    if (!user) return;
-    
-    try {
-      const { data: newPortfolio } = await client.models.Portfolio.create({
-        name,
-        userId: (user as any).id
-      });
-      
-      if (newPortfolio) {
-        setPortfolios(prev => [...prev, newPortfolio]);
-        setActivePortfolio(newPortfolio);
-      }
-    } catch (err) {
-      console.error('Error creating portfolio:', err);
-      setError('Failed to create portfolio');
-    }
-  };
+		try {
+			const userId = (user as any).id;
+			const { data: portfolios } = await client.models.Portfolio.list({
+				filter: { userId: { eq: userId } }
+			});
 
-  const handleDeletePortfolio = async (portfolioId: string) => {
-    try {
-      await client.models.Portfolio.delete({
-        id: portfolioId
-      });
-      setPortfolios(prev => {
-        const newPortfolios = prev.filter(p => p.id !== portfolioId);
-        if (activePortfolio?.id === portfolioId) {
-          setActivePortfolio(newPortfolios[0] || null);
-        }
-        return newPortfolios;
-      });
-    } catch (err) {
-      console.error('Error deleting portfolio:', err);
-      setError('Failed to delete portfolio');
-    }
-  };
+			setPortfolios(portfolios || []);
+		} catch (err) {
+			console.error('Error fetching portfolios:', err);
+			setError('Failed to load portfolios');
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
-  if (isUserLoading || isLoading) {
-    return <div className={styles.loading}>Loading...</div>;
-  }
+	const handleCreatePortfolio = async (name: string) => {
+		if (!user) return;
 
-  if (userError || error) {
-    return <div className={styles.error}>Error: {userError || error}</div>;
-  }
+		try {
+			const { data: newPortfolio } = await client.models.Portfolio.create({
+				name,
+				userId: (user as any).id
+			});
 
-  if (!user) {
-    return <div className={styles.error}>User not found</div>;
-  }
+			if (newPortfolio) {
+				setPortfolios(prev => [...prev, newPortfolio]);
+				setActivePortfolio(newPortfolio);
+			}
+		} catch (err) {
+			console.error('Error creating portfolio:', err);
+			setError('Failed to create portfolio');
+		}
+	};
 
-  return (
-    <div className={styles.container}>
-      {activePortfolio && (
-        <PortfolioCard
-          portfolio={activePortfolio}
-          onDelete={(portfolio) => setPortfolioToDelete(portfolio)}
-        />
-      )}
-      <div className={`${styles.portfolioOptions} mt-auto`}>
-        <div className="flex justify-end items-center gap-4">
-          <select
-            value={activePortfolio?.id || ''}
-            onChange={(e) => {
-              const selected = portfolios.find(p => p.id === e.target.value);
-              setActivePortfolio(selected || null);
-            }}
-            className="dark:bg-gray-700 p-2 border dark:border-gray-600 rounded text-black"
-          >
-            {portfolios.map(portfolio => (
-              <option key={portfolio.id} value={portfolio.id}>
-                {portfolio.name}
-              </option>
-            ))}
-          </select>
-          <CreatePortfolioButton onCreatePortfolio={handleCreatePortfolio} />
-        </div>
-      </div>
+	const handleDeletePortfolio = async (portfolioId: string) => {
+		try {
+			await client.models.Portfolio.delete({
+				id: portfolioId
+			});
+			setPortfolios(prev => {
+				const newPortfolios = prev.filter(p => p.id !== portfolioId);
+				if (activePortfolio?.id === portfolioId) {
+					setActivePortfolio(newPortfolios[0] || null);
+				}
+				return newPortfolios;
+			});
+		} catch (err) {
+			console.error('Error deleting portfolio:', err);
+			setError('Failed to delete portfolio');
+		}
+	};
 
-      <Modal
-        isOpen={!!portfolioToDelete}
-        onClose={() => setPortfolioToDelete(null)}
-        title="Delete Portfolio"
-      >
-        <div className="space-y-4">
-          <p>
-            Are you sure you want to delete portfolio "{portfolioToDelete?.name}"? 
-            This action cannot be undone and will delete all positions within this portfolio.
-          </p>
-          <div className="flex justify-end gap-3">
-            <button
-              onClick={() => setPortfolioToDelete(null)}
-              className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded text-gray-800 transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={() => {
-                if (portfolioToDelete) {
-                  handleDeletePortfolio(portfolioToDelete.id);
-                  setPortfolioToDelete(null);
-                }
-              }}
-              className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white transition-colors"
-            >
-              Delete Portfolio
-            </button>
-          </div>
-        </div>
-      </Modal>
-    </div>
-  );
+	if (isUserLoading || isLoading) {
+		return <div className={styles.loading}>Loading...</div>;
+	}
+
+	if (userError || error) {
+		return <div className={styles.error}>Error: {userError || error}</div>;
+	}
+
+	if (!user) {
+		return <div className={styles.error}>User not found</div>;
+	}
+
+	return (
+		<div className={styles.container}>
+			{activePortfolio && (
+				<PortfolioCard
+					portfolio={activePortfolio}
+					onDelete={(portfolio) => setPortfolioToDelete(portfolio)}
+				/>
+			)}
+			<div className={`${styles.portfolioOptions} mt-auto`}>
+				<div className="flex justify-end items-center gap-4">
+					<SelectPortfolio
+						portfolios={portfolios}
+						activePortfolio={activePortfolio}
+						setActivePortfolio={setActivePortfolio}
+					/>
+					<CreatePortfolioButton onCreatePortfolio={handleCreatePortfolio} />
+				</div>
+			</div>
+
+			<Modal
+				isOpen={!!portfolioToDelete}
+				onClose={() => setPortfolioToDelete(null)}
+				title="Delete Portfolio"
+			>
+				<div className="space-y-4">
+					<p>
+						Are you sure you want to delete portfolio "{portfolioToDelete?.name}"?
+						This action cannot be undone and will delete all positions within this portfolio.
+					</p>
+					<div className="flex justify-end gap-3">
+						<button
+							onClick={() => setPortfolioToDelete(null)}
+							className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded text-gray-800 transition-colors"
+						>
+							Cancel
+						</button>
+						<button
+							onClick={() => {
+								if (portfolioToDelete) {
+									handleDeletePortfolio(portfolioToDelete.id);
+									setPortfolioToDelete(null);
+								}
+							}}
+							className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white transition-colors"
+						>
+							Delete Portfolio
+						</button>
+					</div>
+				</div>
+			</Modal>
+		</div>
+	);
 }
