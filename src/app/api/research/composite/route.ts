@@ -31,7 +31,6 @@ export async function GET() {
         marketIndicators
     };
     await setLeadingIndicatorsForDate(today, data);
-    console.log(data);
     return NextResponse.json(data);
 }
 

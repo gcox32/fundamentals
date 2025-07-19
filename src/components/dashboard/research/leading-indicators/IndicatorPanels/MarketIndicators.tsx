@@ -12,6 +12,7 @@ import {
   Tooltip,
 } from 'recharts';
 import { useEffect, useState } from 'react';
+import { useTheme } from '@/src/contexts/ThemeContext';
 
 type DataPoint = { date: string; spread: number };
 type YieldCurveData = {
@@ -22,7 +23,7 @@ type YieldCurveData = {
 
 export default function MarketBasedIndicators({ data }: { data: YieldCurveData }) {
   const [showChart, setShowChart] = useState(false);
-
+  const { isDarkMode } = useTheme();
   const handleClick = (e: React.MouseEvent) => {
     if (!showChart) {
       setShowChart(true);

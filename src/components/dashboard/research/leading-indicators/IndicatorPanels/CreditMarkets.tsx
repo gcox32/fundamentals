@@ -12,6 +12,7 @@ import {
     Tooltip,
     ResponsiveContainer,
 } from 'recharts';
+import { useTheme } from '@/src/contexts/ThemeContext';
 
 type CreditDataPoint = {
     date: string;
@@ -27,7 +28,7 @@ type CreditData = {
 
 export default function CreditMarkets({ data }: { data: CreditData }) {
     const [showChart, setShowChart] = useState(false);
-
+    const { isDarkMode } = useTheme();
     const handleClick = (e: React.MouseEvent) => {
         if (!showChart) {
             setShowChart(true);

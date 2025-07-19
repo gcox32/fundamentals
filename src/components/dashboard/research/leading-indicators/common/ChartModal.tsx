@@ -12,6 +12,7 @@ import {
 import Modal from '@/components/common/Modal';
 import styles from '@/components/common/Toggle/styles.module.css';
 import clsx from 'clsx';
+import { useTheme } from '@/src/contexts/ThemeContext';
 
 type Props = {
   title: string;
@@ -22,6 +23,8 @@ type Props = {
 };
 
 export default function ChartModal({ title, data, onClose, mode, onToggleMode }: Props) {
+  const { isDarkMode } = useTheme();
+  
   return (
     <Modal isOpen={true} onClose={onClose} title={title} maxWidth="800px">
       {mode && onToggleMode && (
@@ -44,11 +47,16 @@ export default function ChartModal({ title, data, onClose, mode, onToggleMode }:
         </div>
       )}
 
-      <div style={{ width: '100%', height: 400 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data}>
+      <div style={{ width: '100%', height: 550 }}>
+        <ResponsiveContainer>
+          <LineChart data={data} style={{ height: 'auto', width: 'auto', margin: '0 2rem 2rem 2rem'}}>
             <CartesianGrid horizontal={true} vertical={false} stroke={isDarkMode ? "#404040" : "#f0f0f0"} />
-            <XAxis dataKey="date" tickFormatter={(tick) => tick.slice(0, 7)} />
+            <XAxis 
+              dataKey="date" 
+              tickFormatter={(tick) => tick.slice(0, 7)} 
+              angle={-45}
+              textAnchor={"end"}
+            />
             <YAxis />
             <Tooltip
               formatter={(value: number) => `${value.toFixed(2)}%`}

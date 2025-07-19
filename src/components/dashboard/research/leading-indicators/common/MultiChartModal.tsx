@@ -11,6 +11,7 @@ import {
   ResponsiveContainer
 } from 'recharts';
 import { useState } from 'react';
+import { useTheme } from '@/src/contexts/ThemeContext';
 
 type DataPoint = { date: string; value: number };
 
@@ -25,7 +26,7 @@ type Props = {
 
 export default function MultiChartModal({ isOpen, onClose, charts }: Props) {
   const [activeTab, setActiveTab] = useState(0);
-
+  const { isDarkMode } = useTheme();
   const activeChart = charts[activeTab];
 
   return (
@@ -46,9 +47,9 @@ export default function MultiChartModal({ isOpen, onClose, charts }: Props) {
         ))}
       </div>
 
-      <div style={{ width: '100%', height: 400 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={activeChart.data}>
+      <div style={{ width: '100%', height: 550 }}>
+        <ResponsiveContainer >
+          <LineChart data={activeChart.data} style={{ margin: '0 2rem 2rem 2rem'}}>
             <CartesianGrid horizontal={true} vertical={false} stroke={isDarkMode ? "#404040" : "#f0f0f0"} />
             <XAxis dataKey="date" tickFormatter={(tick) => tick.slice(0, 7)} />
             <YAxis />

@@ -50,7 +50,7 @@ export default function FearGreedInfoPanel({ data }: FearGreedInfoPanelProps) {
               <div className={`font-semibold relative flex-shrink-0 ${styles.fearGreedInfoLabel}`}>{sentiment}</div>
             </div>
 
-            <div className="bg-[var(--background)] relative z-10 top-[10px] px-4">
+            <div className="bg-[var(--searchbar-bg)] relative z-10 top-[10px] px-4">
               <span
                 className={clsx(
                   "rounded-full px-2 py-2 text-sm font-semibold min-w-[36px] text-center flex-shrink-0",

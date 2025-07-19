@@ -7,7 +7,7 @@
   content: '';
   position: absolute;
   top: 50%;
-  width: 80%;
+  width: 75%;
   border-bottom: 1px dotted var(--info-panel-dotted-line);
   margin-left: 8px;
   z-index: 1;

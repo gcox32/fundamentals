@@ -250,7 +250,7 @@ export default function Revenue({
           </div>
         </div>
       )}
-      <ResponsiveContainer width="100%" height={isExpanded ? 750 : 300}>
+      <ResponsiveContainer width="100%" height={isExpanded ? 550 : 300}>
         <BarChart 
           data={chartData} 
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
