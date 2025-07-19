@@ -153,7 +153,7 @@ export default function BackTesting({ portfolioHistoricalPrices, weights }: Back
                         <div style={{ width: "100%", height: 400 }}>
                             <ResponsiveContainer>
                                 <LineChart data={chartData}>
-                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <CartesianGrid horizontal={true} vertical={false} stroke={isDarkMode ? "#404040" : "#f0f0f0"} />
                                     <XAxis
                                         dataKey="date"
                                         tickFormatter={(date) => new Date(date).toLocaleDateString()}

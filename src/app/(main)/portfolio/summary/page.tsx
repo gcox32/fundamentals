@@ -12,6 +12,7 @@ import Allocation from '@/src/components/dashboard/portfolio/allocation';
 import BackTesting from '@/src/components/dashboard/portfolio/performance/BackTesting';
 import { HistoricalPriceData } from '@/types/stock';
 import SelectPortfolio from '@/src/components/dashboard/portfolio/common/SelectPortfolio';
+import { CompanyEventDividends, CompanyEventEarnings } from '@/types/company';
 
 const client = generateClient<Schema>();
 
@@ -243,7 +244,7 @@ export default function AssessPortfolio() {
 						</div>
 
 						{activePortfolio && (
-							<div className="mt-8 space-y-12">
+							<div className="space-y-12 mt-8">
 								{/* Asset Allocation Section */}
 								{positionWeights && portfolioCompanyProfiles &&
 									<Allocation companyOutlooks={portfolioCompanies} weights={positionWeights.holdings} />

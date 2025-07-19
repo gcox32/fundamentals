@@ -47,7 +47,7 @@ export default function ChartModal({ title, data, onClose, mode, onToggleMode }:
       <div style={{ width: '100%', height: 400 }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
+            <CartesianGrid horizontal={true} vertical={false} stroke={isDarkMode ? "#404040" : "#f0f0f0"} />
             <XAxis dataKey="date" tickFormatter={(tick) => tick.slice(0, 7)} />
             <YAxis />
             <Tooltip

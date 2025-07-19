@@ -31,8 +31,8 @@ export default function MarketBasedIndicators({ data }: { data: YieldCurveData }
 
   if (!data) {
     return (
-      <section className="p-6 bg-[var(--card-bg)] rounded-lg shadow">
-        <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Market-Based Indicators</h2>
+      <section className="bg-[var(--card-bg)] shadow p-6 rounded-lg">
+        <h2 className="mb-4 font-bold text-[var(--text)] text-xl">Market-Based Indicators</h2>
         <p className="text-[var(--text-secondary)]">Loading...</p>
       </section>
     );
@@ -41,17 +41,17 @@ export default function MarketBasedIndicators({ data }: { data: YieldCurveData }
   return (
     <VisibilityWrapper componentId="market-based">
       <section
-        className="p-6 bg-[var(--card-bg)] rounded-lg shadow cursor-pointer hover:bg-[var(--background-hover)] transition"
+        className="bg-[var(--card-bg)] hover:bg-[var(--background-hover)] shadow p-6 rounded-lg transition cursor-pointer"
         onClick={handleClick}
       >
-        <h2 className="text-xl font-bold mb-4 text-[var(--text)]">Market-Based Indicators</h2>
-        <div className="grid grid-cols-2 gap-4">
+        <h2 className="mb-4 font-bold text-[var(--text)] text-xl">Market-Based Indicators</h2>
+        <div className="gap-4 grid grid-cols-2">
           <div>
-            <h3 className="text-sm font-semibold text-[var(--text-secondary)]">2Y / 10Y Spread</h3>
-            <p className="text-lg font-bold text-[var(--text)]">{data.latest.spread} bps</p>
+            <h3 className="font-semibold text-[var(--text-secondary)] text-sm">2Y / 10Y Spread</h3>
+            <p className="font-bold text-[var(--text)] text-lg">{data.latest.spread} bps</p>
           </div>
         </div>
-        <p className="text-sm text-[var(--text-secondary)] mt-2">{data.trend}</p>
+        <p className="mt-2 text-[var(--text-secondary)] text-sm">{data.trend}</p>
 
         {showChart && (
           <Modal
@@ -63,7 +63,7 @@ export default function MarketBasedIndicators({ data }: { data: YieldCurveData }
             <div style={{ width: '100%', height: 400 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={data.series}>
-                  <CartesianGrid strokeDasharray="3 3" />
+                  <CartesianGrid horizontal={true} vertical={false} stroke={isDarkMode ? "#404040" : "#f0f0f0"} />
                   <XAxis dataKey="date" tickFormatter={(d) => d.slice(0, 7)} />
                   <YAxis domain={['dataMin', 'dataMax']} />
                   <Tooltip />

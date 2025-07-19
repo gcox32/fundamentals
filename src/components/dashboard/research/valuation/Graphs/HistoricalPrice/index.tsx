@@ -15,6 +15,7 @@ import graphStyles from '@/components/dashboard/research/valuation/DashboardCard
 import { useChartContext } from '@/components/dashboard/research/valuation/DashboardCard/GraphicalCard/ChartContext';
 import { filterDataByTimeframe } from '@/src/lib/utilities/timeframeFilter';
 import { HistoricalIncomeStatement } from '@/src/types/financials';
+import { useTheme } from '@/src/contexts/ThemeContext';
 
 interface HistoricalPriceProps {
   historicalPrice?: HistoricalPriceData;
@@ -25,7 +26,7 @@ interface HistoricalPriceProps {
 export default function HistoricalPrice({ historicalPrice: data, incomeStatement, isLoading  }: HistoricalPriceProps) {
   const { isExpanded, timeframe } = useChartContext();
   const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
-
+  const { isDarkMode } = useTheme();
   const toggleSeries = (dataKey: string) => {
     setHiddenSeries(prev => {
       const newSet = new Set(prev);
@@ -45,8 +46,10 @@ export default function HistoricalPrice({ historicalPrice: data, incomeStatement
     const allData = [...data.historical].reverse();
     const filteredData = filterDataByTimeframe(allData, timeframe);
 
-    // Create a map of TTM EPS values by date
+    // Create a map of TTM EPS values by date and find the last available EPS for each date
     const ttmEpsMap = new Map<string, number>();
+    let lastAvailableEps: number | null = null;
+    
     if (incomeStatement?.data) {
       const quarterlyData = [...incomeStatement.data].reverse();
       
@@ -74,8 +77,13 @@ export default function HistoricalPrice({ historicalPrice: data, incomeStatement
         ? array.slice(index - 199, index + 1).reduce((sum, curr) => sum + curr.close, 0) / 200 
         : null;
 
-      const ttmEps = ttmEpsMap.get(item.date) || null;
-      const peRatio = ttmEps && ttmEps !== 0 ? item.close / ttmEps : null;
+      // Use the last available EPS for this date, or update if we have a new EPS value
+      const currentDateEps = ttmEpsMap.get(item.date);
+      if (currentDateEps !== undefined) {
+        lastAvailableEps = currentDateEps;
+      }
+      
+      const peRatio = lastAvailableEps && lastAvailableEps !== 0 ? item.close / lastAvailableEps : null;
       return {
         ...item,
         ma50,
@@ -91,9 +99,9 @@ export default function HistoricalPrice({ historicalPrice: data, incomeStatement
 
   return (
     <div className={graphStyles.chartContainer}>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={isExpanded ? 750 : 300}>
         <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid horizontal={true} vertical={false} stroke={isDarkMode ? "#404040" : "#f0f0f0"} />
           <XAxis 
             dataKey="date" 
             tickFormatter={(date) => new Date(date).toLocaleDateString()}
@@ -176,9 +184,9 @@ export default function HistoricalPrice({ historicalPrice: data, incomeStatement
               type="monotone"
               dataKey="peRatio"
               stroke="#FF5722"
-              // dot={false}
+              dot={false}
               yAxisId="pe"
-              name="P/E Ratio"
+              name="P/E (TTM)"
               hide={hiddenSeries.has('peRatio')}
               connectNulls={true}
             />

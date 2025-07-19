@@ -30,7 +30,7 @@ export default function MultiChartModal({ isOpen, onClose, charts }: Props) {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Inflation & Rates Trends" maxWidth="800px">
-      <div className="mb-4 flex border-b border-[var(--border-color)]">
+      <div className="flex mb-4 border-[var(--border-color)] border-b">
         {charts.map((chart, idx) => (
           <button
             key={chart.title}
@@ -49,7 +49,7 @@ export default function MultiChartModal({ isOpen, onClose, charts }: Props) {
       <div style={{ width: '100%', height: 400 }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={activeChart.data}>
-            <CartesianGrid strokeDasharray="3 3" />
+            <CartesianGrid horizontal={true} vertical={false} stroke={isDarkMode ? "#404040" : "#f0f0f0"} />
             <XAxis dataKey="date" tickFormatter={(tick) => tick.slice(0, 7)} />
             <YAxis />
             <Tooltip

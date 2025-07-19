@@ -90,3 +90,7 @@
 .dragHandle:active {
   cursor: grabbing;
 }
+
+.chartContainer {
+  margin: 0 2rem 2rem 2rem;
+}

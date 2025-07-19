@@ -16,6 +16,7 @@ import styles from '@/components/common/Toggle/styles.module.css';
 import { formatLargeNumber, getQuarterFromDate } from '@/src/lib/utilities/format';
 import { useChartContext } from '@/components/dashboard/research/valuation/DashboardCard/GraphicalCard/ChartContext';
 import { filterDataByTimeframe } from '@/src/lib/utilities/timeframeFilter';
+import { useTheme } from '@/src/contexts/ThemeContext';
 import clsx from 'clsx';
 
 type RevenueView = 'total' | 'segment' | 'region';
@@ -48,7 +49,7 @@ export default function Revenue({
   const { isExpanded, timeframe, isTTM } = useChartContext();
   const [selectedView, setSelectedView] = useState<RevenueView>('total');
   const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
-
+  const { isDarkMode } = useTheme();
   const toggleSeries = (dataKey: string) => {
     setHiddenSeries(prev => {
       const newSet = new Set(prev);
@@ -249,12 +250,12 @@ export default function Revenue({
           </div>
         </div>
       )}
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={isExpanded ? 750 : 300}>
         <BarChart 
           data={chartData} 
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid horizontal={true} vertical={false} stroke={isDarkMode ? "#404040" : "#f0f0f0"} />
           <XAxis 
             angle={isExpanded ? -45 : 0}
             textAnchor={isExpanded ? "end" : "middle"}
