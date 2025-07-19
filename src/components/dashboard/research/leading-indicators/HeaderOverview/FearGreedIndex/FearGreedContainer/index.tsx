@@ -15,7 +15,7 @@ export default function FearGreedContainer({ data }: FearGreedIndexData) {
                 </div>
             </div>
             <span className="text-sm text-gray-500 mx-14 mt-2 z-10">Last Updated: {new Date(data.lastUpdated as string).toLocaleString()}</span>
-            <div className="max-w-4xl mx-auto px-6 text-sm text-gray-700 leading-relaxed space-y-4">
+            <div className="max-w-4xl mx-auto px-6 text-sm leading-relaxed space-y-4">
                 <h3 className="text-base font-semibold">What is the CNN Business Fear &amp; Greed Index?</h3>
                 <p>
                     The Fear &amp; Greed Index is a way to gauge stock market movements and whether stocks are fairly priced.

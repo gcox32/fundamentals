@@ -99,7 +99,7 @@ export default function HistoricalPrice({ historicalPrice: data, incomeStatement
 
   return (
     <div className={graphStyles.chartContainer}>
-      <ResponsiveContainer width="100%" height={isExpanded ? 750 : 300}>
+      <ResponsiveContainer width="100%" height={isExpanded ? 550 : 300}>
         <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <CartesianGrid horizontal={true} vertical={false} stroke={isDarkMode ? "#404040" : "#f0f0f0"} />
           <XAxis 

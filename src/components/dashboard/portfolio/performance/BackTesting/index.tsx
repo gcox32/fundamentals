@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import { formatLargeNumber, formatPrice } from "@/src/lib/utilities/format";
 import { fetchValuationData } from "@/src/lib/valuation/fetchValuationData";
+import { useTheme } from "@/src/contexts/ThemeContext";
 
 interface BackTestingProps {
     portfolioHistoricalPrices: HistoricalPriceData[];
@@ -38,7 +39,8 @@ export default function BackTesting({ portfolioHistoricalPrices, weights }: Back
     const [qqqData, setQqqData] = useState<HistoricalPriceData | null>(null);
     const [showSpy, setShowSpy] = useState(true);
     const [showQqq, setShowQqq] = useState(true);
-
+    const { isDarkMode } = useTheme();
+    
     // Fetch benchmark data
     useMemo(() => {
         fetchValuationData(
