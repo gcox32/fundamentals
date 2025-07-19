@@ -16,6 +16,7 @@ import { formatLargeNumber } from '@/src/lib/utilities/format';
 import { useChartContext } from '@/components/dashboard/research/valuation/DashboardCard/GraphicalCard/ChartContext';
 import { filterDataByTimeframe } from '@/src/lib/utilities/timeframeFilter';
 import clsx from 'clsx';
+import { useTheme } from '@/src/contexts/ThemeContext';
 
 interface ExpensesProps {
   incomeStatement?: HistoricalIncomeStatement;
@@ -37,7 +38,7 @@ export default function Expenses({ incomeStatement: data, cashFlowStatement: cas
   const { isExpanded, timeframe, isTTM } = useChartContext();
   const [showBreakdown, setShowBreakdown] = useState(false);
   const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
-
+  const { isDarkMode } = useTheme();
   const toggleSeries = (dataKey: string) => {
     setHiddenSeries(prev => {
       const newSet = new Set(prev);
@@ -130,9 +131,9 @@ export default function Expenses({ incomeStatement: data, cashFlowStatement: cas
           </div>
         </div>
       )}
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={isExpanded ? 750 : 300}>
         <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid horizontal={true} vertical={false} stroke={isDarkMode ? "#404040" : "#f0f0f0"} />
           <XAxis 
             dataKey="label"
             interval="preserveStartEnd"

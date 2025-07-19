@@ -66,6 +66,7 @@ export default function PresentValueSection({
   onTerminalGrowthChange,
   onExitMultipleChange
 }: PresentValueSectionProps) {
+
   // Calculate FCFE inputs from financial statements
   const fcfeInputs = useMemo(() => {
     if (!incomeStatement?.data?.[0] || !cashFlowStatement?.data?.[0] || !balanceSheetStatement?.data?.[0]) {
@@ -345,7 +346,7 @@ export default function PresentValueSection({
             <h4>{operatingModel === 'FCFE' ? 'FCFE per Share' : 'EPS'} Projection</h4>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={projectedValues}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid horizontal={true} vertical={false} stroke={"#f0f0f0"} />
                 <XAxis dataKey="year" />
                 <YAxis
                   orientation="right"

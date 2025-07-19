@@ -14,6 +14,7 @@ import graphStyles from '@/components/dashboard/research/valuation/DashboardCard
 import { formatPercent } from '@/src/lib/utilities/format';
 import { useChartContext } from '@/components/dashboard/research/valuation/DashboardCard/GraphicalCard/ChartContext';
 import { filterDataByTimeframe } from '@/src/lib/utilities/timeframeFilter';
+import { useTheme } from '@/src/contexts/ThemeContext';
 
 interface MarginsProps {
   data?: HistoricalIncomeStatement;
@@ -23,7 +24,7 @@ interface MarginsProps {
 export default function Margins({ data, isLoading }: MarginsProps) {
   const { isExpanded, timeframe, isTTM } = useChartContext();
   const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
-
+  const { isDarkMode } = useTheme();
   const toggleSeries = (dataKey: string) => {
     setHiddenSeries(prev => {
       const newSet = new Set(prev);
@@ -90,9 +91,9 @@ export default function Margins({ data, isLoading }: MarginsProps) {
 
   return (
     <div className={graphStyles.chartContainer}>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={isExpanded ? 750 : 300}>
         <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid horizontal={true} vertical={false} stroke={isDarkMode ? "#404040" : "#f0f0f0"} />
           <XAxis 
             angle={isExpanded ? -45 : 0}
             textAnchor={isExpanded ? "end" : "middle"}
