@@ -146,120 +146,115 @@ export default function BackTesting({ portfolioHistoricalPrices, weights }: Back
     }, [portfolioHistoricalPrices, weights, selectedTimeframe, spyData, qqqData]);
 
     return (
-        <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>Historical Performance</h2>
-            <div className={styles.card}>
-                <div className={styles.grid}>
-                    <div className={styles.subsection}>
-                        <h3 className={styles.subsectionTitle}>{`Price Performance over ${selectedTimeframe} Timeframe`}</h3>
-                        <div style={{ width: "100%", height: 400 }}>
-                            <ResponsiveContainer>
-                                <LineChart data={chartData}>
-                                    <CartesianGrid horizontal={true} vertical={false} stroke={isDarkMode ? "#404040" : "#f0f0f0"} />
-                                    <XAxis
-                                        dataKey="date"
-                                        tickFormatter={(date) => new Date(date).toLocaleDateString()}
-                                        angle={-45}
-                                    />
-                                    <YAxis
-                                        tickFormatter={(value) => formatPrice(value)}
-                                        domain={["auto", "auto"]}
-                                    />
-                                    <Tooltip
-                                        formatter={(value: number, name: string) => {
-                                            const formattedValue = formatPrice(value);
-                                            const returnValue = ((value / 10000 - 1) * 100).toFixed(2);
-                                            return [`${formattedValue} (${returnValue}%)`, name];
-                                        }}
-                                        labelFormatter={(label) => new Date(label).toLocaleDateString()}
-                                    />
-                                    <Legend />
-                                    <Line
-                                        type="monotone"
-                                        dataKey="value"
-                                        name="Portfolio"
-                                        stroke="#2196F3"
-                                        strokeWidth={2}
-                                        dot={false}
-                                    />
-                                    {showSpy && (
-                                        <Line
-                                            type="monotone"
-                                            dataKey="spyValue"
-                                            name="S&P 500"
-                                            stroke="#4CAF50"
-                                            strokeWidth={2}
-                                            dot={false}
-                                        />
-                                    )}
-                                    {showQqq && (
-                                        <Line
-                                            type="monotone"
-                                            dataKey="qqqValue"
-                                            name="NASDAQ 100"
-                                            stroke="#FF9800"
-                                            strokeWidth={2}
-                                            dot={false}
-                                        />
-                                    )}
-                                </LineChart>
-                            </ResponsiveContainer>
+        <div className={styles.grid}>
+            <div className={styles.subsection}>
+                <h3 className={styles.subsectionTitle}>{`Price Performance over ${selectedTimeframe} Timeframe`}</h3>
+                <div style={{ width: "90%", height: 400, margin: "0 auto" }}>
+                    <ResponsiveContainer>
+                        <LineChart data={chartData}>
+                            <CartesianGrid horizontal={true} vertical={false} stroke={isDarkMode ? "#404040" : "#f0f0f0"} />
+                            <XAxis
+                                dataKey="date"
+                                tickFormatter={(date) => new Date(date).toLocaleDateString()}
+                                angle={-45}
+                            />
+                            <YAxis
+                                tickFormatter={(value) => formatPrice(value)}
+                                domain={["auto", "auto"]}
+                            />
+                            <Tooltip
+                                formatter={(value: number, name: string) => {
+                                    const formattedValue = formatPrice(value);
+                                    const returnValue = ((value / 10000 - 1) * 100).toFixed(2);
+                                    return [`${formattedValue} (${returnValue}%)`, name];
+                                }}
+                                labelFormatter={(label) => new Date(label).toLocaleDateString()}
+                            />
+                            <Legend />
+                            <Line
+                                type="monotone"
+                                dataKey="value"
+                                name="Portfolio"
+                                stroke="#2196F3"
+                                strokeWidth={2}
+                                dot={false}
+                            />
+                            {showSpy && (
+                                <Line
+                                    type="monotone"
+                                    dataKey="spyValue"
+                                    name="S&P 500"
+                                    stroke="#4CAF50"
+                                    strokeWidth={2}
+                                    dot={false}
+                                />
+                            )}
+                            {showQqq && (
+                                <Line
+                                    type="monotone"
+                                    dataKey="qqqValue"
+                                    name="NASDAQ 100"
+                                    stroke="#FF9800"
+                                    strokeWidth={2}
+                                    dot={false}
+                                />
+                            )}
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
+            <div className={styles.controlsSection}>
+                <div className={styles.controlGroup}>
+                    <h3 className={styles.subsectionTitle}>Configuration</h3>
+                    <div className={styles.timeframeSelector}>
+                        {timeframes.map((timeframe) => (
+                            <button
+                                key={timeframe.value}
+                                className={`${styles.timeframeButton} ${selectedTimeframe === timeframe.value ? styles.selected : ""}`}
+                                onClick={() => setSelectedTimeframe(timeframe.value)}
+                            >
+                                {timeframe.label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+                {chartData.length > 0 && (
+                    <div className={styles.metrics}>
+                        <h3 className={styles.subsectionTitle}>Results</h3>
+                        <div className={styles.metric}>
+                            <span>Initial Value:</span>
+                            <span>{formatPrice(10000)}</span>
+                        </div>
+                        <div className={styles.metric}>
+                            <span>Current Value:</span>
+                            <span>{formatPrice(chartData[chartData.length - 1].value)}</span>
+                        </div>
+                        <div className={styles.metric}>
+                            <span>Total Return:</span>
+                            <span className={chartData[chartData.length - 1].value >= 10000 ? styles.positive : styles.negative}>
+                                {formatLargeNumber(Number(((chartData[chartData.length - 1].value / 10000 - 1) * 100).toFixed(2)))}%
+                            </span>
                         </div>
                     </div>
-                    <div className={styles.controlsSection}>
-                        <div className={styles.controlGroup}>
-                            <h3 className={styles.subsectionTitle}>Configuration</h3>
-                            <div className={styles.timeframeSelector}>
-                                {timeframes.map((timeframe) => (
-                                    <button
-                                        key={timeframe.value}
-                                        className={`${styles.timeframeButton} ${selectedTimeframe === timeframe.value ? styles.selected : ""}`}
-                                        onClick={() => setSelectedTimeframe(timeframe.value)}
-                                    >
-                                        {timeframe.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                        {chartData.length > 0 && (
-                            <div className={styles.metrics}>
-                                <h3 className={styles.subsectionTitle}>Results</h3>
-                                <div className={styles.metric}>
-                                    <span>Initial Value:</span>
-                                    <span>{formatPrice(10000)}</span>
-                                </div>
-                                <div className={styles.metric}>
-                                    <span>Current Value:</span>
-                                    <span>{formatPrice(chartData[chartData.length - 1].value)}</span>
-                                </div>
-                                <div className={styles.metric}>
-                                    <span>Total Return:</span>
-                                    <span className={chartData[chartData.length - 1].value >= 10000 ? styles.positive : styles.negative}>
-                                        {formatLargeNumber(Number(((chartData[chartData.length - 1].value / 10000 - 1) * 100).toFixed(2)))}%
-                                    </span>
-                                </div>
-                            </div>
-                        )}
-                        <div className={styles.controlGroup}>
-                            <h3 className={styles.subsectionTitle}>Benchmarks</h3>
-                            <div className={styles.benchmarkSelector}>
-                                <button
-                                    className={`${styles.timeframeButton} ${showSpy ? styles.selected : ""}`}
-                                    onClick={() => setShowSpy(!showSpy)}
-                                >
-                                    S&P 500
-                                </button>
-                                <button
-                                    className={`${styles.timeframeButton} ${showQqq ? styles.selected : ""}`}
-                                    onClick={() => setShowQqq(!showQqq)}
-                                >
-                                    NASDAQ 100
-                                </button>
-                            </div>
-                        </div>
+                )}
+                <div className={styles.controlGroup}>
+                    <h3 className={styles.subsectionTitle}>Benchmarks</h3>
+                    <div className={styles.benchmarkSelector}>
+                        <button
+                            className={`${styles.timeframeButton} ${showSpy ? styles.selected : ""}`}
+                            onClick={() => setShowSpy(!showSpy)}
+                        >
+                            S&P 500
+                        </button>
+                        <button
+                            className={`${styles.timeframeButton} ${showQqq ? styles.selected : ""}`}
+                            onClick={() => setShowQqq(!showQqq)}
+                        >
+                            NASDAQ 100
+                        </button>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     );
 }

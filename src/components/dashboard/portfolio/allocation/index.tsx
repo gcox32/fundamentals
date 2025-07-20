@@ -14,10 +14,7 @@ export default function Allocation({ companyOutlooks, weights }: AllocationProps
     const companyProfiles = companyOutlooks.map(outlook => outlook.profile);
     return (
         <div className="space-y-4">
-            <div className="flex justify-between items-center mb-2">
-                <h2 className="text-lg font-bold">Allocation</h2>
-            </div>
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-wrap justify-center gap-4">
                 <SectorDistribution companyProfiles={companyProfiles} weights={weights} />
                 <StyleDistribution companyOutlooks={companyOutlooks} weights={weights} />
             </div>

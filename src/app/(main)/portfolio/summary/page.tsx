@@ -244,19 +244,29 @@ export default function AssessPortfolio() {
 						</div>
 
 						{activePortfolio && (
-							<div className="space-y-12 mt-8">
+							<div className="space-y-16 mt-8">
 								{/* Asset Allocation Section */}
-								{positionWeights && portfolioCompanyProfiles &&
-									<Allocation companyOutlooks={portfolioCompanies} weights={positionWeights.holdings} />
-								}
+								{positionWeights && portfolioCompanyProfiles && (
+									<section className={styles.section}>
+										<h2 className={styles.sectionTitle}>Asset Allocation</h2>
+										<div className={styles.card}>
+											<Allocation companyOutlooks={portfolioCompanies} weights={positionWeights.holdings} />
+										</div>
+									</section>
+								)}
 
 								{/* Historical Performance Section */}
-								{positionWeights && portfolioHistoricalPrices &&
-									<BackTesting 
-										portfolioHistoricalPrices={portfolioHistoricalPrices.map((price) => price.data)} 
-										weights={positionWeights.holdings.map((weight: any) => weight.weight)} 
-									/>
-								}
+								{positionWeights && portfolioHistoricalPrices && (
+									<section className={styles.section}>
+										<h2 className={styles.sectionTitle}>Historical Performance</h2>
+										<div className={styles.card}>
+											<BackTesting 
+												portfolioHistoricalPrices={portfolioHistoricalPrices.map((price) => price.data)} 
+												weights={positionWeights.holdings.map((weight: any) => weight.weight)} 
+											/>
+										</div>
+									</section>
+								)}
 
 								{/* Upcoming Events Section */}
 								<section className={styles.section}>
