@@ -6,7 +6,8 @@ import {
     fetchCFNAI, 
     fetchRate, 
     fetchSentiment, 
-    fetchRecessionProbability
+    fetchRecessionProbability,
+    fetch3MTBill
  } from "@/lib/fred";
 import { getSeriesId } from './config';
 
@@ -40,6 +41,9 @@ export async function GET(
                 break;
             case "CFNAI":
                 data = await fetchCFNAI();
+                break;
+            case "DGS3MO":
+                data = await fetch3MTBill();
                 break;
         }
         // Use seriesId in your API logic
