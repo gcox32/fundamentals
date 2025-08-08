@@ -10,6 +10,8 @@ import SuperAssessment from '@/src/components/dashboard/portfolio/super-assessme
 import { fetchValuationData } from '@/src/lib/valuation/fetchValuationData';
 import Allocation from '@/src/components/dashboard/portfolio/allocation';
 import BackTesting from '@/src/components/dashboard/portfolio/performance/BackTesting';
+import UpcomingEvents from '@/src/components/dashboard/portfolio/UpcomingEvents';
+import RiskAssessment from '@/src/components/dashboard/portfolio/risk-assessment';
 import { HistoricalPriceData } from '@/types/stock';
 import SelectPortfolio from '@/src/components/dashboard/portfolio/common/SelectPortfolio';
 import { CompanyEventDividends, CompanyEventEarnings } from '@/types/company';
@@ -268,39 +270,28 @@ export default function AssessPortfolio() {
 									</section>
 								)}
 
-								{/* Upcoming Events Section */}
-								<section className={styles.section}>
-									<h2 className={styles.sectionTitle}>Upcoming Events</h2>
-									<div className={styles.card}>
-										<div className={styles.grid}>
-											<div className={styles.subsection}>
-												<h3 className={styles.subsectionTitle}>Upcoming Dividends</h3>
-												<p className={styles.subsectionContent}>Dividends will be displayed here</p>
-											</div>
-											<div className={styles.subsection}>
-												<h3 className={styles.subsectionTitle}>Upcoming Earnings</h3>
-												<p className={styles.subsectionContent}>Earnings will be displayed here</p>
-											</div>
-										</div>
-									</div>
-								</section>
+                                {/* Upcoming Events Section */}
+                                {positions.length > 0 && (
+                                    <section className={styles.section}>
+                                        <h2 className={styles.sectionTitle}>Upcoming Events</h2>
+                                        <div className={styles.card}>
+                                            <UpcomingEvents symbols={positions.map(p => p.symbol)} />
+                                        </div>
+                                    </section>
+                                )}
 
-								{/* Risk Assessment Section */}
-								<section className={styles.section}>
-									<h2 className={styles.sectionTitle}>Risk Assessment</h2>
-									<div className={styles.card}>
-										<div className={styles.grid}>
-											<div className={styles.subsection}>
-												<h3 className={styles.subsectionTitle}>Risk Metrics</h3>
-												<p className={styles.subsectionContent}>Volatility and risk measures will be displayed here</p>
-											</div>
-											<div className={styles.subsection}>
-												<h3 className={styles.subsectionTitle}>Risk Analysis</h3>
-												<p className={styles.subsectionContent}>Detailed risk analysis and recommendations will be shown here</p>
-											</div>
-										</div>
-									</div>
-								</section>
+                                {/* Risk Assessment Section */}
+                                {positionWeights && portfolioHistoricalPrices && (
+                                    <section className={styles.section}>
+                                        <h2 className={styles.sectionTitle}>Risk Assessment</h2>
+                                        <div className={styles.card}>
+                                            <RiskAssessment
+                                                portfolioHistoricalPrices={portfolioHistoricalPrices.map((p) => p.data)}
+                                                weights={positionWeights.holdings.map((w: any) => w.weight)}
+                                            />
+                                        </div>
+                                    </section>
+                                )}
 
 								{/* Super Investor Section */}
 								{isWeightsCalculated ? (

@@ -1,4 +1,6 @@
 import { CompanyOutlook } from '@/types/company';
+import Tooltip from '@/components/common/Tooltip';
+import { FiInfo } from 'react-icons/fi';
 
 interface StyleDistributionProps {
     companyOutlooks: CompanyOutlook[];
@@ -48,57 +50,41 @@ export default function StyleDistribution({ companyOutlooks, weights }: StyleDis
         return 'LARGE';
     };
 
-    // Calculate style category based on multiple valuation metrics
+    // Calculate style category based on multiple valuation and growth/quality metrics
     const getStyleCategory = (companyOutlook: CompanyOutlook): StyleCategory => {
         const ratios = companyOutlook.ratios[0];
         if (!ratios) return 'BLEND'; // Default to blend if no ratios available
 
-        // Normalize each ratio to a 0-1 scale where 0 is most value-oriented and 1 is most growth-oriented
-        const getNormalizedScore = (value: number, min: number, max: number) => {
-            if (value <= min) return 0;
-            if (value >= max) return 1;
-            return (value - min) / (max - min);
+        // Normalize helpers: 0 -> value tilt, 1 -> growth tilt
+        const normalizeLowerBetter = (value: number, min: number, max: number) => {
+            const v = Math.max(min, Math.min(max, value));
+            return (v - min) / (max - min);
+        };
+        const normalizeHigherBetter = (value: number, min: number, max: number) => {
+            return 1 - normalizeLowerBetter(value, min, max);
         };
 
-        // Valuation metrics with their min/max thresholds
-        const metrics = [
-            {
-                value: ratios.peRatioTTM || 0,
-                min: 5,    // Very value-oriented
-                max: 50,   // Very growth-oriented
-                weight: 0.3
-            },
-            {
-                value: ratios.priceToBookRatioTTM || 0,
-                min: 0.5,  // Very value-oriented
-                max: 5,    // Very growth-oriented
-                weight: 0.2
-            },
-            {
-                value: ratios.priceToSalesRatioTTM || 0,
-                min: 0.5,  // Very value-oriented
-                max: 10,   // Very growth-oriented
-                weight: 0.15
-            },
-            {
-                value: ratios.priceToFreeCashFlowsRatioTTM || 0,
-                min: 5,    // Very value-oriented
-                max: 30,   // Very growth-oriented
-                weight: 0.15
-            },
-            {
-                value: ratios.priceEarningsToGrowthRatioTTM || 0,
-                min: 0.5,  // Very value-oriented
-                max: 2,    // Very growth-oriented
-                weight: 0.2
-            }
-        ];
+        // Candidate metrics (conditionally included if present)
+        const metricCandidates: Array<{ score: number; weight: number }> = [];
 
-        // Calculate weighted average score
-        const totalScore = metrics.reduce((acc, metric) => {
-            const normalizedScore = getNormalizedScore(metric.value, metric.min, metric.max);
-            return acc + (normalizedScore * metric.weight);
-        }, 0);
+        // Valuation (lower -> value)
+        if (ratios.peRatioTTM) metricCandidates.push({ score: normalizeLowerBetter(ratios.peRatioTTM, 5, 50), weight: 0.25 });
+        if (ratios.priceToBookRatioTTM) metricCandidates.push({ score: normalizeLowerBetter(ratios.priceToBookRatioTTM, 0.5, 5), weight: 0.15 });
+        if (ratios.priceToSalesRatioTTM) metricCandidates.push({ score: normalizeLowerBetter(ratios.priceToSalesRatioTTM, 0.5, 10), weight: 0.1 });
+        if (ratios.priceToFreeCashFlowsRatioTTM) metricCandidates.push({ score: normalizeLowerBetter(ratios.priceToFreeCashFlowsRatioTTM, 5, 30), weight: 0.15 });
+        if (ratios.priceEarningsToGrowthRatioTTM) metricCandidates.push({ score: normalizeLowerBetter(ratios.priceEarningsToGrowthRatioTTM, 0.5, 2), weight: 0.2 });
+
+        // Yield (higher -> value)
+        if (ratios.dividendYielPercentageTTM) metricCandidates.push({ score: normalizeHigherBetter(ratios.dividendYielPercentageTTM, 0, 8), weight: 0.05 });
+
+        // Profitability/Growth proxy (higher -> growth)
+        if (ratios.returnOnEquityTTM) metricCandidates.push({ score: normalizeLowerBetter(ratios.returnOnEquityTTM, 0, 30), weight: 0.1 });
+
+        if (metricCandidates.length === 0) return 'BLEND';
+
+        // Normalize weights among available metrics
+        const totalWeight = metricCandidates.reduce((sum, m) => sum + m.weight, 0);
+        const totalScore = metricCandidates.reduce((acc, m) => acc + m.score * (m.weight / totalWeight), 0);
 
         // Classify based on total score
         if (totalScore <= STYLE_THRESHOLDS.VALUE.score) {
@@ -147,18 +133,23 @@ export default function StyleDistribution({ companyOutlooks, weights }: StyleDis
 
     return (
         <div className="w-[40%] min-w-[440px]">
-            <h3 className="text-sm font-semibold text-[var(--text)] mb-2 text-center">Style Distribution</h3>
-            <div className="grid grid-cols-4 gap-0.5 mt-5 ml-[-120px]">
+            <h3 className="inline-flex items-center gap-2 mb-2 font-semibold text-[var(--text)] text-sm text-center">
+                Style Distribution
+                <Tooltip content={"Classification combines valuation (P/E, P/B, P/S, P/FCF, PEG), yield (Div%), and profitability (ROE). Metrics are normalized with caps and weighted; low scores tilt Value, high scores tilt Growth."}>
+                    <FiInfo />
+                </Tooltip>
+            </h3>
+            <div className="gap-0.5 grid grid-cols-4 mt-5 ml-[-120px]">
                 {/* Header row */}
                 <div className="col-span-1"></div>
-                <div className="text-center text-[var(--text)] text-xs font-medium">VALUE</div>
-                <div className="text-center text-[var(--text)] text-xs font-medium">BLEND</div>
-                <div className="text-center text-[var(--text)] text-xs font-medium">GROWTH</div>
+                <div className="font-medium text-[var(--text)] text-xs text-center">VALUE</div>
+                <div className="font-medium text-[var(--text)] text-xs text-center">BLEND</div>
+                <div className="font-medium text-[var(--text)] text-xs text-center">GROWTH</div>
 
                 {/* Data rows */}
                 {(['LARGE', 'MEDIUM', 'SMALL'] as MarketCapCategory[]).map((marketCap) => (
                     <div key={marketCap} className="contents">
-                        <div className="flex items-end justify-center mb-2 transform -rotate-90 text-[var(--text)] text-xs font-medium">
+                        <div className="flex justify-center items-end mb-2 font-medium text-[var(--text)] text-xs -rotate-90 transform">
                             {marketCap}
                         </div>
                         {(['VALUE', 'BLEND', 'GROWTH'] as StyleCategory[]).map((style) => {
@@ -166,7 +157,7 @@ export default function StyleDistribution({ companyOutlooks, weights }: StyleDis
                             return (
                                 <div
                                     key={`${marketCap}-${style}`}
-                                    className="relative group"
+                                    className="group relative"
                                 >
                                     <div
                                         className={`aspect-square rounded-sm transition-all duration-100 ${cell.value > 0 ? "hover:scale-105 cursor-default" : "cursor-default"}`}
@@ -175,13 +166,13 @@ export default function StyleDistribution({ companyOutlooks, weights }: StyleDis
                                             border: '1px solid var(--border-color)'
                                         }}
                                     >
-                                        <div className="absolute inset-0 flex items-center justify-center text-[var(--text)] text-xs font-medium">
+                                        <div className="absolute inset-0 flex justify-center items-center font-medium text-[var(--text)] text-xs">
                                             {cell.value > 0 ? `${(cell.value).toFixed(0)}%` : ''}
                                         </div>
                                     </div>
                                     {/* Tooltip */}
                                     {cell.companies.length > 0 && (
-                                        <div className="absolute z-10 hidden group-hover:block bg-[var(--card-bg)] border border-[var(--border-color)] rounded-md p-2 shadow-lg min-w-[150px]">
+                                        <div className="hidden group-hover:block z-10 absolute bg-[var(--card-bg)] shadow-lg p-2 border border-[var(--border-color)] rounded-md min-w-[150px]">
                                             <div className="text-[var(--text)] text-xs">
                                                 {cell.companies.map(company => (
                                                     <div key={company.symbol} className="flex justify-between">

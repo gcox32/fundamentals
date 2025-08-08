@@ -76,6 +76,25 @@ async function fetchRate() {
     };
 }
 
+async function fetch3MTBill() {
+    const series: FREDObservation[] = await fetchSeries("DGS3MO");
+    const clean = series
+        .filter(obs => obs.value !== '.')
+        .map(obs => ({ date: obs.date, value: parseFloat(obs.value) }))
+        .reverse();
+
+    const latest = clean.at(-1)!;
+    const prev = clean.at(-2)!;
+    const trend = latest.value > prev.value ? 'Rising' : latest.value < prev.value ? 'Falling' : 'Stable';
+
+    return {
+        latest,
+        trend,
+        series: clean,
+        source: 'FRED: DGS3MO'
+    };
+}
+
 async function fetchSentiment() {
     const series: FREDObservation[] = await fetchSeries("UMCSENT");
     const latest = parseFloat(series[0].value);
@@ -292,5 +311,6 @@ export {
     fetchCFNAI,
     fetchPPI,
     fetchCreditSpreads,
-    fetchYieldCurve
+    fetchYieldCurve,
+    fetch3MTBill
 };

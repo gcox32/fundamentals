@@ -5,7 +5,8 @@ export type seriesIdOptions =
     | "GDP"
     | "USREC"
     | "PCE"
-    | "CFNAI";
+    | "CFNAI"
+    | "DGS3MO";
 
 export async function getSeriesId(params: { series_id: string }): Promise<seriesIdOptions> {
     const { series_id } = params;
@@ -16,5 +17,5 @@ export async function getSeriesId(params: { series_id: string }): Promise<series
 }
 
 function isValidSeriesId(id: string): id is seriesIdOptions {
-    return ["CPI", "FEDFUNDS", "UMCSENT", "GDP", "USREC", "PCE", "CFNAI"].includes(id);
+    return ["CPI", "FEDFUNDS", "UMCSENT", "GDP", "USREC", "PCE", "CFNAI", "DGS3MO"].includes(id);
 } 

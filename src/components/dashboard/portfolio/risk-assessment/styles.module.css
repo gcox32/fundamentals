@@ -1,0 +1,133 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+}
+
+.button {
+  padding: 6px 10px;
+  border: 1px solid var(--border, rgba(148,163,184,0.12));
+  border-radius: 6px;
+  background: var(--card, #0b1220);
+  color: inherit;
+}
+
+.active {
+  outline: 2px solid #60a5fa;
+}
+
+.placeholder {
+  color: var(--muted-foreground, #6b7280);
+  padding: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.metricCard {
+  background: var(--card, #0b1220);
+  border: 1px solid var(--border, rgba(148,163,184,0.12));
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+.metricLabel {
+  font-size: 0.85rem;
+  color: var(--muted-foreground, #6b7280);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.metricValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.metricSub {
+  font-size: 0.75rem;
+  color: var(--muted-foreground, #6b7280);
+}
+
+.link {
+  color: #60a5fa;
+  text-decoration: underline;
+}
+
+.popover {
+  position: absolute;
+  bottom: 100%;
+  left: 92px;
+  margin-top: 6px;
+  background: var(--card, #0b1220);
+  border: 1px solid var(--border, rgba(148,163,184,0.12));
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 10;
+}
+
+.popItem {
+  text-align: left;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: inherit;
+}
+
+.popRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.popLabel {
+  font-size: 0.8rem;
+}
+
+.popInput {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid var(--border, rgba(148,163,184,0.12));
+  border-radius: 6px;
+  background: var(--background, #0b1220);
+  color: inherit;
+}
+
+.rfLabel {
+  margin-right: 6px;
+}
+
+.rfControl {
+  display: inline-block;
+  position: relative;
+}
+
+.infoIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--muted-foreground, #94a3b8);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+

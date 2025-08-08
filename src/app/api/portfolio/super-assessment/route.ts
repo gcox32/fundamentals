@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
         const principles = await getInvestorPrinciples(investor);
         const prompt = buildPrompt({ investor, holdings, principles });
         const text = await callOpenAI(prompt);
-
+        
         // 3. Store in Dynamo
         const generatedAt = new Date().toISOString();
         await putAssessment({ key, text, generatedAt });
