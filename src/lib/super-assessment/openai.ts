@@ -13,6 +13,6 @@ export async function callOpenAI(prompt: string): Promise<string> {
 	});
 
 	const json = await res.json();
-	console.log('json', json);
+
 	return json.choices?.[0]?.message?.content || 'No response';
 }

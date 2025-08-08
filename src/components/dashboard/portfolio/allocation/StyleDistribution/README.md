@@ -4,47 +4,33 @@ This component visualizes the distribution of stocks in a portfolio across diffe
 
 ## Style Classification Methodology
 
-The component uses a comprehensive multi-factor approach to classify stocks into Value, Blend, and Growth categories. The classification is based on a weighted combination of five key valuation metrics:
+The component uses a multi-factor approach to classify holdings into Value, Blend, and Growth, combining valuation, yield, and profitability signals. Metrics are normalized onto a common 0–1 scale and combined via weights, then mapped to Value/Blend/Growth using thresholds.
 
-### Valuation Metrics
+### Metrics and Weights
 
-1. **Price-to-Earnings (P/E) Ratio** (30% weight)
-   - Range: 5-50
-   - Lower values indicate more value-oriented stocks
-   - Higher values indicate more growth-oriented stocks
+- Valuation (lower values tilt Value):
+  - **P/E** (25%) — range cap: 5 to 50
+  - **P/B** (15%) — range cap: 0.5 to 5
+  - **P/S** (10%) — range cap: 0.5 to 10
+  - **P/FCF** (15%) — range cap: 5 to 30
+  - **PEG** (20%) — range cap: 0.5 to 2
+- Yield (higher values tilt Value):
+  - **Dividend Yield** (5%) — range cap: 0% to 8%
+- Profitability/Growth proxy (higher values tilt Growth):
+  - **Return on Equity (ROE)** (10%) — range cap: 0% to 30%
 
-2. **Price-to-Book (P/B) Ratio** (20% weight)
-   - Range: 0.5-5
-   - Lower values suggest value characteristics
-   - Higher values suggest growth characteristics
-
-3. **Price-to-Sales (P/S) Ratio** (15% weight)
-   - Range: 0.5-10
-   - Lower values indicate value stocks
-   - Higher values indicate growth stocks
-
-4. **Price-to-Free Cash Flow (P/FCF) Ratio** (15% weight)
-   - Range: 5-30
-   - Lower values suggest value characteristics
-   - Higher values suggest growth characteristics
-
-5. **Price/Earnings-to-Growth (PEG) Ratio** (20% weight)
-   - Range: 0.5-2
-   - Lower values indicate value stocks
-   - Higher values indicate growth stocks
+Notes:
+- Ranges are clamped to reduce outlier impact and stabilize normalization.
+- If one or more metrics are unavailable for a company, the available metrics are used and weights are re-normalized proportionally (so missing data doesn’t bias toward any style).
 
 ### Classification Process
 
-1. Each metric is normalized to a 0-1 scale where:
-   - 0 represents the most value-oriented end of the spectrum
-   - 1 represents the most growth-oriented end of the spectrum
-
-2. A weighted average score is calculated using the normalized values and their respective weights
-
-3. Final classification is based on the total score:
-   - Score ≤ 0.4: Value
-   - Score ≤ 0.7: Blend
-   - Score > 0.7: Growth
+1. Normalize each metric to 0–1, where 0 = Value-tilt and 1 = Growth-tilt. For “higher is better” toward Value (e.g., Dividend Yield), the scale is inverted appropriately.
+2. Compute a weighted average using the metric weights (re-normalized over available metrics).
+3. Map the score to style:
+   - Score ≤ 0.4 → Value
+   - Score ≤ 0.7 → Blend
+   - Score > 0.7 → Growth
 
 ## Market Capitalization Classification
 

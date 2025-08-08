@@ -50,6 +50,7 @@
   padding: 8px;
   display: flex;
   flex-direction: column;
+  transition: border-color 120ms ease, transform 120ms ease;
 }
 
 .today {
@@ -123,5 +124,11 @@
   color: #fcd34d;
   border: 1px solid rgba(245, 158, 11, 0.35);
 }
+
+.cell:hover {
+  border-color: rgba(148,163,184,0.35);
+}
+
+
 
 
