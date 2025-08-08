@@ -46,9 +46,9 @@ export default function SectorDistribution({ companyProfiles, weights }: SectorD
     }));
 
     return (
-        <div className="w-[50%] h-[400px] min-w-[600px]">
+        <div className="w-[50%] min-w-[600px] h-[400px]">
             <div className="flex justify-between items-center mb-2">
-                <h3 className="text-sm font-semibold text-[var(--text)] w-full text-center">Sector Distribution</h3>
+                <h3 className="w-full font-semibold text-[var(--text)] text-sm text-center">Sector Distribution</h3>
 
             </div>
             <ResponsiveContainer width="100%" height="100%">
@@ -71,15 +71,7 @@ export default function SectorDistribution({ companyProfiles, weights }: SectorD
                                 />
                             ))}
                         </Pie>
-                        <Tooltip
-                            formatter={(value: number) => `${(value * 100).toFixed(0)}%`}
-                            contentStyle={{
-                                backgroundColor: 'var(--card-bg)',
-                                border: '1px solid var(--border-color)',
-                                color: 'var(--text)',
-                                fontSize: '12px'
-                            }}
-                        />
+
                     </PieChart>
                 ) : (
                     <BarChart data={chartData}>
@@ -91,18 +83,10 @@ export default function SectorDistribution({ companyProfiles, weights }: SectorD
                             tick={{ fill: 'var(--text)', fontSize: 10 }}
                         />
                         <YAxis
-                            tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+                            tickFormatter={(value) => `${(value).toFixed(0)}%`}
                             tick={{ fill: 'var(--text)', fontSize: 10 }}
                         />
-                        <Tooltip
-                            formatter={(value: number) => `${(value * 100).toFixed(0)}%`}
-                            contentStyle={{
-                                backgroundColor: 'var(--card-bg)',
-                                border: '1px solid var(--border-color)',
-                                color: 'var(--text)',
-                                fontSize: '12px'
-                            }}
-                        />
+
                         <Bar dataKey="value">
                             {chartData.map((_, index) => (
                                 <Cell
@@ -114,7 +98,7 @@ export default function SectorDistribution({ companyProfiles, weights }: SectorD
                     </BarChart>
                 )}
             </ResponsiveContainer>
-            <div className={`${styles.toggleWrapper} w-[220px] my-[-3em] mx-auto`}>
+            <div className={`${styles.toggleWrapper} w-[220px] mt-[2em] mx-auto`}>
                 <button
                     onClick={() => setChartType('pie')}
                     className={clsx('flex', 'justify-center', 'items-center', 'w-3', 'h-6', styles.toggleButton, chartType === 'pie' ? styles.active : styles.inactive)}

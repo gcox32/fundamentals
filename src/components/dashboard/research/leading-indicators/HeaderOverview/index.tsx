@@ -4,13 +4,7 @@ import { useEffect, useState } from 'react';
 import EconomicStatus from "./EconomicStatus";
 import FearGreedIndex from "./FearGreedIndex";
 import RecessionProbability from "./RecessionProbability";
-
-type RecessionProb = {
-  value: string;
-  raw: number;
-  date: string;
-  source: string;
-};
+import { ParsedMarket } from '@/types/polymarket';
 
 type HeaderOverviewData = {
   economicStatus: {
@@ -20,7 +14,7 @@ type HeaderOverviewData = {
   fearGreed: {
     value: string;
   };
-  recessionProb: RecessionProb;
+  recessionMarket: ParsedMarket;
 };
 
 export default function HeaderOverview() {
@@ -34,20 +28,20 @@ export default function HeaderOverview() {
 
   if (!data) {
     return (
-      <section className="mb-8 p-6 bg-[var(--card-bg)] rounded-lg shadow">
-        <h2 className="text-2xl font-bold mb-4 text-[var(--text)]">Macroeconomic Overview</h2>
+      <section className="bg-[var(--card-bg)] shadow mb-8 p-6 rounded-lg">
+        <h2 className="mb-4 font-bold text-[var(--text)] text-2xl">Macroeconomic Overview</h2>
         <p className="text-[var(--text-secondary)]">Loading...</p>
       </section>
     );
   }
 
   return (
-    <section className="mb-8 p-6 bg-[var(--card-bg)] rounded-lg shadow">
-      <h2 className="text-2xl font-bold mb-4 text-[var(--text)]">Macroeconomic Overview</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <section className="bg-[var(--card-bg)] shadow mb-8 p-6 rounded-lg">
+      <h2 className="mb-4 font-bold text-[var(--text)] text-2xl">Macroeconomic Overview</h2>
+      <div className="gap-4 grid grid-cols-1 md:grid-cols-3">
         <EconomicStatus status={data.economicStatus} />
         <FearGreedIndex data={data.fearGreed} />
-        <RecessionProbability prob={data.recessionProb} />
+        <RecessionProbability parsedMarket={data.recessionMarket} />
       </div>
     </section>
   );
