@@ -14,6 +14,7 @@ import styles from './styles.module.css';
 import { fetchValuationData } from '@/src/lib/valuation/fetchValuationData';
 import { graphCards } from './graphConfig';
 import { SelectedCompany } from './types';
+import TabSelector, { TabItem } from '@/components/common/TabSelector';
 import DraggableCardGrid from '@/components/dashboard/research/valuation/DraggableCardGrid';
 import VisibilityWrapper from '@/components/dashboard/research/valuation/VisibilityWrapper';
 import AssetTypeSelector from '@/components/dashboard/research/valuation/AssetTypeSelector';
@@ -49,6 +50,11 @@ export default function Dashboard() {
     if (typeof window === 'undefined') return FLOURISHING_CARD_ORDER;
     return JSON.parse(localStorage.getItem('flourishingOrder') || JSON.stringify(FLOURISHING_CARD_ORDER));
   });
+
+  const tabs: TabItem<'fundamental' | 'flourishing'>[] = [
+    { key: 'fundamental', label: 'Fundamental' },
+    { key: 'flourishing', label: 'Flourishing' },
+  ];
 
   useEffect(() => {
     if (cardOrder !== DEFAULT_CARD_ORDER) {
@@ -214,22 +220,7 @@ export default function Dashboard() {
             onAssetTypeChange={setSelectedAssetType}
           />
         </div>
-        {selectedCompany && (
-          <div className={styles.tabsContainer}>
-            <button
-              className={`${styles.tabButton} ${activeTab === 'fundamental' ? styles.active : ''}`}
-              onClick={() => setActiveTab('fundamental')}
-            >
-              Fundamental
-            </button>
-            <button
-              className={`${styles.tabButton} ${activeTab === 'flourishing' ? styles.active : ''}`}
-              onClick={() => setActiveTab('flourishing')}
-            >
-              Flourishing
-            </button>
-          </div>
-        )}
+        <TabSelector tabs={tabs} activeKey={activeTab} onChange={setActiveTab} />
 
         {(selectedCompany || isLoading) && (
           <>

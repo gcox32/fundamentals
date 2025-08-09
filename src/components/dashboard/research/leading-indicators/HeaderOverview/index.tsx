@@ -19,7 +19,7 @@ type HeaderOverviewData = {
 
 export default function HeaderOverview() {
   const [data, setData] = useState<HeaderOverviewData | null>(null);
-
+  console.log(data);
   useEffect(() => {
     fetch('/api/research/composite/header-overview')
       .then(res => res.json())

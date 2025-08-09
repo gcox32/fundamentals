@@ -1,0 +1,74 @@
+.tabsContainer {
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+.tabButton {
+  padding: 1rem 1.25rem;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s ease;
+  position: relative;
+  text-transform: uppercase;
+}
+
+.tabButton:hover {
+  color: var(--text);
+}
+
+.tabButton::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--active-accent);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.tabButton.active {
+  color: var(--text);
+}
+
+.tabButton.active::after {
+  transform: scaleX(1);
+}
+
+.tabContent {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.tabContent.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.placeholderCard {
+  background: var(--card-bg);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+}
+
+.placeholderTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.placeholderText {
+  color: var(--text-secondary);
+}
+
+
