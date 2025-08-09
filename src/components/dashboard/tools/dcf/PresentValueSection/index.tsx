@@ -6,9 +6,8 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend
+  Tooltip as RechartsTooltip,
+  ResponsiveContainer
 } from 'recharts';
 import type {
   HistoricalIncomeStatement,
@@ -18,6 +17,10 @@ import type {
 import { calculateFCFEValuation, calculateEPSValuation } from '@/src/lib/valuation/valuations';
 import ModelSelector from './ModelSelector';
 import type { OperatingModel } from './types';
+import { dcfConfig } from '@/src/app/(main)/tools/dcf/config';
+import InfoTooltip from '@/components/common/Tooltip';
+import { FiInfo } from 'react-icons/fi';
+import { tooltipText } from '@/components/common/Tooltip/dictionary';
 
 interface PresentValueSectionProps {
   isLoading: boolean;
@@ -37,6 +40,10 @@ interface PresentValueSectionProps {
   onTerminalGrowthChange?: (growth: number) => void;
   exitMultiple?: number;
   onExitMultipleChange?: (multiple: number) => void;
+  fcfeGrowthRate?: number;
+  onFcfeGrowthRateChange?: (rate: number) => void;
+  epsGrowthRate?: number;
+  onEpsGrowthRateChange?: (rate: number) => void;
 }
 
 function formatLargeNumber(value: number | undefined | null) {
@@ -56,15 +63,19 @@ export default function PresentValueSection({
   balanceSheetStatement,
   sharesOutstanding = 0,
   forecastPeriod = 5,
-  discountRate = 7.79,
-  terminalGrowth = 0,
+  discountRate = dcfConfig.discountRate,
+  terminalGrowth = dcfConfig.terminalGrowth,
   operatingModel = 'FCFE',
-  exitMultiple = 15,
+  exitMultiple = dcfConfig.exitMultiple,
   onOperatingModelChange,
   onForecastPeriodChange,
   onDiscountRateChange,
   onTerminalGrowthChange,
-  onExitMultipleChange
+  onExitMultipleChange,
+  fcfeGrowthRate = dcfConfig.fcfeDefaultGrowthRate,
+  onFcfeGrowthRateChange,
+  epsGrowthRate = dcfConfig.epsDefaultGrowthRate,
+  onEpsGrowthRateChange
 }: PresentValueSectionProps) {
 
   // Calculate FCFE inputs from financial statements
@@ -90,12 +101,12 @@ export default function PresentValueSection({
       capEx: latestCashFlow.capitalExpenditure || 0,
       changeInNWC,
       netBorrowing: 0, // Default to 0, can be adjusted by user
-      growthRate: 0.1, // Default to 10%, can be adjusted by user
-      discountRate,
+      growthRate: fcfeGrowthRate,
+      discountRate: discountRate / 100,
       terminalGrowthRate: terminalGrowth,
       forecastPeriod
     };
-  }, [incomeStatement, cashFlowStatement, balanceSheetStatement, forecastPeriod, discountRate, terminalGrowth]);
+  }, [incomeStatement, cashFlowStatement, balanceSheetStatement, forecastPeriod, discountRate, terminalGrowth, fcfeGrowthRate]);
 
   // Calculate EPS inputs from financial statements
   const epsInputs = useMemo(() => {
@@ -108,12 +119,12 @@ export default function PresentValueSection({
 
     return {
       eps,
-      growthRate: 0.1, // Default to 10%, can be adjusted by user
-      discountRate,
+      growthRate: epsGrowthRate,
+      discountRate: discountRate / 100,
       forecastPeriod,
       exitMultiple
     };
-  }, [incomeStatement, sharesOutstanding, forecastPeriod, discountRate, exitMultiple]);
+  }, [incomeStatement, sharesOutstanding, forecastPeriod, discountRate, exitMultiple, epsGrowthRate]);
 
   // Calculate projected values for both models
   const projectedValues = useMemo(() => {
@@ -210,30 +221,60 @@ export default function PresentValueSection({
               {operatingModel === 'FCFE' ? (
                 <>
                   <div className={styles.inputRow}>
-                    <span className={styles.label}>Net Income</span>
+                    <label>
+                      Net Income
+                      <InfoTooltip content={tooltipText.dcf.netIncome}>
+                        <FiInfo className={styles.infoIcon} />
+                      </InfoTooltip>
+                    </label>
                     <span className={styles.value}>{formatLargeNumber(fcfeInputs?.netIncome)}</span>
                   </div>
                   <div className={styles.inputRow}>
-                    <span className={styles.label}>Depreciation</span>
+                    <label>
+                      Depreciation
+                      <InfoTooltip content={tooltipText.dcf.depreciation}>
+                        <FiInfo className={styles.infoIcon} />
+                      </InfoTooltip>
+                    </label>
                     <span className={styles.value}>{formatLargeNumber(fcfeInputs?.depreciation)}</span>
                   </div>
                   <div className={styles.inputRow}>
-                    <span className={styles.label}>Capital Expenditure</span>
+                    <label>
+                      Capital Expenditure
+                      <InfoTooltip content={tooltipText.dcf.capitalExpenditure}>
+                        <FiInfo className={styles.infoIcon} />
+                      </InfoTooltip>
+                    </label>
                     <span className={styles.value}>{formatLargeNumber(fcfeInputs?.capEx)}</span>
                   </div>
                   <div className={styles.inputRow}>
-                    <span className={styles.label}>Change in NWC</span>
+                    <label>
+                      Change in NWC
+                      <InfoTooltip content={tooltipText.dcf.changeInNwc}>
+                        <FiInfo className={styles.infoIcon} />
+                      </InfoTooltip>
+                    </label>
                     <span className={styles.value}>{formatLargeNumber(fcfeInputs?.changeInNWC)}</span>
                   </div>
                 </>
               ) : (
                 <>
                   <div className={styles.inputRow}>
-                    <span className={styles.label}>Current EPS</span>
+                    <label>
+                      Current EPS
+                      <InfoTooltip content={tooltipText.dcf.currentEps}>
+                        <FiInfo className={styles.infoIcon} />
+                      </InfoTooltip>
+                    </label>
                     <span className={styles.value}>{formatLargeNumber(epsInputs?.eps)}</span>
                   </div>
                   <div className={styles.inputRow}>
-                    <span className={styles.label}>Shares Outstanding</span>
+                    <label>
+                      Shares Outstanding
+                      <InfoTooltip content={tooltipText.dcf.sharesOutstanding}>
+                        <FiInfo className={styles.infoIcon} />
+                      </InfoTooltip>
+                    </label>
                     <span className={styles.value}>{formatLargeNumber(sharesOutstanding)}</span>
                   </div>
                 </>
@@ -244,7 +285,12 @@ export default function PresentValueSection({
               <h4>Adjustable Inputs</h4>
               <div className={styles.sliderGroup}>
                 <div className={styles.sliderControl}>
-                  <label>Forecast Period</label>
+                  <label>
+                    Forecast Period
+                    <InfoTooltip content={tooltipText.dcf.forecastPeriod}>
+                      <FiInfo className={styles.infoIcon} />
+                    </InfoTooltip>
+                  </label>
                   <div className={styles.inputGroup}>
                     <input
                       type="range"
@@ -266,7 +312,12 @@ export default function PresentValueSection({
                 </div>
 
                 <div className={styles.sliderControl}>
-                  <label>Discount Rate</label>
+                  <label>
+                    Discount Rate
+                    <InfoTooltip content={tooltipText.dcf.discountRate}>
+                      <FiInfo className={styles.infoIcon} />
+                    </InfoTooltip>
+                  </label>
                   <div className={styles.inputGroup}>
                     <input
                       type="range"
@@ -291,7 +342,72 @@ export default function PresentValueSection({
 
                 {operatingModel === 'FCFE' ? (
                   <div className={styles.sliderControl}>
-                    <label>Terminal Growth</label>
+                    <label>
+                      FCFE Growth Rate
+                      <InfoTooltip content={tooltipText.dcf.fcfeGrowthRate}>
+                        <FiInfo className={styles.infoIcon} />
+                      </InfoTooltip>
+                    </label>
+                    <div className={styles.inputGroup}>
+                      <input
+                        type="range"
+                        min="0"
+                        max="0.30"
+                        step="0.005"
+                        value={fcfeGrowthRate}
+                        onChange={(e) => onFcfeGrowthRateChange?.(Number(e.target.value))}
+                      />
+                      <input
+                        type="number"
+                        min="0"
+                        max="30"
+                        step="0.25"
+                        value={Number(fcfeGrowthRate * 100).toFixed(2)}
+                        onChange={(e) => onFcfeGrowthRateChange?.(Number(e.target.value) / 100)}
+                        className={styles.numberInput}
+                      />
+                      <span className={styles.unitLabel}>%</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={styles.sliderControl}>
+                    <label>
+                      EPS Growth Rate
+                      <InfoTooltip content={tooltipText.dcf.epsGrowthRate}>
+                        <FiInfo className={styles.infoIcon} />
+                      </InfoTooltip>
+                    </label>
+                    <div className={styles.inputGroup}>
+                      <input
+                        type="range"
+                        min="0"
+                        max="0.30"
+                        step="0.005"
+                        value={epsGrowthRate}
+                        onChange={(e) => onEpsGrowthRateChange?.(Number(e.target.value))}
+                      />
+                      <input
+                        type="number"
+                        min="0"
+                        max="30"
+                        step="0.25"
+                        value={Number(epsGrowthRate * 100).toFixed(2)}
+                        onChange={(e) => onEpsGrowthRateChange?.(Number(e.target.value) / 100)}
+                        className={styles.numberInput}
+                      />
+                      <span className={styles.unitLabel}>%</span>
+                    </div>
+                  </div>
+                )}
+
+                {operatingModel === 'FCFE' ? (
+                  <div className={styles.sliderControl}>
+                    <label>
+                      Terminal Growth
+                      <InfoTooltip content={tooltipText.dcf.terminalGrowth}>
+                        <FiInfo className={styles.infoIcon} />
+                      </InfoTooltip>
+                    </label>
                     <div className={styles.inputGroup}>
                       <input
                         type="range"
@@ -315,7 +431,12 @@ export default function PresentValueSection({
                   </div>
                 ) : (
                   <div className={styles.sliderControl}>
-                    <label>Exit Multiple</label>
+                    <label>
+                      Exit Multiple
+                      <InfoTooltip content={tooltipText.dcf.exitMultiple}>
+                        <FiInfo className={styles.infoIcon} />
+                      </InfoTooltip>
+                    </label>
                     <div className={styles.inputGroup}>
                       <input
                         type="range"
@@ -352,7 +473,7 @@ export default function PresentValueSection({
                   orientation="right"
                   tickFormatter={(value) => formatLargeNumber(value)}
                 />
-                <Tooltip
+                <RechartsTooltip
                   formatter={(value: number) => [`$${value.toFixed(2)}`, operatingModel === 'FCFE' ? 'FCFE per Share' : 'EPS']}
                 />
                 <Line

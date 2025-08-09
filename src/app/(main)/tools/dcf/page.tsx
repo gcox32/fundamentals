@@ -10,6 +10,8 @@ import DCFValueSection from '@/src/components/dashboard/tools/dcf/DCFValueSectio
 import PresentValueSection from '@/src/components/dashboard/tools/dcf/PresentValueSection';
 import FloatingDCFValue from '@/src/components/dashboard/tools/dcf/FloatingDCFValue';
 import { calculateGrowthRate, calculateValuations } from '@/components/dashboard/research/valuation/Overview/IntrinsicValueOverview/calculations';
+import { calculateEpsPerShare, calculateFcfePerShare } from '@/src/lib/valuation/dcfModels';
+import { computeBaselineGrowthRates, computeCapmDiscountPercent } from '@/src/lib/valuation/dcfAssumptions';
 import { dcfConfig } from './config';
 type CaseScenarioType = 'worst' | 'base' | 'best';
 
@@ -45,7 +47,9 @@ function DCFContent() {
     discountRate: dcfConfig.discountRate,
     terminalGrowth: dcfConfig.terminalGrowth,
     operatingModel: dcfConfig.operatingModel,
-    exitMultiple: dcfConfig.exitMultiple
+    exitMultiple: dcfConfig.exitMultiple,
+    fcfeGrowthRate: dcfConfig.fcfeDefaultGrowthRate,
+    epsGrowthRate: dcfConfig.epsDefaultGrowthRate
   });
 
   const fetchCompanyData = useCallback(() => {
@@ -135,10 +139,43 @@ function DCFContent() {
     };
 
     const quarterlyFcfValues = selectedCompany.cashFlowStatement.data.map(d => d.freeCashFlow || 0);
-    const baseFcfGrowthRate = calculateGrowthRate(quarterlyFcfValues);
-    const baseEarningsGrowthRate = calculateGrowthRate(
-      selectedCompany.incomeStatement.data.map(d => d.netIncome || 0)
-    );
+    const epsQuarters = selectedCompany.incomeStatement.data.map(d => d.epsdiluted || 0);
+
+    // Helper: compute TTM sum starting at index
+    const ttmSum = (arr: number[], start: number): number => {
+      let sum = 0;
+      for (let i = start; i < Math.min(start + 4, arr.length); i++) {
+        sum += arr[i] || 0;
+      }
+      // annualize if fewer than 4 quarters
+      const count = Math.min(4, arr.length - start);
+      return count < 4 ? (sum / Math.max(count, 1)) * 4 : sum;
+    };
+    const safeClamp = (val: number, min: number, max: number) => Math.max(min, Math.min(max, val));
+
+    // FCFE growth: use YoY TTM growth on FCF; fallback to sequential growth average
+    const latestFcfTTM = ttmSum(quarterlyFcfValues, 0);
+    const priorFcfTTM = ttmSum(quarterlyFcfValues, 4);
+    let baseFcfGrowthRate = 0;
+    if (priorFcfTTM > 0) {
+      baseFcfGrowthRate = (latestFcfTTM / priorFcfTTM) - 1;
+    } else {
+      baseFcfGrowthRate = calculateGrowthRate(quarterlyFcfValues);
+    }
+    baseFcfGrowthRate = safeClamp(baseFcfGrowthRate, dcfConfig.fcfGrowthClamp.min, dcfConfig.fcfGrowthClamp.max);
+
+    // EPS growth: use YoY TTM EPS growth
+    const latestEpsTTM = ttmSum(epsQuarters, 0);
+    const priorEpsTTM = ttmSum(epsQuarters, 4);
+    let baseEarningsGrowthRate = 0;
+    if (priorEpsTTM > 0) {
+      baseEarningsGrowthRate = (latestEpsTTM / priorEpsTTM) - 1;
+    } else {
+      baseEarningsGrowthRate = calculateGrowthRate(
+        selectedCompany.incomeStatement.data.map(d => d.netIncome || 0)
+      );
+    }
+    baseEarningsGrowthRate = safeClamp(baseEarningsGrowthRate, dcfConfig.epsGrowthClamp.min, dcfConfig.epsGrowthClamp.max);
 
     // Apply scenario adjustments to growth rates
     const getGrowthRateAdjustment = (scenario: CaseScenarioType) => {
@@ -160,7 +197,7 @@ function DCFContent() {
       ? latest.income.incomeTaxExpense / latest.income.incomeBeforeTax
       : dcfConfig.taxRate;
 
-    const beta = selectedCompany.profile?.beta
+    const costOfEquity = selectedCompany.profile?.beta !== undefined
       ? dcfConfig.riskFreeRate + (selectedCompany.profile.beta * dcfConfig.marketRiskPremium)
       : dcfConfig.riskFreeRate + dcfConfig.marketRiskPremium;
 
@@ -169,21 +206,29 @@ function DCFContent() {
         key: 'Free Cash Flow Growth Rate',
         value: `${(adjustedFcfGrowthRate * 100).toFixed(2)}%`,
         baseValue: baseFcfGrowthRate,
-        adjustment: growthRateAdjustment
+        adjustment: growthRateAdjustment,
+        isEditable: true,
+        onValueChange: (newValue: number) => {
+          setDcfParameters(prev => ({ ...prev, fcfeGrowthRate: newValue / 100 }));
+        }
       },
       {
         key: 'Earnings Growth Rate',
         value: `${(adjustedEarningsGrowthRate * 100).toFixed(2)}%`,
         baseValue: baseEarningsGrowthRate,
-        adjustment: growthRateAdjustment
+        adjustment: growthRateAdjustment,
+        isEditable: true,
+        onValueChange: (newValue: number) => {
+          setDcfParameters(prev => ({ ...prev, epsGrowthRate: newValue / 100 }));
+        }
       },
       {
         key: 'Tax Rate',
         value: `${(taxRate * 100).toFixed(2)}%`
       },
       {
-        key: 'Cost of Equity (Beta)',
-        value: `${(beta * 100).toFixed(2)}%`
+        key: 'Cost of Equity (CAPM)',
+        value: `${(costOfEquity * 100).toFixed(2)}%`
       },
       {
         key: 'Terminal Growth Rate',
@@ -232,38 +277,89 @@ function DCFContent() {
     ];
   }, [selectedCompany, caseScenarioType, dcfParameters]);
 
+  // Auto-set baseline discount rate from CAPM when beta available (only once per symbol load)
+  useEffect(() => {
+    const beta = selectedCompany?.outlook?.profile?.beta;
+    if (beta === undefined || beta === null) return;
+    const capm = computeCapmDiscountPercent(beta);
+    if (
+      Math.abs(dcfParameters.discountRate - capm) > dcfConfig.capmAutoApplyDeviationPct &&
+      (dcfParameters.discountRate === dcfConfig.discountRate || dcfParameters.discountRate === 0)
+    ) {
+      setDcfParameters(prev => ({ ...prev, discountRate: Number(capm.toFixed(2)) }));
+    }
+  }, [selectedCompany?.outlook?.profile?.beta]);
+
+  // Auto-set baseline growth rates from computed base if still at defaults
+  useEffect(() => {
+    if (!selectedCompany?.incomeStatement?.data?.[0] || !selectedCompany?.cashFlowStatement?.data?.[0]) return;
+    const { fcfeGrowth, epsGrowth } = computeBaselineGrowthRates(
+      selectedCompany.incomeStatement,
+      selectedCompany.cashFlowStatement
+    );
+    const updated: any = {};
+    if (dcfParameters.fcfeGrowthRate === dcfConfig.fcfeDefaultGrowthRate) {
+      updated.fcfeGrowthRate = fcfeGrowth;
+    }
+    if (dcfParameters.epsGrowthRate === dcfConfig.epsDefaultGrowthRate) {
+      updated.epsGrowthRate = epsGrowth;
+    }
+    if (Object.keys(updated).length) {
+      setDcfParameters(prev => ({ ...prev, ...updated }));
+    }
+  }, [selectedCompany?.incomeStatement?.data?.[0], selectedCompany?.cashFlowStatement?.data?.[0]]);
+
   const assumptions = useMemo<DCFAssumption[]>(() => {
     return calculateAssumptions();
   }, [selectedCompany, caseScenarioType, dcfParameters]);
 
   const dcfValue = useMemo(() => {
-    if (!selectedCompany?.incomeStatement?.data?.[0] ||
-      !selectedCompany?.cashFlowStatement?.data?.[0] ||
-      !selectedCompany?.balanceSheetStatement?.data?.[0] ||
-      !selectedCompany?.quote?.sharesOutstanding) {
+    if (!selectedCompany?.quote?.sharesOutstanding || !selectedCompany?.incomeStatement?.data?.[0]) {
       return 0;
     }
 
-    const baseValuations = calculateValuations(
+    const adjustment = caseScenarioType === 'worst' ? dcfConfig.worstCaseFactor : caseScenarioType === 'best' ? dcfConfig.bestCaseFactor : 1;
+
+    if (dcfParameters.operatingModel === 'EPS') {
+      const perShare = calculateEpsPerShare(
+        selectedCompany.incomeStatement,
+        selectedCompany.quote.sharesOutstanding,
+        {
+          epsGrowthRate: dcfParameters.epsGrowthRate,
+          discountRatePercent: dcfParameters.discountRate,
+          forecastPeriodYears: dcfParameters.forecastPeriod,
+          exitMultiple: dcfParameters.exitMultiple,
+        }
+      );
+      return perShare * adjustment;
+    }
+
+    if (!selectedCompany?.cashFlowStatement?.data?.[0] || !selectedCompany?.balanceSheetStatement?.data?.[0]) {
+      return 0;
+    }
+    // Compute FCFE-based DCF using user-selected growth assumptions (aligned with PresentValueSection)
+    const latestIncome = selectedCompany.incomeStatement.data[0];
+    const latestCF = selectedCompany.cashFlowStatement.data[0];
+    const latestBalance = selectedCompany.balanceSheetStatement.data[0];
+    const prevBalance = selectedCompany.balanceSheetStatement.data[1];
+    const changeInNWC = prevBalance
+      ? (latestBalance.totalCurrentAssets - latestBalance.totalCurrentLiabilities) -
+        (prevBalance.totalCurrentAssets - prevBalance.totalCurrentLiabilities)
+      : 0;
+
+    const perShare = calculateFcfePerShare(
       selectedCompany.incomeStatement,
       selectedCompany.cashFlowStatement,
       selectedCompany.balanceSheetStatement,
       selectedCompany.quote.sharesOutstanding,
-      selectedCompany.quote.price || 0,
-      selectedCompany.quote.marketCap || 0,
-      selectedCompany.outlook?.profile,
-      selectedCompany.outlook?.ratios,
-      dcfParameters.terminalGrowth,
-      dcfParameters.forecastPeriod,
-      dcfParameters.discountRate,
-      dcfParameters.exitMultiple
+      {
+        fcfeGrowthRate: dcfParameters.fcfeGrowthRate,
+        discountRatePercent: dcfParameters.discountRate,
+        forecastPeriodYears: dcfParameters.forecastPeriod,
+        terminalGrowth: dcfParameters.terminalGrowth,
+      }
     );
-
-    if (!baseValuations) return 0;
-
-    const adjustment = caseScenarioType === 'worst' ? dcfConfig.worstCaseFactor : caseScenarioType === 'best' ? dcfConfig.bestCaseFactor : 1;
-    const value = baseValuations.dcf.value * adjustment;
-    return value;
+    return perShare * adjustment;
   }, [selectedCompany, caseScenarioType, dcfParameters]);
 
   const undervaluedPercent = useMemo(() => {
@@ -319,6 +415,7 @@ function DCFContent() {
         isVisible={isFloatingValueVisible}
         assessment={undervaluedPercent > 0 ? 'UNDERVALUATION' : 'OVERVALUATION'}
         percentage={undervaluedPercent}
+        operatingModel={dcfParameters.operatingModel}
       />
 
       <div className={styles.header}>
@@ -354,6 +451,9 @@ function DCFContent() {
             discountRate={dcfParameters.discountRate}
             terminalGrowth={dcfParameters.terminalGrowth}
             exitMultiple={dcfParameters.exitMultiple}
+            operatingModel={dcfParameters.operatingModel}
+            fcfeGrowthRate={dcfParameters.fcfeGrowthRate}
+            epsGrowthRate={dcfParameters.epsGrowthRate}
           />
         </div>
       )}
@@ -370,6 +470,8 @@ function DCFContent() {
           terminalGrowth={dcfParameters.terminalGrowth}
           operatingModel={dcfParameters.operatingModel}
           exitMultiple={dcfParameters.exitMultiple}
+          fcfeGrowthRate={dcfParameters.fcfeGrowthRate}
+          epsGrowthRate={dcfParameters.epsGrowthRate}
           onOperatingModelChange={(model) => {
             setDcfParameters(prev => ({ ...prev, operatingModel: model }));
           }}
@@ -384,6 +486,12 @@ function DCFContent() {
           }}
           onExitMultipleChange={(multiple) => {
             setDcfParameters(prev => ({ ...prev, exitMultiple: multiple }));
+          }}
+          onFcfeGrowthRateChange={(rate) => {
+            setDcfParameters(prev => ({ ...prev, fcfeGrowthRate: rate }));
+          }}
+          onEpsGrowthRateChange={(rate) => {
+            setDcfParameters(prev => ({ ...prev, epsGrowthRate: rate }));
           }}
         />
       )}

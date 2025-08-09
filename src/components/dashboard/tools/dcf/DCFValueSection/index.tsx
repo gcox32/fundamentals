@@ -1,7 +1,10 @@
 import React, { useMemo, useCallback, useState } from 'react';
 import Image from 'next/image';
 import styles from './styles.module.css';
-import { calculateValuations, calculateGrowthRate } from '@/components/dashboard/research/valuation/Overview/IntrinsicValueOverview/calculations';
+import { calculateValuations } from '@/components/dashboard/research/valuation/Overview/IntrinsicValueOverview/calculations';
+import { calculateEpsPerShare, calculateFcfePerShare } from '@/src/lib/valuation/dcfModels';
+import type { OperatingModel } from '../PresentValueSection/types';
+import { dcfConfig } from '@/src/app/(main)/tools/dcf/config';
 import type { 
   HistoricalIncomeStatement, 
   HistoricalCashFlowStatement, 
@@ -35,6 +38,9 @@ interface DCFValueSectionProps {
   discountRate?: number;
   terminalGrowth?: number;
   exitMultiple?: number;
+  operatingModel?: OperatingModel;
+  fcfeGrowthRate?: number;
+  epsGrowthRate?: number;
 }
 
 function formatCurrency(value: number) {
@@ -74,61 +80,67 @@ export default function DCFValueSection({
   forecastPeriod,
   discountRate,
   terminalGrowth,
-  exitMultiple
+  exitMultiple,
+  operatingModel = 'FCFE',
+  fcfeGrowthRate = dcfConfig.fcfeDefaultGrowthRate,
+  epsGrowthRate = dcfConfig.epsDefaultGrowthRate
 }: DCFValueSectionProps) {
   const [isDCFAssumptionsModalOpen, setIsDCFAssumptionsModalOpen] = useState(false);
   const handleScenarioChange = useCallback((scenario: CaseScenario) => {
     onCaseScenarioChange(scenario);
   }, [onCaseScenarioChange]);
 
-  const valuations = useMemo(() => {
-    if (!incomeStatement || !cashFlowStatement || !balanceSheetStatement) {
-      return null;
+  const valueAndMargin = useMemo(() => {
+    if (!incomeStatement || !sharesOutstanding) return null;
+
+    let baseValue = 0;
+
+    if (operatingModel === 'EPS') {
+      baseValue = calculateEpsPerShare(incomeStatement, sharesOutstanding, {
+        epsGrowthRate,
+        discountRatePercent: discountRate,
+        forecastPeriodYears: forecastPeriod,
+        exitMultiple,
+      });
+    } else {
+      if (!cashFlowStatement || !balanceSheetStatement) return null;
+      baseValue = calculateFcfePerShare(
+        incomeStatement,
+        cashFlowStatement,
+        balanceSheetStatement,
+        sharesOutstanding,
+        {
+          fcfeGrowthRate,
+          discountRatePercent: discountRate,
+          forecastPeriodYears: forecastPeriod,
+          terminalGrowth,
+        }
+      );
     }
 
-    const baseValuations = calculateValuations(
-      incomeStatement,
-      cashFlowStatement,
-      balanceSheetStatement,
-      sharesOutstanding,
-      marketPrice,
-      marketCap,
-      profile,
-      ratios,
-      terminalGrowth || 0.02,
-      forecastPeriod || 5,
-      discountRate
-    );
-
-    if (!baseValuations) return null;
-
     const adjustment = getScenarioAdjustment(caseScenario);
-    return {
-      ...baseValuations,
-      dcf: {
-        value: baseValuations.dcf.value * adjustment,
-        margin: ((baseValuations.dcf.value * adjustment - marketPrice) / (baseValuations.dcf.value * adjustment)) * 100
-      }
-    };
+    const adjustedValue = baseValue * adjustment;
+    const margin = adjustedValue ? ((adjustedValue - marketPrice) / adjustedValue) * 100 : 0;
+    return { value: adjustedValue, margin };
   }, [
+    operatingModel,
     incomeStatement,
     cashFlowStatement,
     balanceSheetStatement,
     sharesOutstanding,
     marketPrice,
-    marketCap,
-    profile,
-    ratios,
     caseScenario,
     terminalGrowth,
     forecastPeriod,
     discountRate,
-    exitMultiple
+    exitMultiple,
+    fcfeGrowthRate,
+    epsGrowthRate
   ]);
 
-  const isLoadingState = isLoading || !valuations;
-  const dcfValue = valuations?.dcf.value || 0;
-  const undervaluedPercent = valuations?.dcf.margin || 0;
+  const isLoadingState = isLoading || !valueAndMargin;
+  const dcfValue = valueAndMargin?.value || 0;
+  const undervaluedPercent = valueAndMargin?.margin || 0;
   const isUndervalued = undervaluedPercent > 0;
 
   if (isLoadingState) {
