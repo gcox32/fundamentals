@@ -51,7 +51,7 @@ export default function FearGreedIndexCard({ data }: FearGreedIndexData) {
           )}
 
           <a 
-          href={`https://www.cnbc.com/markets/fear-and-greed/`} 
+          href={`https://www.cnn.com/markets/fear-and-greed/`} 
           target="_blank" 
           rel="noopener noreferrer" 
           className="inline-flex justify-end items-center gap-1 mt-2 w-full text-[var(--text-secondary)] hover:text-[var(--text)] text-xs"
