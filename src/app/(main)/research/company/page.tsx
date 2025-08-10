@@ -1,29 +1,29 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import StockSearchBar from "@/components/dashboard/research/valuation/StockSearchBar";
-import CompanyHeader from "@/components/dashboard/research/valuation/Overview/CompanyHeader";
-import TimeframeSelector from "@/components/dashboard/research/valuation/TimeframeSelector";
-import GraphicalCard from "@/src/components/dashboard/research/valuation/DashboardCard/GraphicalCard";
-import CompanyProfile from "@/src/components/dashboard/research/valuation/Overview/CompanyProfile";
-import CompanyEvents from "@/src/components/dashboard/research/valuation/Overview/CompanyEvents";
-import CompanyNews from "@/src/components/dashboard/research/valuation/Overview/CompanyNews";
-import CompanyMetricsOverview from "@/src/components/dashboard/research/valuation/Overview/CompanyMetricsOverview";
-import StockOverview from "@/src/components/dashboard/research/valuation/Overview/StockOverview";
+import StockSearchBar from "@/components/dashboard/research/company/StockSearchBar";
+import CompanyHeader from "@/components/dashboard/research/company/Overview/CompanyHeader";
+import TimeframeSelector from "@/components/dashboard/research/company/TimeframeSelector";
+import GraphicalCard from "@/src/components/dashboard/research/company/DashboardCard/GraphicalCard";
+import CompanyProfile from "@/src/components/dashboard/research/company/Overview/CompanyProfile";
+import CompanyEvents from "@/src/components/dashboard/research/company/Overview/CompanyEvents";
+import CompanyNews from "@/src/components/dashboard/research/company/Overview/CompanyNews";
+import CompanyMetricsOverview from "@/src/components/dashboard/research/company/Overview/CompanyMetricsOverview";
+import StockOverview from "@/src/components/dashboard/research/company/Overview/StockOverview";
 import styles from './styles.module.css';
 import { fetchValuationData } from '@/src/lib/valuation/fetchValuationData';
 import { graphCards } from './graphConfig';
 import { SelectedCompany } from './types';
 import TabSelector, { TabItem } from '@/components/common/TabSelector';
-import DraggableCardGrid from '@/components/dashboard/research/valuation/DraggableCardGrid';
-import VisibilityWrapper from '@/components/dashboard/research/valuation/VisibilityWrapper';
-import AssetTypeSelector from '@/components/dashboard/research/valuation/AssetTypeSelector';
-import EventideOverview from "@/src/components/dashboard/research/valuation/Flourishing/Eventide";
-import GlassdoorOverview from "@/src/components/dashboard/research/valuation/Flourishing/Glassdoor";
-import ComparablyOverview from "@/src/components/dashboard/research/valuation/Flourishing/Comparably";
-import SocialsOverview from "@/src/components/dashboard/research/valuation/Flourishing/Socials";
+import DraggableCardGrid from '@/components/dashboard/research/company/DraggableCardGrid';
+import VisibilityWrapper from '@/components/dashboard/research/company/VisibilityWrapper';
+import AssetTypeSelector from '@/components/dashboard/research/company/AssetTypeSelector';
+import EventideOverview from "@/src/components/dashboard/research/company/Flourishing/Eventide";
+import GlassdoorOverview from "@/src/components/dashboard/research/company/Flourishing/Glassdoor";
+import ComparablyOverview from "@/src/components/dashboard/research/company/Flourishing/Comparably";
+import SocialsOverview from "@/src/components/dashboard/research/company/Flourishing/Socials";
 import { useHiddenCards } from '@/contexts/HiddenCardsContext';
-import IntrinsicValueOverview from "@/src/components/dashboard/research/valuation/Overview/IntrinsicValueOverview";
+import IntrinsicValueOverview from "@/src/components/dashboard/research/company/Overview/IntrinsicValueOverview";
 
 const DEFAULT_CARD_ORDER = graphCards.map((card, index) => `graph-${index}`);
 

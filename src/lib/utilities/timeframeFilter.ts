@@ -1,4 +1,4 @@
-import { timeframes } from '@/components/dashboard/research/valuation/TimeframeSelector/config';
+import { timeframes } from '@/components/dashboard/research/company/TimeframeSelector/config';
 
 export function filterDataByTimeframe<T extends { date: string }>(
   data: T[],

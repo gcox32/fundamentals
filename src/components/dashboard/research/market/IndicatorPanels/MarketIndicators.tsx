@@ -1,6 +1,6 @@
 'use client';
 
-import VisibilityWrapper from "../../valuation/VisibilityWrapper";
+import VisibilityWrapper from "../../company/VisibilityWrapper";
 import Modal from "@/src/components/common/Modal";
 import {
   ResponsiveContainer,
@@ -11,7 +11,7 @@ import {
   YAxis,
   Tooltip,
 } from 'recharts';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTheme } from '@/src/contexts/ThemeContext';
 
 type DataPoint = { date: string; spread: number };

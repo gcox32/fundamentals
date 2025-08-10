@@ -1,7 +1,7 @@
 'use client';
 
-import VisibilityWrapper from "@/src/components/dashboard/research/valuation/VisibilityWrapper";
-import { useEffect, useState } from 'react';
+import VisibilityWrapper from "@/src/components/dashboard/research/company/VisibilityWrapper";
+import { useState } from 'react';
 import MultiChartModal from "../common/MultiChartModal";
 
 type DataPoint = { date: string; value: number };

@@ -10,7 +10,7 @@ import {
     Margins,
     ROIC,
     CapitalStructure
-  } from "@/components/dashboard/research/valuation/Graphs";
+  } from "@/components/dashboard/research/company/Graphs";
 
 export const graphCards = [
   {

@@ -1,6 +1,6 @@
-import VisibilityWrapper from "../../valuation/VisibilityWrapper";
+import VisibilityWrapper from "../../company/VisibilityWrapper";
 import ChartModal from "@/src/components/dashboard/research/market/common/ChartModal";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type DataPoint = { date: string; value: number };
 type PCEData = {
