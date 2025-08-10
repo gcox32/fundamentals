@@ -1,7 +1,7 @@
 'use client';
 
-import VisibilityWrapper from "../../valuation/VisibilityWrapper";
-import { useEffect, useState } from 'react';
+import VisibilityWrapper from "../../company/VisibilityWrapper";
+import { useState } from 'react';
 import Modal from "@/src/components/common/Modal";
 import {
     LineChart,

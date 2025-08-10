@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback, useState } from 'react';
 import Image from 'next/image';
 import styles from './styles.module.css';
-import { calculateValuations } from '@/components/dashboard/research/valuation/Overview/IntrinsicValueOverview/calculations';
+import { calculateValuations } from '@/components/dashboard/research/company/Overview/IntrinsicValueOverview/calculations';
 import { calculateEpsPerShare, calculateFcfePerShare } from '@/src/lib/valuation/dcfModels';
 import type { OperatingModel } from '../PresentValueSection/types';
 import { dcfConfig } from '@/src/app/(main)/tools/dcf/config';

@@ -3,13 +3,13 @@
 import { useState, useEffect, Suspense, useRef, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import styles from './styles.module.css';
-import StockSearchBar from '@/components/dashboard/research/valuation/StockSearchBar';
+import StockSearchBar from '@/components/dashboard/research/company/StockSearchBar';
 import { fetchValuationData } from '@/src/lib/valuation/fetchValuationData';
 import { SelectedCompany } from '@/src/app/(main)/research/company/types';
 import DCFValueSection from '@/src/components/dashboard/tools/dcf/DCFValueSection';
 import PresentValueSection from '@/src/components/dashboard/tools/dcf/PresentValueSection';
 import FloatingDCFValue from '@/src/components/dashboard/tools/dcf/FloatingDCFValue';
-import { calculateGrowthRate, calculateValuations } from '@/components/dashboard/research/valuation/Overview/IntrinsicValueOverview/calculations';
+import { calculateGrowthRate, calculateValuations } from '@/components/dashboard/research/company/Overview/IntrinsicValueOverview/calculations';
 import { calculateEpsPerShare, calculateFcfePerShare } from '@/src/lib/valuation/dcfModels';
 import { computeBaselineGrowthRates, computeCapmDiscountPercent } from '@/src/lib/valuation/dcfAssumptions';
 import { dcfConfig } from './config';
