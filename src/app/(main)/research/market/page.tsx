@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import HeaderOverview from "@/src/components/dashboard/research/leading-indicators/HeaderOverview";
+import HeaderOverview from "@/src/components/dashboard/research/market/HeaderOverview";
 import ValuationView from "@/components/dashboard/research/market/ValuationView";
 import LeadingIndicatorsView from "@/components/dashboard/research/market/LeadingIndicatorsView";
 import SentimentView from "@/components/dashboard/research/market/SentimentView";

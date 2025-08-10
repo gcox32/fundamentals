@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ChartModal from '@/components/dashboard/research/leading-indicators/common/ChartModal';
+import ChartModal from '@/components/dashboard/research/market/common/ChartModal';
 
 type Props = {
     trend: string;
