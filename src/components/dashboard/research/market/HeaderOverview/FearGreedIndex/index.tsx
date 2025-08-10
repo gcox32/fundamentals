@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import FearGreedModal from './FearGreedModal';
+import { FiExternalLink } from 'react-icons/fi';
 
 export interface FearGreedIndexData {
   data: {
@@ -31,17 +32,33 @@ export default function FearGreedIndexCard({ data }: FearGreedIndexData) {
         onClick={() => setShowModal(true)}
         className="p-4 border rounded-lg border-[var(--border-color)] bg-[var(--background)] shadow cursor-pointer hover:bg-[var(--background-hover)] transition"
       >
-        <h3 className="font-semibold text-[var(--text-secondary)]">Fear-Greed Index</h3>
-        <p className={`text-2xl font-bold ${color}`}>{data.value}</p>
-        <div className="text-xs text-[var(--text-secondary)] mt-1 space-y-1">
+        <h3 className="mb-1 font-semibold text-[var(--text-secondary)]">Fear-Greed Index</h3>
+
+        <p className={`text-3xl font-bold ${color}`}>{data.value}</p>
+
+        <div className="mt-1 text-[var(--text-secondary)] text-xs">
+
           {data.previous && (
-            <p>
+            <p className="mt-1 text-[var(--text-secondary)] text-xs">
               Prev Close: {data.previous.value} ({data.previous.valueText})
             </p>
           )}
+
           {data.lastUpdated && (
-            <p>Updated: {new Date(data.lastUpdated).toLocaleDateString()}</p>
+            <p className="mt-1 text-[var(--text-secondary)] text-xs">
+              Updated: {new Date(data.lastUpdated).toLocaleDateString()}
+            </p>
           )}
+
+          <a 
+          href={`https://www.cnn.com/markets/fear-and-greed/`} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="inline-flex justify-end items-center gap-1 mt-2 w-full text-[var(--text-secondary)] hover:text-[var(--text)] text-xs"
+          >
+            View on CNN
+            <FiExternalLink className="w-3 h-3" />
+          </a>
         </div>
       </div>
 

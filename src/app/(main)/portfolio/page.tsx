@@ -10,6 +10,7 @@ import styles from './styles.module.css';
 import Modal from '@/components/common/Modal';
 import type { Portfolio } from '@/types/portfolio';
 import SelectPortfolio from '@/src/components/dashboard/portfolio/common/SelectPortfolio';
+import PortfolioLoadingSkeleton from '@/components/dashboard/portfolio/LoadingSkeleton';
 
 const client = generateClient<Schema>();
 
@@ -91,7 +92,7 @@ export default function Portfolio() {
 	};
 
 	if (isUserLoading || isLoading) {
-		return <div className={styles.loading}>Loading...</div>;
+    return <PortfolioLoadingSkeleton />;
 	}
 
 	if (userError || error) {

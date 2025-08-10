@@ -23,7 +23,7 @@ export default function CompanyNews({ isLoading: parentLoading, symbol }: Compan
             
             setIsLoading(true);
             try {
-                const response = await fetch(`/api/market/news?symbol=${symbol}`);
+                const response = await fetch(`/api/research/valuation/market/news?symbol=${symbol}`);
                 if (!response.ok) throw new Error('Failed to fetch news');
                 const data = await response.json();
                 setNews(data);

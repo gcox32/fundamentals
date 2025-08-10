@@ -2,6 +2,7 @@ import { ParsedMarket } from "@/types/polymarket";
 import { FiExternalLink } from "react-icons/fi";
 
 export default function RecessionProbability({ parsedMarket }: { parsedMarket: ParsedMarket }) {
+    console.log(parsedMarket);
     const prob = parsedMarket.yesPrice * 100;
     const riskLevel =
         prob > 40 ? 'text-red-600'

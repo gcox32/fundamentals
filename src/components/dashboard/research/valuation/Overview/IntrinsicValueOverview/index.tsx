@@ -10,7 +10,9 @@ import { formatPrice, formatPercent, formatLargeNumber } from '@/src/lib/utiliti
 import { FiInfo, FiExternalLink } from 'react-icons/fi';
 import Tooltip from '@/components/common/Tooltip';
 import { valuationTooltips } from './tooltips';
-import { calculateValuations } from './calculations';
+import { calculateEpsPerShare, calculateFcfePerShare } from '@/src/lib/valuation/dcfModels';
+import { computeBaselineGrowthRates, computeCapmDiscountPercent } from '@/src/lib/valuation/dcfAssumptions';
+import { dcfConfig } from '@/src/app/(main)/tools/dcf/config';
 import { CompanyProfile, CompanyRatios } from '@/types/company';
 
 interface IntrinsicValueOverviewProps {
@@ -64,19 +66,43 @@ export default function IntrinsicValueOverview({
   const latestEPS = incomeStatement?.data?.[0]?.eps || 0;
 
 
-  const valuations = calculateValuations(
-    incomeStatement, 
-    cashFlowStatement, 
-    balanceSheetStatement, 
-    sharesOutstanding, 
-    currentPrice, 
-    marketCap, 
-    profile, 
-    ratios,
-    0.02,
-    5,
-    7.79
-  );
+  // FCFE-Based DCF and EPS Growth DCF using the same starting assumptions as the DCF tool
+  let fcfeDcfValue = 0;
+  let fcfeDcfMargin = 0;
+  let epsDcfValue = 0;
+  let epsDcfMargin = 0;
+  if (incomeStatement?.data?.[0] && cashFlowStatement?.data?.[0] && balanceSheetStatement?.data?.[0] && sharesOutstanding) {
+    const { fcfeGrowth, epsGrowth } = computeBaselineGrowthRates(incomeStatement, cashFlowStatement);
+    const discountRate = computeCapmDiscountPercent(profile?.beta ?? null);
+
+    // FCFE model (use shared defaults + baseline growth and CAPM when available)
+    fcfeDcfValue = calculateFcfePerShare(
+      incomeStatement,
+      cashFlowStatement,
+      balanceSheetStatement,
+      sharesOutstanding,
+      {
+        fcfeGrowthRate: fcfeGrowth,
+        discountRatePercent: discountRate,
+        forecastPeriodYears: dcfConfig.forecastPeriod,
+        terminalGrowth: dcfConfig.terminalGrowth,
+      }
+    );
+    if (fcfeDcfValue) fcfeDcfMargin = ((fcfeDcfValue - (currentPrice || 0)) / fcfeDcfValue) * 100;
+
+    // EPS model
+    epsDcfValue = calculateEpsPerShare(
+      incomeStatement,
+      sharesOutstanding,
+      {
+        epsGrowthRate: epsGrowth,
+        discountRatePercent: discountRate,
+        forecastPeriodYears: dcfConfig.forecastPeriod,
+        exitMultiple: dcfConfig.exitMultiple,
+      }
+    );
+    if (epsDcfValue) epsDcfMargin = ((epsDcfValue - (currentPrice || 0)) / epsDcfValue) * 100;
+  }
 
   return (
     <OverviewCard title="Intrinsic Value Analysis" isLoading={isLoading}>
@@ -103,24 +129,24 @@ export default function IntrinsicValueOverview({
               />
             </div>
 
-            {/* Valuation Metrics - Each in its own section */}
+            {/* Valuation Metrics */}
             <div className={styles.metricSection}>
-              <h4 className={styles.sectionTitle}>DCF Valuation</h4>
+              <h4 className={styles.sectionTitle}>FCFE-Based DCF</h4>
               <MetricRow
-                label="DCF Value"
-                value={formatPrice(valuations?.dcf.value)}
-                margin={formatPercent(valuations?.dcf.margin)}
-                tooltipKey="dcfValue"
+                label="Fair Value"
+                value={formatPrice(fcfeDcfValue)}
+                margin={formatPercent(fcfeDcfMargin)}
+                tooltipKey="fcfeDcfValue"
               />
             </div>
 
             <div className={styles.metricSection}>
-              <h4 className={styles.sectionTitle}>Earnings-Based</h4>
+              <h4 className={styles.sectionTitle}>EPS Growth DCF</h4>
               <MetricRow
                 label="Fair Value"
-                value={formatPrice(valuations?.earnings.value)}
-                margin={formatPercent(valuations?.earnings.margin)}
-                tooltipKey="earningsValue"
+                value={formatPrice(epsDcfValue)}
+                margin={formatPercent(epsDcfMargin)}
+                tooltipKey="epsDcfValue"
               />
             </div>
           </div>

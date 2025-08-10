@@ -15,6 +15,8 @@ import RiskAssessment from '@/src/components/dashboard/portfolio/risk-assessment
 import { HistoricalPriceData } from '@/types/stock';
 import SelectPortfolio from '@/src/components/dashboard/portfolio/common/SelectPortfolio';
 import { CompanyEventDividends, CompanyEventEarnings } from '@/types/company';
+import LoadingSkeleton from '@/components/dashboard/portfolio/summary/LoadingSkeleton';
+import CalculatingWeightsSkeleton from '@/components/dashboard/portfolio/summary/CalculatingWeightsSkeleton';
 
 const client = generateClient<Schema>();
 
@@ -229,9 +231,9 @@ export default function AssessPortfolio() {
 			<div className="mb-8">
 				<h1 className={styles.sectionTitle}>Portfolio Assessment</h1>
 
-				{isLoading ? (
-					<div className={styles.subsectionContent}>Loading portfolios...</div>
-				) : error ? (
+                {isLoading ? (
+                    <LoadingSkeleton />
+                ) : error ? (
 					<div className="text-red-600 dark:text-red-400">{error}</div>
 				) : (
 					<div className="space-y-4">
@@ -294,11 +296,11 @@ export default function AssessPortfolio() {
                                 )}
 
 								{/* Super Investor Section */}
-								{isWeightsCalculated ? (
-									<SuperAssessment positionWeights={positionWeights} />
-								) : (
-									<div className={styles.subsectionContent}>Calculating position weights...</div>
-								)}
+                                {isWeightsCalculated ? (
+                                    <SuperAssessment positionWeights={positionWeights} />
+                                ) : (
+                                    <CalculatingWeightsSkeleton />
+                                )}
 							</div>
 						)}
 					</div>

@@ -8,6 +8,7 @@ interface FloatingDCFValueProps {
   isVisible: boolean;
   assessment: 'OVERVALUATION' | 'UNDERVALUATION';
   percentage: number;
+  operatingModel?: 'FCFE' | 'EPS';
 }
 
 export default function FloatingDCFValue({
@@ -16,7 +17,8 @@ export default function FloatingDCFValue({
   setCaseScenario,
   isVisible,
   assessment,
-  percentage
+  percentage,
+  operatingModel = 'FCFE'
 }: FloatingDCFValueProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -37,6 +39,9 @@ export default function FloatingDCFValue({
         <div className={`${styles.details} ${isExpanded ? styles.expanded : ''}`}>
           <div className={`${styles.assessment} ${assessment === 'OVERVALUATION' ? styles.overvalued : styles.undervalued}`}>
             {assessment} {Math.abs(percentage).toFixed(2)}%
+          </div>
+          <div className={styles.meta}>
+            Model: <strong>{operatingModel}</strong>
           </div>
           <div className={styles.scenarios}>
             <button
