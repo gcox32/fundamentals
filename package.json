@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "fetch:econ": "tsx scripts/fetchEconomicCalendar.ts",
+    "fetch:econ:2025": "tsx scripts/fetchEconomicCalendar.ts --from 2025-01-01 --to 2025-12-31"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.709.0",

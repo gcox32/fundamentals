@@ -24,7 +24,7 @@ if (!process.env.ACCESS_KEY_ID || !process.env.SECRET_ACCESS_KEY || !process.env
   });
 }
 
-const DB_PATH = path.join(process.cwd(), 'database', 'nyse.db');
+const DB_PATH = path.join(process.cwd(), 'database', 'data.db');
 
 async function ensureDatabase() {
   try {
@@ -46,7 +46,7 @@ async function ensureDatabase() {
   // Download fresh copy from S3
   const command = new GetObjectCommand({
     Bucket: process.env.S3_BUCKET_NAME || '',
-    Key: 'public/fundamental/db/nyse.db'
+    Key: 'public/fundamental/db/data.db'
   });
 
   const response = await s3.send(command);

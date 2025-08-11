@@ -209,7 +209,7 @@ export default function Dashboard() {
   return (
 
     <div className={styles.dashboardContainer}>
-      <div className="container mx-auto px-4 py-8">
+      <div className="mx-auto px-4 py-8 container">
         <div className={styles.controlsContainer}>
           <StockSearchBar
             onSubmit={handleCompanySelect}
@@ -220,10 +220,10 @@ export default function Dashboard() {
             onAssetTypeChange={setSelectedAssetType}
           />
         </div>
-        <TabSelector tabs={tabs} activeKey={activeTab} onChange={setActiveTab} />
 
         {(selectedCompany || isLoading) && (
           <>
+            <TabSelector tabs={tabs} activeKey={activeTab} onChange={setActiveTab} />
             <CompanyHeader
               symbol={selectedCompany?.symbol || ''}
               name={selectedCompany?.name || ''}
