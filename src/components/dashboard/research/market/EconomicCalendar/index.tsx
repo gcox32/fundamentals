@@ -217,7 +217,7 @@ export default function EconomicCalendar({ country = 'US', impact }: Props) {
     <div className={styles.wrapper} ref={wrapperRef}>
       <div className={styles.header}>
         <div className={styles.rangeText}>
-          {rangeStart.toLocaleDateString()} – {rangeEnd.toLocaleDateString()} ({country})
+          {rangeStart.toLocaleDateString()} - {rangeEnd.toLocaleDateString()} ({country})
         </div>
         {loading && <div className={styles.loading}>Loading…</div>}
         {error && <div className={styles.error}>{error}</div>}

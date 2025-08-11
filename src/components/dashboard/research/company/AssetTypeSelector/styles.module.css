@@ -2,14 +2,31 @@
   margin: 1rem 0;
   display: flex;
   justify-content: center;
+  position: relative;
+  width: 100%;
 }
 
 .buttonGroup {
   display: flex;
+  justify-content: space-between;
   gap: 0.5rem;
   background: var(--card-background);
   padding: 0.5rem;
   border-radius: 0.5rem;
+  max-width: 580px; /* match search bar max width */
+  margin: 0;
+}
+
+.scrollable {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+}
+
+.scrollable::-webkit-scrollbar {
+  display: none;
 }
 
 .button {
@@ -20,6 +37,8 @@
   color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  scroll-snap-align: center;
 }
 
 .button:hover {
@@ -33,12 +52,18 @@
 
 @media (max-width: 912px) {
   .container {
-    font-size: 12px;
+    font-size: 16px; /* keep text readable */
+  }
+  .buttonGroup {
+    max-width: 100%;
   }
 }
 
 @media (max-width: 768px) {
   .container {
-    font-size: 8px;
+    font-size: 16px; /* do not shrink excessively on mobile */
+  }
+  .buttonGroup {
+    max-width: 100%;
   }
 }
