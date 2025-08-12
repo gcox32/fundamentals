@@ -152,3 +152,10 @@
   background: rgba(255, 255, 255, 0.1);
   font-size: 10px;
 } 
+
+@media (max-width: 768px) {
+  .container {
+    right: auto;
+    left: calc(50% - 140px);
+  }
+}

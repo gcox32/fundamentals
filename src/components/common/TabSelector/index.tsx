@@ -72,8 +72,6 @@ export default function TabSelector<Key extends string = string>({
     const base = [styles.tabsContainer];
     if (className) base.push(className);
     if (isScrollable) base.push(styles.scrollable);
-    if (!atStart) base.push(styles.shadowLeft);
-    if (!atEnd) base.push(styles.shadowRight);
     return base.join(' ');
   }, [className, isScrollable, atStart, atEnd]);
 

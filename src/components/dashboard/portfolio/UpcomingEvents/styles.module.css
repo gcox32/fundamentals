@@ -47,7 +47,7 @@
   border: 1px solid var(--border, rgba(148,163,184,0.12));
   border-radius: 8px;
   height: 110px;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 8px;
   display: flex;
   flex-direction: column;
@@ -128,6 +128,25 @@
 
 .cell:hover {
   border-color: rgba(148,163,184,0.35);
+}
+
+/* Mobile layout: stack by day instead of 7-column grid */
+@media (max-width: 640px) {
+  .weekdays {
+    display: none;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .cell {
+    height: auto;
+  }
+  .dateHeader {
+    justify-content: space-between;
+  }
+  .badge {
+    font-size: 0.8rem;
+  }
 }
 
 
