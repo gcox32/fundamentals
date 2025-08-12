@@ -105,7 +105,11 @@ export default function IntrinsicValueOverview({
   }
 
   return (
-    <OverviewCard title="Intrinsic Value Analysis" isLoading={isLoading}>
+    <OverviewCard 
+      title="Intrinsic Value Analysis" 
+      isLoading={isLoading}
+      className="mt-5"
+    >
       <div className={styles.container}>
         <div className={styles.mainContent}>
           <div className={styles.metricsGrid}>
@@ -159,7 +163,7 @@ export default function IntrinsicValueOverview({
               Try our Discounted Cash Flow calculator to create your own valuation model with custom assumptions.
             </p>
             <a href={`/tools/dcf?symbol=${profile?.symbol}`} target="_blank" className={styles.promoButton}>
-              Open DCF Calculator
+              DCF Calculator
               <FiExternalLink className={styles.promoIcon} />
             </a>
           </div>

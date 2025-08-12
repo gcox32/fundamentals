@@ -132,14 +132,14 @@ export default function StyleDistribution({ companyOutlooks, weights }: StyleDis
     };
 
     return (
-        <div className="w-[40%] min-w-[440px]">
+        <div className="w-full sm:w-[40%] min-w-0 sm:min-w-[440px]">
             <h3 className="inline-flex items-center gap-2 mb-2 font-semibold text-[var(--text)] text-sm text-center">
                 Style Distribution
                 <Tooltip content={"Classification combines valuation (P/E, P/B, P/S, P/FCF, PEG), yield (Div%), and profitability (ROE). Metrics are normalized with caps and weighted; low scores tilt Value, high scores tilt Growth."}>
                     <FiInfo />
                 </Tooltip>
             </h3>
-            <div className="gap-0.5 grid grid-cols-4 mt-5 ml-[-120px]">
+            <div className="gap-0.5 grid grid-cols-4 mt-5 ml-0 sm:ml-[-120px] scale-[0.9] sm:scale-100 origin-top-left">
                 {/* Header row */}
                 <div className="col-span-1"></div>
                 <div className="font-medium text-[var(--text)] text-xs text-center">VALUE</div>
@@ -149,7 +149,7 @@ export default function StyleDistribution({ companyOutlooks, weights }: StyleDis
                 {/* Data rows */}
                 {(['LARGE', 'MEDIUM', 'SMALL'] as MarketCapCategory[]).map((marketCap) => (
                     <div key={marketCap} className="contents">
-                        <div className="flex justify-center items-end mb-2 font-medium text-[var(--text)] text-xs -rotate-90 transform">
+                        <div className="flex justify-center items-end mb-2 font-medium text-[10px] text-[var(--text)] sm:text-xs sm:-rotate-90 transform">
                             {marketCap}
                         </div>
                         {(['VALUE', 'BLEND', 'GROWTH'] as StyleCategory[]).map((style) => {

@@ -9,6 +9,12 @@
   gap: 8px;
 }
 
+@media (max-width: 768px) {
+  .controls {
+    justify-content: center;
+  }
+}
+
 .button {
   padding: 6px 10px;
   border: 1px solid var(--border, rgba(148,163,184,0.12));

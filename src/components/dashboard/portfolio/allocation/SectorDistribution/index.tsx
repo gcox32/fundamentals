@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PieChart, Pie, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { PieChart, Pie, BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell } from 'recharts';
 import { CompanyProfile } from '@/types/company';
 import styles from '@/components/common/Toggle/styles.module.css';
 import clsx from 'clsx';
@@ -46,33 +46,32 @@ export default function SectorDistribution({ companyProfiles, weights }: SectorD
     }));
 
     return (
-        <div className="w-[50%] min-w-[600px] h-[400px]">
+        <div className="w-[50%] min-w-[300px] h-[400px]">
             <div className="flex justify-between items-center mb-2">
                 <h3 className="w-full font-semibold text-[var(--text)] text-sm text-center">Sector Distribution</h3>
 
             </div>
             <ResponsiveContainer width="100%" height="100%">
                 {chartType === 'pie' ? (
-                    <PieChart>
-                        <Pie
-                            data={chartData}
-                            dataKey="value"
-                            nameKey="name"
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={90}
-                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                        >
-                            {chartData.map((_, index) => (
-                                <Cell
-                                    key={`cell-${index}`}
-                                    fill={COLORS[index % COLORS.length]}
-                                    className="stroke-[var(--background)]"
-                                />
-                            ))}
-                        </Pie>
-
-                    </PieChart>
+                        <PieChart>
+                            <Pie
+                                data={chartData}
+                                dataKey="value"
+                                nameKey="name"
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={90}
+                                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                            >
+                                {chartData.map((_, index) => (
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={COLORS[index % COLORS.length]}
+                                        className="stroke-[var(--background)]"
+                                    />
+                                ))}
+                            </Pie>
+                        </PieChart>
                 ) : (
                     <BarChart data={chartData}>
                         <XAxis

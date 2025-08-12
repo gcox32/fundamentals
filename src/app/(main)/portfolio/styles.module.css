@@ -11,6 +11,13 @@
   float: right;
 }
 
+@media (max-width: 768px) {
+  .portfolioOptions {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 .portfolioOptions select {
   width: 200px;
   cursor: pointer;

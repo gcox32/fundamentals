@@ -105,6 +105,12 @@
   gap: 2rem;
 }
 
+@media (max-width: 768px) {
+  .grid {
+    display: none;
+  }
+}
+
 .controlsSection {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

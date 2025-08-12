@@ -8,12 +8,12 @@ export default function AIGenerated() {
                 color: '#1976D2',
                 padding: '4px 12px',
                 borderRadius: '16px',
-                fontSize: '12px',
                 fontWeight: 500,
                 fontFamily: 'system-ui, -apple-system, sans-serif',
             }}
+            className="font-medium text-xs"
         >
-            AI Generated
+            AI&nbsp;Generated
         </div>
     );
 }

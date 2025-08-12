@@ -41,7 +41,7 @@
 .card {
   border-radius: 0.75rem;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
-  padding: 2rem;
+  padding: 1rem;
   background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
   transition: all 0.2s ease;
@@ -57,9 +57,15 @@
   gap: 1.5rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 2rem;
   }
 }
 

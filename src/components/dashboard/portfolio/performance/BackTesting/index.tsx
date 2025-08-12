@@ -1,6 +1,6 @@
 import { HistoricalPriceData } from "@/types/stock";
 import styles from "./styles.module.css";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
     ResponsiveContainer,
     LineChart,
@@ -39,6 +39,8 @@ export default function BackTesting({ portfolioHistoricalPrices, weights }: Back
     const [qqqData, setQqqData] = useState<HistoricalPriceData | null>(null);
     const [showSpy, setShowSpy] = useState(true);
     const [showQqq, setShowQqq] = useState(true);
+    const [isCompactPortrait, setIsCompactPortrait] = useState(false);
+    const [showChartAnyway, setShowChartAnyway] = useState(false);
     const { isDarkMode } = useTheme();
     
     // Fetch benchmark data

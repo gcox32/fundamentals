@@ -59,27 +59,6 @@
   transform: scaleX(1);
 }
 
-/* Gradient edge indicators to hint scrollability */
-.shadowLeft::before,
-.shadowRight::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 24px;
-  pointer-events: none;
-}
-
-.shadowLeft::before {
-  left: 0;
-  background: linear-gradient(to right, var(--background), transparent);
-}
-
-.shadowRight::after {
-  right: 0;
-  background: linear-gradient(to left, var(--background), transparent);
-}
-
 /* Desktop: keep equal distribution, no overflow */
 @media (min-width: 768px) {
   .scrollable {
