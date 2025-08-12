@@ -46,7 +46,8 @@
   background: var(--card, #0b1220);
   border: 1px solid var(--border, rgba(148,163,184,0.12));
   border-radius: 8px;
-  min-height: 110px;
+  height: 110px;
+  overflow-y: scroll;
   padding: 8px;
   display: flex;
   flex-direction: column;

@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from 'react';
+
 type MacroComposite = {
   score: number;
   regime: string;
@@ -6,40 +10,55 @@ type MacroComposite = {
   asOf: string;
 };
 
+type PolicyStanceData = {
+  latest: { value: number; date: string };
+  trend: 'Restrictive' | 'Neutral' | 'Accommodative' | string;
+};
+
 export default function MacroHealth({ composite, fallbackStatus }: { composite?: MacroComposite | null, fallbackStatus: { value: string; basis: string } }) {
-  if (!composite) {
+  const [policy, setPolicy] = useState<PolicyStanceData | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch('/api/research/fred/FEDFUNDS')
+      .then(res => res.ok ? res.json() : Promise.reject(new Error('Failed to load policy stance')))
+      .then((data) => { if (isMounted) setPolicy(data); })
+      .catch((e) => { if (isMounted) setError(e.message); });
+    return () => { isMounted = false; };
+  }, []);
+
+  // While loading or on error, show the simple economic status fallback to keep the header clean
+  if (!policy || error) {
     return (
-      <div className="p-4 border rounded-lg border-[var(--border-color)] bg-[var(--background)] shadow">
-        <h3 className="font-semibold text-[var(--text-secondary)]">Macro Health & Nowcast</h3>
-        <p className="text-2xl font-bold">{fallbackStatus.value}</p>
-        <p className="text-xs text-[var(--text-secondary)] mt-1">{fallbackStatus.basis}</p>
+      <div className="bg-[var(--background)] shadow p-4 border border-[var(--border-color)] rounded-lg">
+        <h3 className="font-semibold text-[var(--text-secondary)]">Policy Stance</h3>
+        <p className="font-bold text-2xl">{fallbackStatus.value}</p>
+        <p className="mt-1 text-[var(--text-secondary)] text-xs">{fallbackStatus.basis}</p>
       </div>
     );
   }
 
   const color =
-    composite.score >= 70 ? 'text-green-600' :
-      composite.score >= 50 ? 'text-yellow-600' :
-        composite.score >= 30 ? 'text-orange-600' :
-          'text-red-600';
+    policy.trend === 'Accommodative' ? 'text-green-600' :
+      policy.trend === 'Neutral' ? 'text-yellow-600' :
+        'text-red-600';
 
   return (
-    <div className="p-4 border rounded-lg border-[var(--border-color)] bg-[var(--background)] shadow">
-      <h3 className="font-semibold text-[var(--text-secondary)]">Macro Health & Nowcast</h3>
+    <div className="bg-[var(--background)] shadow p-4 border border-[var(--border-color)] rounded-lg">
+      <h3 className="font-semibold text-[var(--text-secondary)]">Policy Stance (Fed Funds)</h3>
 
       <div className="flex items-baseline gap-2">
-        <p className={`text-3xl font-bold ${color}`}>{composite.score}/100</p>
-        <span className="text-sm text-[var(--text-secondary)]">Regime: {composite.regime}</span>
+        <p className={`text-3xl font-bold ${color}`}>{policy.trend}</p>
       </div>
 
-      <div className="mt-2 flex flex-wrap gap-2">
-        <span className="px-2 py-1 text-xs rounded bg-[var(--card-bg)] border border-[var(--border-color)]">Tilt: {composite.tilt}</span>
-        {composite.drivers.slice(0, 3).map((d, i) => (
-          <span key={i} className="px-2 py-1 text-xs rounded bg-[var(--card-bg)] border border-[var(--border-color)]">{d}</span>
-        ))}
+      <div className="flex flex-wrap gap-2 mt-2">
+        <span className="bg-[var(--card-bg)] px-2 py-1 border border-[var(--border-color)] rounded text-xs">
+          {`${policy.latest.value.toFixed(2)}% effective rate`}
+        </span>
       </div>
 
-      <p className="mt-2 text-[var(--text-secondary)] text-xs">Updated: {new Date(composite.asOf).toLocaleDateString()}</p>
+      <p className="mt-2 text-[var(--text-secondary)] text-xs">Updated: {new Date(policy.latest.date).toLocaleDateString()}</p>
     </div>
   );
 }
