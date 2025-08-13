@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import { open } from 'sqlite';
 import sqlite3 from 'sqlite3';
-import fs from 'fs';
 import path from 'path';
+import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { createWriteStream } from 'fs';
+import { pipeline } from 'stream/promises';
+import fs from 'fs/promises';
 
 type EconomicCalendarRow = {
   date: string;
@@ -18,11 +21,54 @@ type EconomicCalendarRow = {
   unit: string | null;
 };
 
-function resolveDbPath(): string {
-  const cwd = process.cwd();
-  const dataDb = path.join(cwd, 'database', 'data.db');
-  if (fs.existsSync(dataDb)) return dataDb;
-  return dataDb;
+const s3 = new S3Client({
+  region: process.env.REGION || 'us-east-1',
+  credentials: {
+    accessKeyId: process.env.ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.SECRET_ACCESS_KEY || ''
+  }
+});
+
+// Add validation check
+if (!process.env.ACCESS_KEY_ID || !process.env.SECRET_ACCESS_KEY || !process.env.S3_BUCKET_NAME) {
+  console.error('Missing required environment variables:', {
+    hasAccessKey: !!process.env.ACCESS_KEY_ID,
+    hasSecretKey: !!process.env.SECRET_ACCESS_KEY,
+    hasBucketName: !!process.env.S3_BUCKET_NAME
+  });
+}
+
+const DB_PATH = path.join(process.cwd(), 'database', 'data.db');
+
+async function ensureDatabase() {
+  try {
+    // Check if we already have a recent copy
+    const stats = await fs.stat(DB_PATH);
+    const ageInHours = (Date.now() - stats.mtimeMs) / (1000 * 60 * 60);
+    
+    // If DB is less than 24 hours old, use it
+    if (ageInHours < 24) {
+      return;
+    }
+  } catch (error) {
+    // File doesn't exist, continue to download
+  }
+
+  // Ensure database directory exists
+  await fs.mkdir(path.dirname(DB_PATH), { recursive: true });
+
+  // Download fresh copy from S3
+  const command = new GetObjectCommand({
+    Bucket: process.env.S3_BUCKET_NAME || '',
+    Key: 'public/fundamental/db/data.db'
+  });
+
+  const response = await s3.send(command);
+  const writeStream = createWriteStream(DB_PATH);
+  
+  if (response.Body) {
+    await pipeline(response.Body as any, writeStream);
+  }
 }
 
 function toStartOfDay(dateStr: string): string {
@@ -47,8 +93,11 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Missing required query params: from, to (YYYY-MM-DD)' }, { status: 400 });
     }
 
-    const dbPath = resolveDbPath();
-    const db = await open({ filename: dbPath, driver: sqlite3.Database });
+    await ensureDatabase();
+    const db = await open({
+      filename: DB_PATH,
+      driver: sqlite3.Database
+    });
 
     try {
       // Ensure table exists to avoid errors if script hasn't run yet
