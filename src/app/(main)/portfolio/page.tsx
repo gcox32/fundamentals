@@ -112,7 +112,7 @@ export default function Portfolio() {
 				/>
 			)}
 			<div className={`${styles.portfolioOptions} mt-auto`}>
-				<div className="flex justify-end items-center gap-4">
+				<div className="flex xsm:flex-row flex-col justify-end items-center gap-4">
 					<SelectPortfolio
 						portfolios={portfolios}
 						activePortfolio={activePortfolio}

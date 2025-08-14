@@ -46,12 +46,12 @@ export default function SectorDistribution({ companyProfiles, weights }: SectorD
     }));
 
     return (
-        <div className="w-[50%] min-w-[300px] h-[400px]">
+        <div className="w-[50%] min-w-[300px] h-[400px] sm:overflow-hidden md:overflow-hidden xsm:overflow-x-hidden">
             <div className="flex justify-between items-center mb-2">
                 <h3 className="w-full font-semibold text-[var(--text)] text-sm text-center">Sector Distribution</h3>
 
             </div>
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" className="xsm:overflow-hidden">
                 {chartType === 'pie' ? (
                         <PieChart>
                             <Pie
@@ -73,7 +73,7 @@ export default function SectorDistribution({ companyProfiles, weights }: SectorD
                             </Pie>
                         </PieChart>
                 ) : (
-                    <BarChart data={chartData}>
+                    <BarChart data={chartData} className="xsm:margin-left-[-2em]">
                         <XAxis
                             dataKey="name"
                             angle={-45}
